@@ -1,0 +1,40 @@
+- name: create SMB credentials directory
+  file:
+    group: "{{dev_cifs_client_params.username}}"
+    owner: "{{dev_cifs_client_params.username}}"
+    path: /home/{{dev_cifs_client_params.username}}/.smbcredentials
+    state: directory
+
+- name: create SMB credentials file
+  template:
+    dest: /home/{{dev_cifs_client_params.username}}/.smbcredentials/{{item.key}}-{{share.name}}
+    group: "{{dev_cifs_client_params.username}}"
+    mode: "0600"
+    owner: "{{dev_cifs_client_params.username}}"
+    src: smbcredentials.j2
+  loop: "{{item.value}}"
+  loop_control:
+    loop_var: share
+
+- block:
+  - name: create share mountpoints
+    file:
+      group: "{{dev_cifs_client_params.username}}"
+      owner: "{{dev_cifs_client_params.username}}"
+      path: "{{share.path}}"
+      state: directory
+    loop: "{{item.value}}"
+    loop_control:
+      loop_var: share
+
+  - name: add fstab entries for shares
+    mount:
+      fstype: cifs
+      opts: credentials=/home/{{dev_cifs_client_params.username}}/.smbcredentials/{{item.key}}-{{share.name}},iocharset=utf8,sec=ntlmssp,uid={{dev_cifs_client_params.username}},gid={{dev_cifs_client_params.username}},vers=3.0,file_mode=0660,dir_mode=0770
+      path: "{{share.path}}"
+      src: //{{item.key}}/{{share.name}}
+      state: mounted
+    loop: "{{item.value}}"
+    loop_control:
+      loop_var: share
+  become: true

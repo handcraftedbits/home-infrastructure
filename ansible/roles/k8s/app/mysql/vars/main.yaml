@@ -1,0 +1,2 @@
+k8s_app_mysql_internal:
+  app_name: "{{k8s_app_mysql_params.namespace | default(k8s_app_mysql_defaults.namespace)}}-{{k8s_app_mysql_params.name | default(k8s_app_mysql_defaults.name)}}"

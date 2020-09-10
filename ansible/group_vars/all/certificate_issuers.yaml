@@ -1,0 +1,19 @@
+certificate_issuer_credentials:
+  production: "{{lookup('hashi_vault', vault_lookup~'certificate-issuers/production')}}"
+  staging: "{{lookup('hashi_vault', vault_lookup~'certificate-issuers/staging')}}"
+certificate_issuers:
+  - name: letsencrypt-route53-production
+    access_key_id: "{{certificate_issuer_credentials.production.access_key_id}}"
+    email: "{{certificate_issuer_credentials.production.email}}"
+    hosted_zone_id: "{{certificate_issuer_credentials.production.hosted_zone_id}}"
+    region: "{{certificate_issuer_credentials.production.region}}"
+    secret_access_key: "{{certificate_issuer_credentials.production.secret_access_key}}"
+    server: https://acme-v02.api.letsencrypt.org/directory
+  - name: letsencrypt-route53-staging
+    access_key_id: "{{certificate_issuer_credentials.staging.access_key_id}}"
+    email: "{{certificate_issuer_credentials.staging.email}}"
+    hosted_zone_id: "{{certificate_issuer_credentials.staging.hosted_zone_id}}"
+    region: "{{certificate_issuer_credentials.staging.region}}"
+    secret_access_key: "{{certificate_issuer_credentials.staging.secret_access_key}}"
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+current_certificate_issuer: letsencrypt-route53-production

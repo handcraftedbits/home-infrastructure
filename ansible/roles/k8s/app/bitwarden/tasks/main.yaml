@@ -1,0 +1,13 @@
+- name: create statefulset spec
+  set_fact:
+    k8s_app_bitwarden_internal_spec: "{{lookup('template', 'spec.yaml.j2') | from_yaml}}"
+
+- include_role:
+    name: k8s/resource/statefulset
+  vars:
+    k8s_resource_statefulset_params:
+      labels:
+        app: "{{k8s_app_bitwarden_internal.app_name}}"
+      name: "{{k8s_app_bitwarden_params.name}}"
+      namespace: "{{k8s_app_bitwarden_params.namespace | default(k8s_app_bitwarden_defaults.namespace)}}"
+      spec: "{{k8s_app_bitwarden_internal_spec}}"

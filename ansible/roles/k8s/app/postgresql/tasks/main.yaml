@@ -1,0 +1,21 @@
+- block:
+  - name: wait for PostgreSQL server to become available
+    wait_for:
+      host: "{{k8s_app_postgresql_params.hostname}}"
+      port: "{{k8s_app_postgresql_params.port | default(k8s_app_postgresql_defaults.port)}}"
+
+  - block:
+    - name: create initial databases
+      postgresql_db:
+        login_host: "{{k8s_app_postgresql_params.hostname}}"
+        login_password: "{{k8s_app_postgresql_params.password}}"
+        login_user: "{{k8s_app_postgresql_params.username | default(k8s_app_postgresql_defaults.username)}}"
+        name: "{{item}}"
+        port: "{{k8s_app_postgresql_params.port | default(k8s_app_postgresql_defaults.port)}}"
+      loop: "{{k8s_app_postgresql_params.initial.databases}}"
+      when: k8s_app_postgresql_params.initial.databases is defined
+
+    - include_tasks: accounts.yaml
+      loop: "{{(k8s_app_postgresql_params.initial.accounts | default({})) | dict2items}}"
+    when: k8s_app_postgresql_params.initial is defined
+  delegate_to: localhost

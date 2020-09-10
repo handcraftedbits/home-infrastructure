@@ -1,0 +1,2 @@
+k8s_app_jira_internal:
+  app_name: "{{k8s_app_jira_params.namespace | default(k8s_app_jira_defaults.namespace)}}-{{k8s_app_jira_params.name}}"

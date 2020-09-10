@@ -1,0 +1,8 @@
+address_pools:
+  default: "{{lookup('hashi_vault', vault_lookup~'address-pools/default')}}"
+  dns: "{{lookup('hashi_vault', vault_lookup~'address-pools/dns')}}"
+cluster: "{{lookup('hashi_vault', vault_lookup~'info')}}"
+sslterminators: "{{lookup('hashi_vault', vault_lookup~'sslterminators')}}"
+storage:
+  iscsi: "{{lookup('hashi_vault', vault_lookup~'storage/iscsi')}}"
+  nfs: "{{lookup('hashi_vault', vault_lookup~'storage/nfs')}}"

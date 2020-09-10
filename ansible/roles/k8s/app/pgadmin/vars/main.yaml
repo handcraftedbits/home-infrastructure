@@ -1,0 +1,2 @@
+k8s_app_pgadmin_internal:
+  app_name: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}-{{k8s_app_pgadmin_params.name}}"

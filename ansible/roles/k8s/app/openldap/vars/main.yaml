@@ -1,0 +1,4 @@
+k8s_app_openldap_internal:
+  app_name: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}-{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"
+  dn_suffix: dc={{k8s_app_openldap_params.domain.split('.') | join(',dc=')}}
+  uri: ldap://{{k8s_app_openldap_params.hostname}}

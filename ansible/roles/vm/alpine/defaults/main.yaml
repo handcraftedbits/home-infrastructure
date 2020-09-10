@@ -1,0 +1,14 @@
+vm_alpine_defaults:
+  iso: /iso/alpine-provision-edge-x86_64.iso
+  keyboard:
+    layout: us
+    variant: us
+  timezone: America/New_York
+  vm_settings:
+    boot_firmware: efi
+    disk_size: 40
+    guest_id: other4xLinux64Guest
+    memory: 2048
+    network: VM Network
+    num_cpus: 1
+    version: 14

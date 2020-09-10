@@ -1,0 +1,16 @@
+selector:
+  matchLabels:
+    app: {{k8s_app_plantuml_internal.app_name}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_app_plantuml_internal.app_name}}
+  spec:
+    containers:
+      - name: plantuml
+        image: plantuml/plantuml-server:jetty
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP

@@ -1,0 +1,2 @@
+k8s_app_organizr_internal:
+  app_name: "{{k8s_app_organizr_params.namespace | default(k8s_app_organizr_defaults.namespace)}}-{{k8s_app_organizr_params.name}}"

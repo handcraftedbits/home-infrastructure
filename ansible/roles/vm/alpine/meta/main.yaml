@@ -1,0 +1,7 @@
+dependencies:
+  - role: esxi/vm
+    vars:
+      esxi_vm_params:
+        iso: "{{vm_alpine_params.iso | default(vm_alpine_defaults.iso)}}"
+        server: "{{vm_alpine_params.esxi_server}}"
+        vm_settings: "{{vm_alpine_params.vm_settings | default(vm_alpine_defaults.vm_settings)}}"

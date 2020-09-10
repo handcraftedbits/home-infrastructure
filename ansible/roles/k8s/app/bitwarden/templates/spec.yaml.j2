@@ -1,0 +1,41 @@
+
+replicas: {{k8s_app_bitwarden_params.replicas | default(k8s_app_bitwarden_defaults.replicas)}}
+selector:
+  matchLabels:
+    app: {{k8s_app_bitwarden_internal.app_name}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_app_bitwarden_internal.app_name}}
+  serviceName: {{k8s_app_bitwarden_params.name}}
+  spec:
+    containers:
+      - name: bitwarden
+        image: bitwardenrs/server
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: WEBSOCKET_ENABLED
+            value: "true"
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+          - containerPort: 3012
+            name: websocket
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /data
+            name: pv
+volumeClaimTemplates:
+  - metadata:
+      name: pv
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: {{k8s_app_bitwarden_params.size}}
+      selector:
+        matchLabels:
+          app: {{k8s_app_bitwarden_internal.app_name}}
+      storageClassName: ""

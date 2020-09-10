@@ -1,0 +1,18 @@
+dependencies:
+  - role: k8s/resource/helm
+    vars:
+      k8s_resource_helm_params:
+        chart: stable/nfs-client-provisioner
+        chart_values:
+          fullnameOverride: "{{k8s_component_nfsprovisioner_params.name}}"
+          nfs:
+            mountOptions: "{{k8s_component_nfsprovisioner_params.mount_options}}"
+            path: "{{k8s_component_nfsprovisioner_params.path}}"
+            server: "{{k8s_component_nfsprovisioner_params.hostname}}"
+          storageClass:
+            archiveOnDelete: "{{k8s_component_nfsprovisioner_params.archive_on_delete}}"
+            name: "{{k8s_component_nfsprovisioner_params.storageclass_name}}"
+            provisionerName: "{{k8s_component_nfsprovisioner_params.name}}"
+            reclaimPolicy: Retain
+        namespace: "{{k8s_component_nfsprovisioner_params.namespace}}"
+        release: "{{k8s_component_nfsprovisioner_params.prefix}}"

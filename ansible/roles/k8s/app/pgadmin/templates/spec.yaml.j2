@@ -1,0 +1,47 @@
+
+replicas: {{k8s_app_pgadmin_params.replicas | default(k8s_app_pgadmin_defaults.replicas)}}
+selector:
+  matchLabels:
+    app: {{k8s_app_pgadmin_internal.app_name}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_app_pgadmin_internal.app_name}}
+  serviceName: {{k8s_app_pgadmin_params.name}}
+  spec:
+    containers:
+      - name: pgadmin
+        image: dpage/pgadmin4
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: {{k8s_app_pgadmin_params.admin.email}}
+        envFrom:
+          - secretRef:
+              name: {{k8s_app_pgadmin_params.name}}
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /var/lib/pgadmin
+            name: pv
+{% if k8s_app_pgadmin_params.dns_server is defined %}
+    dnsConfig:
+      nameservers:
+        - {{k8s_app_pgadmin_params.dns_server}}
+    dnsPolicy: None
+{% endif %}
+volumeClaimTemplates:
+  - metadata:
+      name: pv
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: {{k8s_app_pgadmin_params.size}}
+      selector:
+        matchLabels:
+          app: {{k8s_app_pgadmin_internal.app_name}}
+      storageClassName: ""

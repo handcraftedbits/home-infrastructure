@@ -1,0 +1,48 @@
+dependencies:
+  - role: k8s/resource/namespace
+    vars:
+      k8s_resource_namespace_params:
+        name: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+
+  - role: k8s/component/metallb
+    vars:
+      k8s_component_metallb_params:
+        config: "{{k8s_core_params.load_balancer}}"
+        namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+        prefix: metallb
+
+  - role: k8s/component/externaldns
+    vars:
+      k8s_component_externaldns_params:
+        address_pool_name: "{{k8s_core_params.dns.address_pool_name | default(k8s_core_defaults.dns.address_pool_name)}}"
+        domain: "{{k8s_core_params.dns.domain}}"
+        domain_reverse: "{{k8s_core_params.dns.domain_reverse}}"
+        namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+        prefix: external-dns
+
+  - role: k8s/component/nginx
+    vars:
+      k8s_component_nginx_params:
+        config: "{{k8s_core_params.ingress}}"
+        namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+        prefix: nginx-ingress
+
+  - role: k8s/component/certmanager
+    vars:
+      k8s_component_certmanager_params:
+        config: "{{k8s_core_params.certificate_manager}}"
+        namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+        prefix: cert-manager
+
+  - role: k8s/component/nfsprovisioner
+    vars:
+      k8s_component_nfsprovisioner_params:
+        archive_on_delete: "{{k8s_core_params.nfs.archive_on_delete | default(k8s_core_defaults.nfs.archive_on_delete)}}"
+        hostname: "{{k8s_core_params.nfs.hostname}}"
+        mount_options: "{{k8s_core_params.nfs.mount_options | default(k8s_core_defaults.nfs.mount_options)}}"
+        name: "{{k8s_core_params.nfs.name}}"
+        namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+        path: "{{k8s_core_params.nfs.path}}"
+        prefix: nfs-provisioner
+        storageclass_name: "{{k8s_core_params.nfs.storageclass_name}}"
+    when: k8s_core_params.nfs is defined

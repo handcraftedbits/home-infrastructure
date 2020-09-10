@@ -1,0 +1,46 @@
+- name: get Ubuntu release name
+  command: lsb_release -cs
+  changed_when: false
+  register: dev_docker_internal_release
+
+- block:
+  - name: install dependencies
+    apt:
+      force_apt_get: true
+      name: "{{packages}}"
+      state: present
+    vars:
+      packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+
+  - name: add repository key
+    apt_key:
+      state: present
+      url: https://download.docker.com/linux/ubuntu/gpg
+
+  - name: add repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{dev_docker_internal_release.stdout}} stable
+
+  - name: install package
+    apt:
+      force_apt_get: true
+      name: docker-ce
+      update_cache: yes
+
+  - name: install docker-compose
+    get_url:
+      dest: /usr/local/bin/docker-compose
+      mode: 0755
+      url: https://github.com/docker/compose/releases/download/{{dev_docker_params.docker_compose_version | default(dev_docker_defaults.docker_compose_version)}}/docker-compose-Linux-x86_64
+
+  - name: add user '{{dev_docker_params.username}}' to group
+    user:
+      append: yes
+      groups: docker
+      name: "{{dev_docker_params.username}}"
+  become: true

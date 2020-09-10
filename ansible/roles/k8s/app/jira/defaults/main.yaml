@@ -1,0 +1,6 @@
+k8s_app_jira_defaults:
+  memory:
+    max: 2048m
+    min: 2048m
+  namespace: jira
+  replicas: 1

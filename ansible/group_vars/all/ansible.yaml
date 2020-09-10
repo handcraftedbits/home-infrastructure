@@ -1,0 +1,3 @@
+ansible_connection: ssh
+ansible_ssh_pass: "{{root_account.password}}"
+ansible_user: root

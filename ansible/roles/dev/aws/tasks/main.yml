@@ -1,0 +1,31 @@
+- name: install CLI tool
+  pip:
+    name: awscli
+    state: present
+  become: true
+
+- name: create AWS configuration directory
+  become_user: "{{dev_aws_params.username}}"
+  file:
+    group: "{{dev_aws_params.username}}"
+    owner: "{{dev_aws_params.username}}"
+    path: /home/{{dev_aws_params.username}}/.aws
+    state: directory
+
+- name: create AWS configuration file
+  become_user: "{{dev_aws_params.username}}"
+  template:
+    dest: /home/{{dev_aws_params.username}}/.aws/config
+    group: "{{dev_aws_params.username}}"
+    mode: "0600"
+    owner: "{{dev_aws_params.username}}"
+    src: config.j2
+
+- name: create AWS credentials file
+  become_user: "{{dev_aws_params.username}}"
+  template:
+    dest: /home/{{dev_aws_params.username}}/.aws/credentials
+    group: "{{dev_aws_params.username}}"
+    mode: "0600"
+    owner: "{{dev_aws_params.username}}"
+    src: credentials.j2

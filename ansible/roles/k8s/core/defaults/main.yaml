@@ -1,0 +1,7 @@
+k8s_core_defaults:
+  dns:
+    address_pool_name: dns
+  namespace: kube-system-custom
+  nfs:
+    archive_on_delete: false
+    mount_options: null

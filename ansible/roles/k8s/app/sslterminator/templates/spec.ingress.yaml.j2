@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: {{k8s_app_sslterminator_params.certificate_issuer}}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+{% if item.value.secure is defined and item.value.secure == true %}
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.org/ssl-services: {{item.key}}
+{% endif %}
+{% if item.value.annotations is defined %}
+    {{item.value.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  labels:
+    app: {{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}-{{item.key}}
+  name: {{item.key}}
+  namespace: {{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}
+spec:
+  rules:
+    - host: {{item.key}}.{{k8s_app_sslterminator_params.hostname_suffix}}
+      http:
+        paths:
+          - backend:
+              serviceName: {{item.key}}
+              servicePort: {{item.value.target_port}}
+            path: /
+  tls:
+    - hosts:
+        - {{item.key}}.{{k8s_app_sslterminator_params.hostname_suffix}}
+      secretName: {{item.key}}-tls

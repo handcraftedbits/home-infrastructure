@@ -1,0 +1,35 @@
+- name: install packages
+  apt:
+    force_apt_get: true
+    name: "{{packages}}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - exuberant-ctags
+      - neovim
+
+- name: make NeoVim config directory
+  file:
+    dest: .config/nvim
+    state: directory
+
+- name: link dotfiles
+  file:
+    dest: /home/{{dev_vim_params.username}}/{{item.dest}}
+    src: /home/{{dev_vim_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .vimrc
+      src: vim/.vimrc
+    - dest: .config/nvim/init.vim
+      src: vim/.vimrc
+
+- name: install Vundle
+  git:
+    dest: /home/{{dev_vim_params.username}}/.vim/bundle/Vundle.vim
+    repo: https://github.com/VundleVim/Vundle.vim.git
+
+# TODO: fix changed_when
+- name: install Vundle plugins
+  shell: vim -c VundleUpdate -c quitall > /dev/null

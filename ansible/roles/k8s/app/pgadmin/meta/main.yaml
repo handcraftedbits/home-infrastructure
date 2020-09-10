@@ -1,0 +1,77 @@
+dependencies:
+  - role: k8s/resource/namespace
+    vars:
+      k8s_resource_namespace_params:
+        labels:
+          app: "{{k8s_app_pgadmin_internal.app_name}}"
+        name: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}"
+
+  - role: k8s/resource/persistentvolume
+    vars:
+      k8s_resource_persistentvolume_params:
+        labels:
+          app: "{{k8s_app_pgadmin_internal.app_name}}"
+        name: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}-{{k8s_app_pgadmin_params.name}}"
+        spec:
+          accessModes:
+            - ReadWriteMany
+          capacity:
+            storage: "{{k8s_app_pgadmin_params.size}}"
+          persistentVolumeReclaimPolicy: Retain
+          readOnly: false
+          storageClassName: ""
+          volumeMode: Filesystem
+        volume_info: "{{k8s_app_pgadmin_params.volume_info}}"
+
+  # TODO: allow for raw map to populate multiple secret values.
+  - role: k8s/resource/secret
+    vars:
+      k8s_resource_secret_params:
+        key: PGADMIN_DEFAULT_PASSWORD
+        labels:
+          app: "{{k8s_app_pgadmin_internal.app_name}}"
+        name: "{{k8s_app_pgadmin_params.name}}"
+        namespace: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}"
+        value: "{{k8s_app_pgadmin_params.admin.password}}"
+
+  - role: k8s/resource/service
+    vars:
+      k8s_resource_service_params:
+        labels:
+          app: "{{k8s_app_pgadmin_internal.app_name}}"
+        name: "{{k8s_app_pgadmin_params.name}}"
+        namespace: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}"
+        spec:
+          ports:
+            - port: 80
+              protocol: TCP
+              targetPort: 80
+          selector:
+            app: "{{k8s_app_pgadmin_internal.app_name}}"
+
+  - role: k8s/resource/ingress
+    vars:
+      k8s_resource_ingress_params:
+        annotations:
+          cert-manager.io/cluster-issuer: "{{k8s_app_pgadmin_params.certificate_issuer}}"
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/configuration-snippet: |-
+            more_set_headers "Content-Security-Policy: frame-ancestors https://*.{{k8s_app_pgadmin_params.cluster_domain}}";
+            proxy_hide_header X-Frame-Options;
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        labels:
+          app: "{{k8s_app_pgadmin_internal.app_name}}"
+        name: "{{k8s_app_pgadmin_params.name}}"
+        namespace: "{{k8s_app_pgadmin_params.namespace | default(k8s_app_pgadmin_defaults.namespace)}}"
+        spec:
+          rules:
+            - host: "{{k8s_app_pgadmin_params.hostname}}"
+              http:
+                paths:
+                  - backend:
+                      serviceName: "{{k8s_app_pgadmin_params.name}}"
+                      servicePort: 80
+          tls:
+            - hosts:
+                - "{{k8s_app_pgadmin_params.hostname}}"
+              secretName: "{{k8s_app_pgadmin_params.name}}-tls"

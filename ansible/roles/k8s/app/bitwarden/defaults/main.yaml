@@ -1,0 +1,3 @@
+k8s_app_bitwarden_defaults:
+  namespace: bitwarden
+  replicas: 1

@@ -1,0 +1,55 @@
+replicas: {{k8s_component_externaldns_params.replicas | default(k8s_component_externaldns_defaults.replicas)}}
+selector:
+  matchLabels:
+    app: {{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}
+  spec:
+    containers:
+      - name: bind
+        image: drebes/bind:0.4.0
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: BIND_DOMAIN_FORWARD
+            value: {{k8s_component_externaldns_params.domain}}.
+          - name: BIND_DOMAIN_REVERSE
+            value: {{k8s_component_externaldns_params.domain_reverse}}
+          - name: BIND_KEY_ALGORITHM
+            value: hmac-sha512
+          - name: BIND_KEY_NAME
+            value: cluster-dns-key.
+          - name: BIND_KEY_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: value
+                name: {{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-bind-key
+        ports:
+          - containerPort: 53
+            name: dns-tcp
+            protocol: TCP
+          - containerPort: 53
+            name: dns-udp
+            protocol: UDP
+      - name: external-dns
+        image: registry.opensource.zalan.do/teapot/external-dns
+        imagePullPolicy: IfNotPresent
+        args:
+          - --provider=rfc2136
+          - --rfc2136-host=127.0.0.1
+          - --rfc2136-port=53
+          - --rfc2136-tsig-axfr
+          - --rfc2136-tsig-keyname=cluster-dns-key.
+          - --rfc2136-tsig-secret=$(DNS_KEY_SECRET)
+          - --rfc2136-tsig-secret-alg=hmac-sha512
+          - --rfc2136-zone={{k8s_component_externaldns_params.domain}}
+          - --source=ingress
+          - --source=service
+        env:
+          - name: DNS_KEY_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: value
+                name: {{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-bind-key
+    serviceAccountName: {{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}

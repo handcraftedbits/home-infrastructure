@@ -1,0 +1,10 @@
+vm_k3s_defaults:
+  version: v1.18.6+k3s1
+  vm_settings:
+    boot_firmware: efi
+    disk_size: 40
+    guest_id: other4xLinux64Guest
+    memory: 16384
+    network: VM Network
+    num_cpus: 2
+    version: 14

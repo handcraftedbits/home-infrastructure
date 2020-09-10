@@ -1,0 +1,9 @@
+dependencies:
+  - role: k8s/resource/helm
+    vars:
+      k8s_resource_helm_params:
+        chart: stable/metallb
+        chart_values:
+          configInline: "{{k8s_component_metallb_params.config}}"
+        namespace: "{{k8s_component_metallb_params.namespace}}"
+        release: "{{k8s_component_metallb_params.prefix}}"

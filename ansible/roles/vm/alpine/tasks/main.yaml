@@ -1,0 +1,71 @@
+- block:
+  - name: create files required for installation
+    template:
+      dest: "{{item.dest}}"
+      src: "{{item.src}}"
+    loop:
+      - dest: /answerfile
+        src: answerfile.j2
+      - dest: /install.sh
+        src: install.sh.j2
+
+  - name: perform Alpine installation
+    command: sh /install.sh
+
+  - name: reboot
+    reboot:
+
+  - name: remove temporary 'perform-setup' service
+    file:
+      path: /etc/runlevels/boot/perform-setup
+      state: absent
+
+  - name: add community repository
+    lineinfile:
+      backrefs: true
+      line: '\1'
+      path: /etc/apk/repositories
+      regexp: ^#(.*community)$
+
+  - name: disallow empty passwords for SSH
+    lineinfile:
+      regexp: ^PermitEmptyPasswords.*$
+      path: /etc/ssh/sshd_config
+      state: absent
+
+  - name: set hostname
+    template:
+      dest: "{{item.dest}}"
+      src: "{{item.src}}"
+    loop:
+      - dest: /etc/hostname
+        src: etc/hostname
+      - dest: /etc/hosts
+        src: etc/hosts
+
+  - name: install base packages
+    apk:
+      name: "{{item}}"
+      update_cache: true
+    loop:
+      - ca-certificates
+      - dbus
+      - open-vm-tools
+      - syslinux
+      - udev
+      - util-linux
+
+  - include_tasks: cgroups.yaml
+
+  - name: start required services on boot
+    service:
+      enabled: true
+      name: "{{item}}"
+      runlevel: boot
+    loop:
+      - open-vm-tools
+      - udev
+
+  - name: reboot to pick up cgroups changes
+    reboot:
+  when: esxi_vm_internal_vm.instance is not defined

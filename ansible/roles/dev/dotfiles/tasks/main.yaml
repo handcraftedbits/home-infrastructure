@@ -1,0 +1,10 @@
+- name: check for existing clone
+  stat:
+    path: "{{dev_dotfiles_params.dir | default(dev_dotfiles_defaults.dir)}}"
+  register: dev_dotfiles_internal_dir
+
+- name: clone dotfiles repository
+  git:
+    dest: "{{dev_dotfiles_params.dir | default(dev_dotfiles_defaults.dir)}}"
+    repo: "{{dev_dotfiles_params.repo}}"
+  when: dev_dotfiles_internal_dir.stat.exists == false

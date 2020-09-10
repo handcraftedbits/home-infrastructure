@@ -1,0 +1,43 @@
+- block:
+  - name: install code-server
+    apt:
+      force_apt_get: true
+      deb: https://github.com/cdr/code-server/releases/download/v{{(dev_vscode_params.version | default(dev_vscode_defaults.version))}}/code-server_{{dev_vscode_params.version | default(dev_vscode_defaults.version)}}_amd64.deb
+      state: present
+    become: true
+
+  - name: create code-server configuration directory
+    file:
+      group: "{{dev_vscode_params.username}}"
+      owner: "{{dev_vscode_params.username}}"
+      path: /home/{{dev_vscode_params.username}}/.config/code-server
+      state: directory
+
+  - name: create code-server configuration
+    template:
+      dest: /home/{{dev_vscode_params.username}}/.config/code-server/config.yaml
+      src: config.yaml.j2
+
+- block:
+  - name: create systemd service
+    template:
+      dest: /etc/systemd/system/code-server.service
+      src: code-server.service.j2
+
+  - name: enable systemd service
+    service:
+      daemon_reload: true
+      enabled: yes
+      name: code-server
+      state: started
+  become: true
+
+- name: install extensions
+  command: /usr/bin/code-server --install-extension {{item}}
+  changed_when: dev_vscode_internal_extension_install.stdout is search('was successfully installed')
+  environment:
+    ITEM_URL: https://marketplace.visualstudio.com/items
+    SERVICE_URL: https://marketplace.visualstudio.com/_apis/public/gallery
+  loop: "{{dev_vscode_params.extensions}}"
+  register: dev_vscode_internal_extension_install
+  when: dev_vscode_params.extensions is defined

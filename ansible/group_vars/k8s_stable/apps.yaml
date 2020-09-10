@@ -1,0 +1,6 @@
+ldap:
+  default: "{{lookup('hashi_vault', vault_lookup~'ldap/default')}}"
+mysql:
+  default: "{{lookup('hashi_vault', vault_lookup~'mysql/default')}}"
+postgresql:
+  default: "{{lookup('hashi_vault', vault_lookup~'postgresql/default')}}"

@@ -1,0 +1,21 @@
+- block:
+  - name: create share mountpoints
+    file:
+      group: "{{dev_nfs_client_params.username}}"
+      owner: "{{dev_nfs_client_params.username}}"
+      path: "{{share.path}}"
+      state: directory
+    loop: "{{item.value}}"
+    loop_control:
+      loop_var: share
+
+  - name: add fstab entries for shares
+    mount:
+      fstype: nfs
+      path: "{{share.path}}"
+      src: "{{item.key}}:/{{share.name}}"
+      state: mounted
+    loop: "{{item.value}}"
+    loop_control:
+      loop_var: share
+  become: true

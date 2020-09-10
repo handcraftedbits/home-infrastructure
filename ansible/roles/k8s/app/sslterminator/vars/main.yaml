@@ -1,0 +1,2 @@
+k8s_app_sslterminator_internal:
+  app_name: "{{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}-{{k8s_app_sslterminator_params.name}}"

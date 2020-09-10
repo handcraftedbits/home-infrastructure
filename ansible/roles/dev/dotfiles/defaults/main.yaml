@@ -1,0 +1,2 @@
+dev_dotfiles_defaults:
+  dir: /home/{{dev_dotfiles_params.username}}/.cloned-repos/dotfiles

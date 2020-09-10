@@ -1,0 +1,25 @@
+- name: install package
+  apt:
+    force_apt_get: true
+    name: tmux
+    state: present
+  become: true
+
+- name: create configuration directory
+  become_user: "{{dev_tmux_params.username}}"
+  file:
+    path: /home/{{dev_tmux_params.username}}/.tmux
+    state: directory
+
+- name: link dotfiles
+  become_user: "{{dev_tmux_params.username}}"
+  file:
+    dest: /home/{{dev_tmux_params.username}}/{{item.dest}}
+    force: yes
+    src: /home/{{dev_tmux_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .tmux/molokai.conf
+      src: tmux/molokai.conf
+    - dest: .tmux.conf
+      src: tmux/.tmux.conf

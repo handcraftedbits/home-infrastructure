@@ -1,0 +1,27 @@
+#!/bin/sh
+
+DIRS_REQUIRED="${HOME}/.cache/helm ${HOME}/.config/helm ${HOME}/.kube ${HOME}/.local/share/helm ${HOME}/.ssh"
+PLAYBOOK_NAME=$1
+SCRIPT_PATH=$(dirname $(realpath -s $0))
+
+shift
+
+# Create directories that may be required while executing the playbook.
+
+for i in $(printf "%s\n" "${DIRS_REQUIRED}")
+do
+     if [ ! -d "${i}" ]
+     then
+          mkdir -p "${i}"
+     fi
+done
+
+docker run -it --rm -e HOST_GID=$(id -g) -e HOST_UID=$(id -u) --cap-add IPC_LOCK \
+     -v ${HOME}/.cache/helm:/root/.cache/helm \
+     -v ${HOME}/.config/helm:/root/.config/helm \
+     -v ${HOME}/.kube:/root/.kube \
+     -v ${HOME}/.local/share/helm:/root/.local/share/helm \
+     -v ${HOME}/.ssh:/root/.ssh \
+     -v ${SCRIPT_PATH}/../ansible/iso:/iso \
+     -v ${SCRIPT_PATH}/../ansible:/work handcraftedbits/ansible-runner \
+     ./${PLAYBOOK_NAME}.yaml $*

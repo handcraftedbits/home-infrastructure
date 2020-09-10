@@ -1,0 +1,13 @@
+- name: create deployment spec
+  set_fact:
+    k8s_app_plantuml_internal_spec: "{{lookup('template', 'spec.yaml.j2') | from_yaml}}"
+
+- include_role:
+    name: k8s/resource/deployment
+  vars:
+    k8s_resource_deployment_params:
+      labels:
+        app: "{{k8s_app_plantuml_internal.app_name}}"
+      name: "{{k8s_app_plantuml_params.name}}"
+      namespace: "{{k8s_app_plantuml_params.namespace | default(k8s_app_plantuml_defaults.namespace)}}"
+      spec: "{{k8s_app_plantuml_internal_spec}}"

@@ -1,0 +1,35 @@
+- name: check if secret already exists
+  k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-bind-key"
+    namespace: "{{k8s_component_externaldns_params.namespace}}"
+  delegate_to: localhost
+  register: k8s_component_externaldns_internal_secret
+
+- include_role:
+    name: k8s/resource/secret
+  vars:
+    k8s_resource_secret_params:
+      key: value
+      labels:
+        app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+      name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-bind-key"
+      namespace: "{{k8s_component_externaldns_params.namespace}}"
+      # The actual password isn't important, it's just required for external-dns to talk to BIND.
+      value: "{{lookup('password', '/dev/null chars=ascii_leters,digits') | b64encode }}"
+  when: (k8s_component_externaldns_internal_secret.resources | length) == 0
+
+- name: create deployment spec
+  set_fact:
+    k8s_component_externaldns_internal_spec: "{{lookup('template', 'spec.yaml.j2') | from_yaml}}"
+
+- include_role:
+    name: k8s/resource/deployment
+  vars:
+    k8s_resource_deployment_params:
+      labels:
+        app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+      name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+      namespace: "{{k8s_component_externaldns_params.namespace}}"
+      spec: "{{k8s_component_externaldns_internal_spec}}"

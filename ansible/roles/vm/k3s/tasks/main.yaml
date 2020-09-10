@@ -1,0 +1,91 @@
+- block:
+  - name: install required packages
+    apk:
+      name: "{{item}}"
+      update_cache: true
+    loop:
+      - nfs-utils
+      - open-iscsi
+
+  - name: download k3s installer
+    get_url:
+      dest: /tmp/k3s_install.sh
+      mode: "0755"
+      url: https://get.k3s.io
+
+  - name: install k3s
+    command: /tmp/k3s_install.sh
+    environment:
+      INSTALL_K3S_EXEC: "{{vm_k3s_params.type}} {{(vm_k3s_params.type == 'server') | ternary('--no-deploy servicelb --no-deploy traefik', '')}}"
+      INSTALL_K3S_VERSION: "{{vm_k3s_params.version | default(vm_k3s_defaults.version)}}"
+
+  - name: update k3s environment settings
+    template:
+      dest: /etc/rancher/k3s/k3s{{(vm_k3s_params.type == "server") | ternary("", "-agent")}}.env
+      src: etc/rancher/k3s/k3s.env.j2
+
+  - name: remove k3s installer
+    file:
+      path: /tmp/k3s_install.sh
+      state: absent
+
+  - name: restart k3s service to pick up environment settings
+    service:
+      name: k3s{{(vm_k3s_params.type == "server") | ternary("", "-agent")}}
+      state: restarted
+
+  - name: start iscsid service on boot
+    service:
+      enabled: true
+      name: iscsid
+      runlevel: boot
+
+  # Workaround for /etc/init.d/iscsid expecting binaries in /usr/sbin, when they're actually installed in /sbin.
+  - name: fix open-iscsi binary locations
+    file:
+      dest: /usr/sbin/{{item}}
+      src: /sbin/{{item}}
+      state: link
+    loop:
+      - iscsiadm
+      - iscsid
+
+  - name: start iscsid service now
+    service:
+      name: iscsid
+      state: started
+
+  - block:
+    - name: wait for kubeconfig to be created
+      wait_for:
+        path: /etc/rancher/k3s/k3s.yaml
+
+    - name: get kubeconfig
+      slurp:
+        src: /etc/rancher/k3s/k3s.yaml
+      register: vm_k3s_internal_kubeconfig
+
+    - name: save kubeconfig to local machine
+      copy:
+        content: "{{vm_k3s_internal_kubeconfig.content | b64decode}}"
+        dest: /root/.kube/config-{{inventory_hostname}}
+        mode: "0640"
+      delegate_to: localhost
+
+    - name: fix server hostname in kubeconfig
+      lineinfile:
+        backrefs: true
+        line: '\1{{inventory_hostname}}\2'
+        path: /root/.kube/config-{{inventory_hostname}}
+        regexp: ^(.*https://)127.0.0.1(:.*)$
+      delegate_to: localhost
+
+    - name: link to new kubeconfig
+      file:
+        dest: /root/.kube/config
+        mode: "0640"
+        src: config-{{inventory_hostname}}
+        state: link
+      delegate_to: localhost
+    when: vm_k3s_params.type == "server"
+  when: esxi_vm_internal_vm.instance is not defined

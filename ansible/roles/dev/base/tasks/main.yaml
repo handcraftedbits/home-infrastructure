@@ -1,0 +1,43 @@
+- block:
+  - name: upgrade existing packages
+    apt:
+      autoremove: true
+      force_apt_get: true
+      upgrade: dist
+      update_cache: true
+
+  - name: install core packages
+    apt:
+      force_apt_get: true
+      name: "{{packages}}"
+      state: present
+    vars:
+      packages:
+        - ca-certificates
+        - curl
+        - git
+        - jq
+        - man-db
+        - net-tools
+        - python3-pip
+        - rar
+        - unrar
+        - unzip
+        - tree
+        - wget
+        - zip
+
+  - name: install Pygments and monokai-hcb theme
+    pip:
+      name: "{{packages}}"
+      state: present
+    vars:
+      packages:
+        - Pygments
+        - pygments-monokai-hcb
+
+  - name: increase number of inotify watchers
+    sysctl:
+      name: fs.inotify.max_user_watches
+      value: "524288"
+  become: true

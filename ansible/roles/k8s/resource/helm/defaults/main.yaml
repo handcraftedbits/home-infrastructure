@@ -1,0 +1,4 @@
+k8s_resource_helm_defaults:
+  repository:
+    name: stable
+    url: https://kubernetes-charts.storage.googleapis.com/

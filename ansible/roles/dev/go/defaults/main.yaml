@@ -1,0 +1,5 @@
+dev_go_defaults:
+  paths:
+    gopath: /opt/devel/projects/go
+    goroot: /opt/devel/go
+  version: 1.13.4

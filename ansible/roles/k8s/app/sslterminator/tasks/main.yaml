@@ -1,0 +1,2 @@
+- include_tasks: resources.yaml
+  loop: "{{k8s_app_sslterminator_params.endpoints | dict2items}}"

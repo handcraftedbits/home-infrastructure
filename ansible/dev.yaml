@@ -1,0 +1,150 @@
+- hosts: dev
+  roles:
+    - role: dev/base
+      tags:
+        - dev.base
+      vars:
+        dev_base_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/dotfiles
+      tags:
+        - dev.dotfiles
+      vars:
+        dev_dotfiles_params:
+          repo: https://github.com/handcraftedbits/dotfiles.git
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/aws
+      tags:
+        - dev.aws
+      vars:
+        dev_aws_params:
+          access_key_id: "{{accounts.aws.access_key_id}}"
+          region: "{{accounts.aws.region}}"
+          secret_access_key: "{{accounts.aws.secret_access_key}}"
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/cifs_client
+      tags:
+        - dev.cifs_client
+      vars:
+        dev_cifs_client_params:
+          accounts: "{{accounts.cifs}}"
+          shares: "{{shares.cifs}}"
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/docker
+      tags:
+        - dev.docker
+      vars:
+        dev_docker_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/go
+      tags:
+        - dev.go
+      vars:
+        dev_go_params:
+          extra_packages:
+            - github.com/ramya-rao-a/go-outline
+            - github.com/rogpeppe/godef
+            - github.com/sqs/goreturns
+            - github.com/uudashr/gopkgs/cmd/gopkgs
+            - golang.org/x/lint/golint
+            - golang.org/x/tools/gopls@latest
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/java
+      tags:
+        - dev.java
+      vars:
+        dev_java_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/misc
+      tags:
+        - dev.misc
+      vars:
+        dev_misc_params:
+          apt_packages:
+            - ffmpeg
+            - imagemagick
+            - gcc
+            - g++
+            - libsmbclient-dev
+            - open-iscsi
+          pip_packages:
+            - youtube-dl
+          snap_packages:
+            - name: goland
+            - name: helm
+            - name: kubectl
+            - name: node
+              channel: "12"
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/nfs_client
+      tags:
+        - dev.nfs_client
+      vars:
+        dev_nfs_client_params:
+          shares: "{{shares.nfs}}"
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/terraform
+      tags:
+        - dev.terraform
+      vars:
+        dev_terraform_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/tmux
+      tags:
+        - dev.tmux
+      vars:
+        dev_tmux_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/vim
+      tags:
+        - dev.vim
+      vars:
+        dev_vim_params:
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/vscode
+      tags:
+        - dev.vscode
+      vars:
+        dev_vscode_params:
+          extensions:
+            - christian-kohler.path-intellisense
+            - coenraads.bracket-pair-colorizer
+            - EditorConfig.EditorConfig
+            - formulahendry.auto-close-tag
+            - formulahendry.auto-rename-tag
+            - golang.go
+            - hashicorp.terraform
+            - humao.rest-client
+            - jebbs.plantuml
+            - ms-azuretools.vscode-docker
+            - redhat.vscode-xml
+            - redhat.vscode-yaml
+            - samuelcolvin.jinjahtml
+            - vscjava.vscode-java-pack
+            - vscode-icons-team.vscode-icons
+            - vscodevim.vim
+            - vscoss.vscode-ansible
+            - wayou.vscode-todo-highlight
+            - yzhang.markdown-all-in-one
+          password: "{{accounts.dev.password}}"
+          port: 8888
+          username: "{{accounts.dev.username}}"
+
+    - role: dev/zsh
+      tags:
+        - dev.zsh
+      vars:
+        dev_zsh_params:
+          username: "{{accounts.dev.username}}"

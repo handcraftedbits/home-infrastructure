@@ -1,0 +1,35 @@
+- block:
+  - name: get info for account '{{item.key}}'
+    set_fact:
+      k8s_app_mysql_internal_account_info: "{{lookup('hashi_vault', vault_lookup~'accounts/'~item.key)}}"
+
+  - name: create account '{{item.key}}@%'
+    mysql_user:
+      encrypted: false
+      host: "%"
+      login_host: "{{k8s_app_mysql_params.hostname}}"
+      login_password: "{{k8s_app_mysql_params.password}}"
+      login_port: "{{k8s_app_mysql_params.port | default(k8s_app_mysql_defaults.port)}}"
+      login_user: "{{k8s_app_mysql_params.username | default(k8s_app_mysql_defaults.username)}}"
+      name: "{{item.key}}"
+      password: "{{k8s_app_mysql_internal_account_info.password}}"
+      priv: "{{database}}.*:ALL"
+    loop: "{{item.value.databases}}"
+    loop_control:
+      loop_var: database
+    when: item.value.databases is defined
+
+  - name: create account '{{item.key}}@localhost'
+    mysql_user:
+      encrypted: false
+      login_host: "{{k8s_app_mysql_params.hostname}}"
+      login_password: "{{k8s_app_mysql_params.password}}"
+      login_port: "{{k8s_app_mysql_params.port | default(k8s_app_mysql_defaults.port)}}"
+      login_user: "{{k8s_app_mysql_params.username | default(k8s_app_mysql_defaults.username)}}"
+      name: "{{item.key}}"
+      password: "{{k8s_app_mysql_internal_account_info.password}}"
+      priv: "{{database}}.*:ALL"
+    loop: "{{item.value.databases}}"
+    loop_control:
+      loop_var: database
+    when: item.value.databases is defined

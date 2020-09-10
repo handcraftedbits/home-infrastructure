@@ -1,0 +1,5 @@
+- name: create service '{{k8s_resource_service_params.name}}'
+  k8s:
+    definition: "{{lookup('template', 'service.yaml.j2')}}"
+    state: present
+  delegate_to: localhost

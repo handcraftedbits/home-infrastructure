@@ -1,0 +1,2 @@
+accounts:
+  pgadmin: "{{lookup('hashi_vault', vault_lookup~'accounts/pgadmin-admin')}}"

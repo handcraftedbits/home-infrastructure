@@ -1,0 +1,43 @@
+- block:
+  - name: install package
+    apt:
+      force_apt_get: true
+      name: zsh
+      state: present
+
+  - name: change shell to Zsh for user '{{dev_zsh_params.username}}'
+    user:
+      name: "{{dev_zsh_params.username}}"
+      shell: /usr/bin/zsh
+  become: true
+
+- name: install Oh My Zsh
+  git:
+    dest: /home/{{dev_zsh_params.username}}/.oh-my-zsh
+    repo: https://github.com/robbyrussell/oh-my-zsh
+
+- name: install zsh-256color plugin
+  git:
+    dest: /home/{{dev_zsh_params.username}}/.oh-my-zsh/custom/plugins/zsh-256color
+    repo: https://github.com/chrissicool/zsh-256color.git
+
+- name: install zsh-autosuggestions plugin
+  git:
+    dest: /home/{{dev_zsh_params.username}}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+
+- name: create custom theme directory
+  file:
+    path: /home/{{dev_zsh_params.username}}/.oh-my-zsh/custom/themes
+    state: directory
+
+- name: link dotfiles
+  file:
+    dest: /home/{{dev_zsh_params.username}}/{{item.dest}}
+    src: /home/{{dev_zsh_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .zshrc
+      src: zsh/.zshrc
+    - dest: .oh-my-zsh/custom/themes/handcraftedbits.zsh-theme
+      src: zsh/handcraftedbits.zsh-theme

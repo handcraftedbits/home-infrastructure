@@ -1,0 +1,21 @@
+- block:
+  - name: wait for MySQL server to become available
+    wait_for:
+      host: "{{k8s_app_mysql_params.hostname}}"
+      port: "{{k8s_app_mysql_params.port | default(k8s_app_mysql_defaults.port)}}"
+
+  - block:
+    - name: create initial databases
+      mysql_db:
+        login_host: "{{k8s_app_mysql_params.hostname}}"
+        login_password: "{{k8s_app_mysql_params.password}}"
+        login_port: "{{k8s_app_mysql_params.port | default(k8s_app_mysql_defaults.port)}}"
+        login_user: "{{k8s_app_mysql_params.username | default(k8s_app_mysql_defaults.username)}}"
+        name: "{{item}}"
+      loop: "{{k8s_app_mysql_params.initial.databases}}"
+      when: k8s_app_mysql_params.initial.databases is defined
+
+    - include_tasks: accounts.yaml
+      loop: "{{(k8s_app_mysql_params.initial.accounts | default({})) | dict2items}}"
+    when: k8s_app_mysql_params.initial is defined
+  delegate_to: localhost

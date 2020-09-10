@@ -1,0 +1,19 @@
+# See:
+# https://rancher.com/docs/k3s/latest/en/running/
+# https://wiki.alpinelinux.org/wiki/Bootloaders
+# https://github.com/rancher/k3s/issues/660
+
+- name: configure cgroups
+  command: rc-update add cgroups default
+
+- name: install extlinux
+  command: extlinux --install /boot
+
+- name: enable cgroups boot parameters
+  lineinfile:
+    line: default_kernel_opts="quiet cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory"
+    path: /etc/update-extlinux.conf
+    regexp: ^default_kernel_opts=.*$
+
+- name: update extlinux
+  command: update-extlinux

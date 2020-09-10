@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+{% if k8s_resource_clusterissuer_params.annotations is defined %}
+  annotations:
+    {{k8s_resource_clusterissuer_params.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+{% if k8s_resource_clusterissuer_params.labels is defined %}
+  labels:
+    {{k8s_resource_clusterissuer_params.labels | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  name: {{k8s_resource_clusterissuer_params.name}}
+spec:
+  acme:
+    email: {{k8s_resource_clusterissuer_params.email}}
+    privateKeySecretRef:
+      key: value
+      name: {{k8s_resource_clusterissuer_params.name}}-private-key
+    server: {{k8s_resource_clusterissuer_params.server}}
+    solvers:
+      - dns01:
+          route53:
+            accessKeyID: {{k8s_resource_clusterissuer_params.access_key_id}}
+            hostedZoneID: {{k8s_resource_clusterissuer_params.hosted_zone_id}}
+            region: {{k8s_resource_clusterissuer_params.region}}
+            secretAccessKeySecretRef:
+              key: value
+              name: {{k8s_resource_clusterissuer_params.name}}-secret-access-key

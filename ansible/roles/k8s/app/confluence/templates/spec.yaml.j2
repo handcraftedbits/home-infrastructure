@@ -1,0 +1,52 @@
+
+replicas: {{k8s_app_confluence_params.replicas | default(k8s_app_confluence_defaults.replicas)}}
+selector:
+  matchLabels:
+    app: {{k8s_app_confluence_internal.app_name}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_app_confluence_internal.app_name}}
+  serviceName: {{k8s_app_confluence_params.name}}
+  spec:
+    containers:
+      - name: confluence
+        image: atlassian/confluence-server
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ATL_PROXY_NAME
+            value: {{k8s_app_confluence_params.hostname}}
+          - name: ATL_PROXY_PORT
+            value: "443"
+          - name: ATL_TOMCAT_SCHEME
+            value: https
+          - name: ATL_TOMCAT_SECURE
+            value: "true"
+          - name: JVM_MAXIMUM_MEMORY
+            value: {{k8s_app_confluence_params.memory.max | default(k8s_app_confluence_defaults.memory.max)}}
+          - name: JVM_MINIMUM_MEMORY
+            value: {{k8s_app_confluence_params.memory.min | default(k8s_app_confluence_defaults.memory.min)}}
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /var/atlassian/application-data/confluence
+            name: pv
+    initContainers:
+      - name: wait-db
+        image: busybox:latest
+        command: ['sh', '-c', "until nc -z {{k8s_app_confluence_params.database.host}} {{k8s_app_confluence_params.database.port}}; do echo Waiting for database; sleep 1; done"]
+volumeClaimTemplates:
+  - metadata:
+      name: pv
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: {{k8s_app_confluence_params.size}}
+      selector:
+        matchLabels:
+          app: {{k8s_app_confluence_internal.app_name}}
+      storageClassName: ""

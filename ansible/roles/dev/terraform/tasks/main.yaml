@@ -1,0 +1,15 @@
+- block:
+  - name: check for existing Terraform installation
+    stat:
+      path: /usr/local/bin/terraform
+    register: dev_terraform_internal_installed
+
+  - name: install Terraform
+    unarchive:
+      dest: /usr/local/bin
+      group: "{{dev_terraform_params.username}}"
+      owner: "{{dev_terraform_params.username}}"
+      remote_src: true
+      src: https://releases.hashicorp.com/terraform/{{dev_terraform_params.version | default(dev_terraform_defaults.version)}}/terraform_{{dev_terraform_params.version | default(dev_terraform_defaults.version)}}_linux_amd64.zip
+    when: dev_terraform_internal_installed.stat.exists == false
+  become: true

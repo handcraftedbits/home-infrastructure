@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+{% if k8s_resource_ingress_params.annotations is defined %}
+  annotations:
+    {{k8s_resource_ingress_params.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+{% if k8s_resource_ingress_params.labels is defined %}
+  labels:
+    {{k8s_resource_ingress_params.labels | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  name: {{k8s_resource_ingress_params.name}}
+  namespace: {{k8s_resource_ingress_params.namespace}}
+spec:
+  {{k8s_resource_ingress_params.spec | to_nice_yaml(indent=2) | indent(width=2, indentfirst=false)}}

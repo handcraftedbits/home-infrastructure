@@ -1,0 +1,35 @@
+
+replicas: {{k8s_app_organizr_params.replicas | default(k8s_app_organizr_defaults.replicas)}}
+selector:
+  matchLabels:
+    app: {{k8s_app_organizr_internal.app_name}}
+template:
+  metadata:
+    labels:
+      app: {{k8s_app_organizr_internal.app_name}}
+  serviceName: {{k8s_app_organizr_params.name}}
+  spec:
+    containers:
+      - name: organizr
+        image: organizrtools/organizr-v2
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /config
+            name: pv
+volumeClaimTemplates:
+  - metadata:
+      name: pv
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: {{k8s_app_organizr_params.size}}
+      selector:
+        matchLabels:
+          app: {{k8s_app_organizr_internal.app_name}}
+      storageClassName: ""

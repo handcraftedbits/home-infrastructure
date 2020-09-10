@@ -1,0 +1,52 @@
+# Since pyhelm doesn't support Helm 3 we have to do everything through the commandline.
+#
+# Furthermore, there's no structured output from the Helm commands, so we have to do regular expression matching.
+#
+# The outer when clause will simply list all releases, filtered by a specific release name.  If there's more than one
+# line of output (i.e., there's a table header AND an entry), then we'll consider that the release is already present,
+# and therefore we can skip everything else.
+#
+# The inner when clause lists all repositories, and we have to grep for "\n<repo name>[ ]*\t" as everything is listed on
+# a separate line.
+
+# TODO: move delegate_tos out to block level
+- name: check for release '{{k8s_resource_helm_params.release}}'
+  command: helm list -a -f '^{{k8s_resource_helm_params.release}}$' -n {{k8s_resource_helm_params.namespace}}
+  changed_when: false
+  delegate_to: localhost
+  register: k8s_resource_helm_internal_list
+
+- block:
+  - name: check for required repository '{{k8s_resource_helm_params.repository.name | default(k8s_resource_helm_defaults.repository.name)}}'
+    command: helm repo list
+    changed_when: false
+    delegate_to: localhost
+    failed_when: false
+    register: k8s_resource_helm_internal_repo_list
+
+  - block:
+    - name: add repository '{{k8s_resource_helm_params.repository.name | default(k8s_resource_helm_defaults.repository.name)}}'
+      command: helm repo add {{k8s_resource_helm_params.repository.name | default(k8s_resource_helm_defaults.repository.name)}} {{k8s_resource_helm_params.repository.url | default(k8s_resource_helm_defaults.repository.url)}}
+      delegate_to: localhost
+
+    - name: update repositories
+      command: helm repo update
+      delegate_to: localhost
+    when: (k8s_resource_helm_internal_repo_list.stdout | regex_search('\n'~(k8s_resource_helm_params.repository.name | default(k8s_resource_helm_defaults.repository.name))~'[ ]*\t')) == None
+
+  - name: create temp file for chart values
+    tempfile:
+    delegate_to: localhost
+    register: k8s_resource_helm_internal_tempfile
+
+  - name: save chart values to temp file
+    copy:
+      content: "{{k8s_resource_helm_params.chart_values | to_nice_yaml(indent = 2)}}"
+      dest: "{{k8s_resource_helm_internal_tempfile.path}}"
+    delegate_to: localhost
+    when: k8s_resource_helm_params.chart_values is defined
+
+  - name: install release '{{k8s_resource_helm_params.release}}' using chart '{{k8s_resource_helm_params.chart}}'
+    command: helm install {{k8s_resource_helm_params.release}} {{k8s_resource_helm_params.chart}} --atomic -f {{k8s_resource_helm_internal_tempfile.path}} -n {{k8s_resource_helm_params.namespace}}
+    delegate_to: localhost
+  when: (k8s_resource_helm_internal_list.stdout_lines | length) == 1

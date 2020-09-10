@@ -1,0 +1,10 @@
+- name: install package
+  apt:
+    force_apt_get: true
+    name: nfs-common
+    state: present
+  become: true
+
+- include_tasks: shares.yaml
+  loop: "{{dev_nfs_client_params.shares | dict2items}}"
+  when: dev_nfs_client_params.shares is defined

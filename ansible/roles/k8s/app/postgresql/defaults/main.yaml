@@ -1,0 +1,4 @@
+k8s_app_postgresql_defaults:
+  port: 5432
+  namespace: postgresql
+  username: postgres

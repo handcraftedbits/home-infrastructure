@@ -1,0 +1,5 @@
+dependencies:
+  - role: k8s/resource/namespace
+    vars:
+      k8s_resource_namespace_params:
+        name: "{{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}"

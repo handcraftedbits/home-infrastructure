@@ -1,0 +1,3 @@
+k8s_app_organizr_defaults:
+  namespace: organizr
+  replicas: 1

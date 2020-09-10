@@ -1,0 +1,88 @@
+dependencies:
+  - role: k8s/resource/serviceaccount
+    vars:
+      k8s_resource_serviceaccount_params:
+        labels:
+          app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        namespace: "{{k8s_component_externaldns_params.namespace}}"
+
+  - role: k8s/resource/clusterrole
+    vars:
+      k8s_resource_clusterrole_params:
+        labels:
+          app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        rules:
+          - apiGroups:
+              - ""
+            resources:
+              - endpoints
+              - services
+              - pods
+              - nodes
+            verbs:
+              - get
+              - list
+              - watch
+          - apiGroups:
+              - extensions
+            resources:
+              - ingresses
+            verbs:
+              - get
+              - list
+              - watch
+
+  - role: k8s/resource/clusterrolebinding
+    vars:
+      k8s_resource_clusterrolebinding_params:
+        labels:
+          app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-viewer"
+        role_ref:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        subjects:
+          - kind: ServiceAccount
+            name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+            namespace: "{{k8s_component_externaldns_params.namespace}}"
+
+  - role: k8s/resource/service
+    vars:
+      k8s_resource_service_params:
+        annotations:
+          metallb.universe.tf/address-pool: "{{k8s_component_externaldns_params.address_pool_name}}"
+          metallb.universe.tf/allow-shared-ip: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-dns"
+        labels:
+          app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-tcp"
+        namespace: "{{k8s_component_externaldns_params.namespace}}"
+        spec:
+          ports:
+            - port: 53
+              protocol: TCP
+              targetPort: 53
+          selector:
+            app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+          type: LoadBalancer
+
+  - role: k8s/resource/service
+    vars:
+      k8s_resource_service_params:
+        annotations:
+          metallb.universe.tf/address-pool: "{{k8s_component_externaldns_params.address_pool_name}}"
+          metallb.universe.tf/allow-shared-ip: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-dns"
+        labels:
+          app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+        name: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}-udp"
+        namespace: "{{k8s_component_externaldns_params.namespace}}"
+        spec:
+          ports:
+            - port: 53
+              protocol: UDP
+              targetPort: 53
+          selector:
+            app: "{{k8s_component_externaldns_params.prefix | default(k8s_component_externaldns_defaults.prefix)}}"
+          type: LoadBalancer

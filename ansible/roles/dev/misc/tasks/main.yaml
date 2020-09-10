@@ -1,0 +1,36 @@
+- block:
+  - name: install extra packages via apt
+    apt:
+      force_apt_get: true
+      name: "{{item}}"
+      state: present
+    loop: "{{dev_misc_params.apt_packages}}"
+    when: dev_misc_params.apt_packages is defined
+
+  - name: install extra packages via pip
+    pip:
+      name: "{{item}}"
+      state: present
+    loop: "{{dev_misc_params.pip_packages}}"
+    when: dev_misc_params.pip_packages is defined
+
+  - name: install extra packages via snap
+    snap:
+      channel: "{{item.channel | default('stable')}}"
+      classic: true
+      name: "{{item.name}}"
+      state: present
+    loop: "{{dev_misc_params.snap_packages}}"
+    when: dev_misc_params.snap_packages is defined
+  become: true
+
+- name: update Zsh configuration
+  lineinfile:
+    create: yes
+    dest: /home/{{dev_misc_params.username}}/.zshrc-extra
+    line: "{{item.line}}"
+    regexp: "{{item.regexp}}"
+    state: present
+  loop:
+    - line: export PATH=/snap/bin:$PATH
+      regexp: ^export PATH

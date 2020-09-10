@@ -1,0 +1,6 @@
+dependencies:
+  - role: vm/alpine
+    vars:
+      vm_alpine_params:
+        esxi_server: "{{vm_k3s_params.esxi_server}}"
+        vm_settings: "{{vm_k3s_params.vm_settings | default(vm_k3s_defaults.vm_settings)}}"

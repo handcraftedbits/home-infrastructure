@@ -1,0 +1,61 @@
+- block:
+  - name: get info for user '{{item.key}}'
+    set_fact:
+      k8s_app_openldap_internal_user_info: "{{lookup('hashi_vault', vault_lookup~'users/'~item.key)}}"
+
+  - name: create user '{{item.key}}'
+    ldap_entry:
+      attributes:
+        givenName: "{{k8s_app_openldap_internal_user_info.first_name}}"
+        mail: "{{k8s_app_openldap_internal_user_info.email}}"
+        sn: "{{k8s_app_openldap_internal_user_info.last_name}}"
+        userPassword: ""
+      bind_dn: cn=admin,{{k8s_app_openldap_internal.dn_suffix}}
+      bind_pw: "{{k8s_app_openldap_params.password}}"
+      dn: cn={{item.key}},ou={{k8s_app_openldap_params.entries.ous.users}},{{k8s_app_openldap_internal.dn_suffix}}
+      objectClass:
+        - inetOrgPerson
+        - simpleSecurityObject
+      server_uri: "{{k8s_app_openldap_internal.uri}}"
+      validate_certs: false
+
+  - name: set LDAP password for user '{{item.key}}'
+    ldap_passwd:
+      bind_dn: cn=admin,{{k8s_app_openldap_internal.dn_suffix}}
+      bind_pw: "{{k8s_app_openldap_params.password}}"
+      dn: cn={{item.key}},ou={{k8s_app_openldap_params.entries.ous.users}},{{k8s_app_openldap_internal.dn_suffix}}
+      passwd: "{{k8s_app_openldap_internal_user_info.password}}"
+      server_uri: "{{k8s_app_openldap_internal.uri}}"
+      validate_certs: false
+
+  - name: create groups for user '{{item.key}}'
+    ldap_entry:
+      attributes:
+        uniqueMember: cn={{item.key}},ou={{k8s_app_openldap_params.entries.ous.users}},{{k8s_app_openldap_internal.dn_suffix}}
+      bind_dn: cn=admin,{{k8s_app_openldap_internal.dn_suffix}}
+      bind_pw: "{{k8s_app_openldap_params.password}}"
+      dn: cn={{group}},ou={{k8s_app_openldap_params.entries.ous.groups}},{{k8s_app_openldap_internal.dn_suffix}}
+      objectClass:
+        - groupOfUniqueNames
+      server_uri: "{{k8s_app_openldap_internal.uri}}"
+      validate_certs: false
+    loop: "{{item.value.groups}}"
+    loop_control:
+      loop_var: group
+    when: item.value.groups is defined and k8s_app_openldap_params.entries.ous.groups is defined
+
+  - name: set group memberships
+    ldap_attr:
+      bind_dn: cn=admin,{{k8s_app_openldap_internal.dn_suffix}}
+      bind_pw: "{{k8s_app_openldap_params.password}}"
+      dn: cn={{group}},ou={{k8s_app_openldap_params.entries.ous.groups}},{{k8s_app_openldap_internal.dn_suffix}}
+      name: uniqueMember
+      server_uri: "{{k8s_app_openldap_internal.uri}}"
+      validate_certs: false
+      values:
+        - cn={{item.key}},ou={{k8s_app_openldap_params.entries.ous.users}},{{k8s_app_openldap_internal.dn_suffix}}
+    loop: "{{item.value.groups}}"
+    loop_control:
+      loop_var: group
+    when: item.value.groups is defined and k8s_app_openldap_params.entries.ous.groups is defined
+  delegate_to: localhost

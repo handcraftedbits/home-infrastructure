@@ -1,0 +1,13 @@
+[Unit]
+Description=code-server
+After=network.target
+
+[Service]
+User={{dev_vscode_params.username}}
+Group={{dev_vscode_params.username}}
+Environment="SERVICE_URL=https://marketplace.visualstudio.com/_apis/public/gallery"
+Environment="ITEM_URL=https://marketplace.visualstudio.com/items"
+ExecStart=/bin/sh -ac '. /home/{{dev_vscode_params.username}}/.zshrc-extra; exec /usr/bin/code-server --disable-telemetry'
+
+[Install]
+WantedBy=multi-user.target

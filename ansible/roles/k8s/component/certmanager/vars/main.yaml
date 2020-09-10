@@ -1,0 +1,5 @@
+k8s_component_certmanager_internal:
+  empty_list:
+    - None
+    - null
+  crd_url: https://raw.githubusercontent.com/jetstack/cert-manager/release-0.13/deploy/manifests/00-crds.yaml

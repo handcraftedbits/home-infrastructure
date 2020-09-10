@@ -1,0 +1,3 @@
+k8s_component_externaldns_defaults:
+  prefix: external-dns
+  replicas: 1

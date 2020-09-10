@@ -1,0 +1,8 @@
+dependencies:
+  - role: k8s/resource/secret
+    vars:
+      k8s_resource_secret_params:
+        key: value
+        name: "{{k8s_resource_clusterissuer_params.name}}-secret-access-key"
+        namespace: "{{k8s_resource_clusterissuer_params.namespace}}"
+        value: "{{k8s_resource_clusterissuer_params.secret_access_key}}"

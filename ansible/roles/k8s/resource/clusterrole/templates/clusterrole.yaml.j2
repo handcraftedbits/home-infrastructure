@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+{% if k8s_resource_clusterrole_params.annotations is defined %}
+  annotations:
+    {{k8s_resource_clusterrole_params.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+{% if k8s_resource_clusterrole_params.labels is defined %}
+  labels:
+    {{k8s_resource_clusterrole_params.labels | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  name: {{k8s_resource_clusterrole_params.name}}
+rules:
+  {{k8s_resource_clusterrole_params.rules | to_nice_yaml(indent=2) | indent(width=2, indentfirst=false)}}

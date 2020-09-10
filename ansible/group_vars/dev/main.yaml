@@ -1,0 +1,4 @@
+paths:
+  dev: /opt/devel
+  projects: /opt/devel/projects
+shares: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/dev/shares')}}"

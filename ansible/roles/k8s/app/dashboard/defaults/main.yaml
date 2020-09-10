@@ -1,0 +1,3 @@
+k8s_app_dashboard_defaults:
+  namespace: kubernetes-dashboard
+  prefix: kubernetes-dashboard

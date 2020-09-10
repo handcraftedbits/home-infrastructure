@@ -1,0 +1,3 @@
+k8s_app_pgadmin_defaults:
+  namespace: pgadmin
+  replicas: 1

@@ -1,0 +1,14 @@
+- name: create certificate cluster issuers
+  include_role:
+    name: k8s/resource/clusterissuer
+  vars:
+    k8s_resource_clusterissuer_params:
+      access_key_id: "{{item.access_key_id}}"
+      email: "{{item.email}}"
+      hosted_zone_id: "{{item.hosted_zone_id}}"
+      name: "{{item.name}}"
+      namespace: "{{k8s_core_params.namespace | default(k8s_core_defaults.namespace)}}"
+      region: "{{item.region}}"
+      secret_access_key: "{{item.secret_access_key}}"
+      server: "{{item.server}}"
+  loop: "{{k8s_core_params.certificate_issuers}}"

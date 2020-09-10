@@ -1,0 +1,259 @@
+- hosts: k8s_servers
+  roles:
+    - role: vm/k3s
+      tags:
+        - vm.create
+      vars:
+        vm_k3s_params:
+          esxi_server: "{{esxi_server}}"
+          token: "{{cluster.token}}"
+          type: server
+
+- hosts: k8s_agents
+  roles:
+    - role: vm/k3s
+      tags:
+        - vm.create
+      vars:
+        vm_k3s_params:
+          esxi_server: "{{esxi_server}}"
+          server_uri: "{{cluster.server_uri}}"
+          token: "{{cluster.token}}"
+          type: agent
+
+- hosts: k8s_servers
+  roles:
+    - role: k8s/core
+      tags:
+        - k8s.core
+      vars:
+        k8s_core_params:
+          certificate_issuers: "{{certificate_issuers}}"
+          certificate_manager:
+            podDnsConfig:
+              nameservers:
+                - 8.8.8.8
+            podDnsPolicy: None
+          dns:
+            domain: "{{cluster.domain}}"
+            domain_reverse: "{{cluster.domain_reverse}}"
+          ingress:
+            controller:
+              config:
+                # Proxied IPMI service returns a malformed header and Chrome barfs; use HTTP/1.1 for now.
+                use-http2: "false"
+              publishService:
+                enabled: true
+              service:
+                externalTrafficPolicy: Local
+            rbac:
+              create: true
+          load_balancer:
+            address-pools:
+              - name: default
+                addresses:
+                  - "{{address_pools.default.addresses}}"
+                avoid-buggy-ips: true
+                protocol: bgp
+              - name: dns
+                addresses:
+                  - "{{address_pools.dns.addresses}}"
+                protocol: bgp
+            peers:
+              - peer-address: "{{cluster.router_address}}"
+                my-asn: 64512
+                peer-asn: 64512
+
+- hosts: k8s_stable:&k8s_servers
+  roles:
+    - role: k8s/app/mysql
+      tags:
+        - k8s.apps
+        - k8s.apps.mysql
+      vars:
+        k8s_app_mysql_params:
+          hostname: mysql.db.{{cluster.domain}}
+          initial: "{{mysql.default.initial}}"
+          name: default
+          password: "{{mysql.default.admin_password}}"
+          size: 50Gi
+          volume_info:
+            iscsi:
+              fsType: ext4
+              iqn: "{{storage.iscsi.iqn_base}}:mysql-stable"
+              lun: 0
+              targetPortal: "{{storage.iscsi.portal_ip}}:{{storage.iscsi.portal_port}}"
+
+    - role: k8s/app/postgresql
+      tags:
+        - k8s.apps
+        - k8s.apps.postgresql
+      vars:
+        k8s_app_postgresql_params:
+          hostname: postgresql.db.{{cluster.domain}}
+          initial: "{{postgresql.default.initial}}"
+          name: default
+          password: "{{postgresql.default.admin_password}}"
+          size: 50Gi
+          volume_info:
+            iscsi:
+              fsType: ext4
+              iqn: "{{storage.iscsi.iqn_base}}:postgresql-stable"
+              lun: 0
+              targetPortal: "{{storage.iscsi.portal_ip}}:{{storage.iscsi.portal_port}}"
+
+    - role: k8s/app/dashboard
+      tags:
+        - k8s.apps
+        - k8s.apps.dashboard
+      vars:
+        k8s_app_dashboard_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          cluster_domain: "{{cluster.domain}}"
+          hostname: dashboard.{{cluster.domain}}
+
+    - role: k8s/app/bitwarden
+      tags:
+        - k8s.apps
+        - k8s.apps.bitwarden
+      vars:
+        k8s_app_bitwarden_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          hostname: bitwarden.{{cluster.domain}}
+          name: default
+          size: 500Mi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/bitwarden/default"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/confluence
+      tags:
+        - k8s.apps
+        - k8s.apps.confluence
+      vars:
+        k8s_app_confluence_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          cluster_domain: "{{cluster.domain}}"
+          database:
+            host: postgresql.db.{{cluster.domain}}
+            port: 5432
+          hostname: wiki.{{cluster.domain}}
+          name: wiki
+          size: 10Gi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/confluence/wiki"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/jira
+      tags:
+        - k8s.apps
+        - k8s.apps.jira
+      vars:
+        k8s_app_jira_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          cluster_domain: "{{cluster.domain}}"
+          database:
+            host: postgresql.db.{{cluster.domain}}
+            port: 5432
+          hostname: jira.{{cluster.domain}}
+          name: default
+          size: 10Gi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/jira/default"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/openldap
+      tags:
+        - k8s.apps
+        - k8s.apps.openldap
+      vars:
+        k8s_app_openldap_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          domain: "{{ldap.default.domain}}"
+          entries: "{{ldap.default.entries}}"
+          hostname: ldap.{{cluster.domain}}
+          name: default
+          organization: "{{ldap.default.organization}}"
+          password: "{{ldap.default.admin_password}}"
+          size: 1Gi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/openldap/default"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/organizr
+      tags:
+        - k8s.apps
+        - k8s.apps.organizr
+      vars:
+        k8s_app_organizr_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          hostname: start.{{cluster.domain}}
+          name: default
+          size: 500Mi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/organizr/default"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/pgadmin
+      tags:
+        - k8s.apps
+        - k8s.apps.pgadmin
+      vars:
+        k8s_app_pgadmin_params:
+          admin:
+            email: "{{accounts.pgadmin.username}}"
+            password: "{{accounts.pgadmin.password}}"
+          certificate_issuer: "{{current_certificate_issuer}}"
+          cluster_domain: "{{cluster.domain}}"
+          # Needed because the Docker image seemingly can't lookup internal addresses using default DNS settings.
+          dns_server: "{{cluster.router_address}}"
+          hostname: admin.postgresql.db.{{cluster.domain}}
+          name: default
+          size: 250Mi
+          volume_info:
+            mountOptions:
+              - hard
+              - vers=4
+            nfs:
+              path: "{{storage.nfs.path}}/pgadmin/default"
+              server: "{{storage.nfs.hostname}}"
+
+    - role: k8s/app/plantuml
+      tags:
+        - k8s.apps
+        - k8s.apps.plantuml
+      vars:
+        k8s_app_plantuml_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          hostname: plantuml.{{cluster.domain}}
+          name: default
+
+    - role: k8s/app/sslterminator
+      tags:
+        - k8s.apps
+        - k8s.apps.sslterminator
+      vars:
+        k8s_app_sslterminator_params:
+          certificate_issuer: "{{current_certificate_issuer}}"
+          hostname_suffix: "{{cluster.domain}}"
+          endpoints: "{{sslterminators}}"

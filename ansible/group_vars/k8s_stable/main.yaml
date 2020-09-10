@@ -1,0 +1,2 @@
+esxi_server: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/esxi/esxi1')}}"
+vault_lookup: token={{vault.token}} url={{vault.url}} secret=cubbyhole/k8s-cluster/stable/

@@ -1,0 +1,4 @@
+ansible_become_pass: "{{accounts.dev.password}}"
+ansible_connection: ssh
+ansible_ssh_pass: "{{accounts.dev.password}}"
+ansible_user: "{{accounts.dev.username}}"

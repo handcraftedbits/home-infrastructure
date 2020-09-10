@@ -1,0 +1,10 @@
+- name: create certificate '{{k8s_resource_certificate_params.name}}'
+  k8s:
+    definition: "{{lookup('template', 'certificate.yaml.j2')}}"
+    state: present
+    wait: "{{k8s_resource_certificate_params.wait | default(k8s_resource_certificate_defaults.wait)}}"
+    wait_condition:
+      reason: Ready
+      status: "True"
+      type: Ready
+  delegate_to: localhost

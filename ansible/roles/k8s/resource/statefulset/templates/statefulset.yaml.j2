@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+{% if k8s_resource_statefulset_params.annotations is defined %}
+  annotations:
+    {{k8s_resource_statefulset_params.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+{% if k8s_resource_statefulset_params.labels is defined %}
+  labels:
+    {{k8s_resource_statefulset_params.labels | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  name: {{k8s_resource_statefulset_params.name}}
+  namespace: {{k8s_resource_statefulset_params.namespace}}
+spec:
+  {{k8s_resource_statefulset_params.spec | to_nice_yaml(indent=2) | indent(width=2, indentfirst=false)}}

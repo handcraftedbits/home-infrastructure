@@ -1,0 +1,19 @@
+- name: create service spec
+  set_fact:
+    k8s_app_sslterminator_internal_service_spec: "{{lookup('template', 'spec.service.yaml.j2') | from_yaml}}"
+
+- include_role:
+    name: k8s/resource/service
+  vars:
+    k8s_resource_service_params:
+      labels:
+        app: "{{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}-{{item.key}}"
+      name: "{{item.key}}"
+      namespace: "{{k8s_app_sslterminator_params.namespace | default(k8s_app_sslterminator_defaults.namespace)}}"
+      spec: "{{k8s_app_sslterminator_internal_service_spec}}"
+
+- name: create ingress
+  k8s:
+    definition: "{{lookup('template', 'spec.ingress.yaml.j2') | from_yaml}}"
+    state: present
+  delegate_to: localhost

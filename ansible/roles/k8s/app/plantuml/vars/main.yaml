@@ -1,0 +1,2 @@
+k8s_app_plantuml_internal:
+  app_name: "{{k8s_app_plantuml_params.namespace | default(k8s_app_plantuml_defaults.namespace)}}-{{k8s_app_plantuml_params.name}}"

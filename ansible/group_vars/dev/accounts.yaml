@@ -1,0 +1,4 @@
+accounts:
+  aws: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/dev/accounts/aws')}}"
+  cifs: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/dev/accounts/cifs')}}"
+  dev: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/dev/accounts/default')}}"

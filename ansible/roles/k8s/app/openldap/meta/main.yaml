@@ -1,0 +1,91 @@
+dependencies:
+  - role: k8s/resource/namespace
+    vars:
+      k8s_resource_namespace_params:
+        labels:
+          app: "{{k8s_app_openldap_internal.app_name}}"
+        name: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}"
+
+  # Disabled: osixia/openldap seems to have problems restarting the container when TLS is enabled.
+  #- role: k8s/resource/certificate
+  #  vars:
+  #    k8s_resource_certificate_params:
+  #      labels:
+  #        app: "{{k8s_app_openldap_internal.app_name}}"
+  #      name: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"
+  #      namespace: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}"
+  #      spec:
+  #        commonName: "{{k8s_app_openldap_params.hostname}}"
+  #        dnsNames:
+  #          - "{{k8s_app_openldap_params.hostname}}"
+  #        issuerRef:
+  #          kind: ClusterIssuer
+  #          name: "{{k8s_app_openldap_params.certificate_issuer}}"
+  #        secretName: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}-tls"
+  #      wait: true
+
+  - role: k8s/resource/persistentvolume
+    vars:
+      k8s_resource_persistentvolume_params:
+        labels:
+          app: "{{k8s_app_openldap_internal.app_name}}"
+        name: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}-{{k8s_app_openldap_params.name}}"
+        spec:
+          accessModes:
+            - ReadWriteMany
+          capacity:
+            storage: "{{k8s_app_openldap_params.size}}"
+          persistentVolumeReclaimPolicy: Retain
+          readOnly: false
+          storageClassName: ""
+          volumeMode: Filesystem
+        volume_info: "{{k8s_app_openldap_params.volume_info}}"
+
+  - role: k8s/resource/persistentvolumeclaim
+    vars:
+      k8s_resource_persistentvolumeclaim_params:
+        labels:
+          app: "{{k8s_app_openldap_internal.app_name}}"
+        name: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"
+        namespace: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}"
+        spec:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: "{{k8s_app_openldap_params.size}}"
+          selector:
+            matchLabels:
+              app: "{{k8s_app_openldap_internal.app_name}}"
+          storageClassName: ""
+          volumeMode: Filesystem
+
+  - role: k8s/resource/helm
+    vars:
+      k8s_resource_helm_params:
+        chart: stable/openldap
+        chart_values:
+          adminPassword: "{{k8s_app_openldap_params.password}}"
+          env:
+            LDAP_DOMAIN: "{{k8s_app_openldap_params.domain}}"
+            LDAP_ORGANISATION: "{{k8s_app_openldap_params.organization}}"
+            # Disabled: osixia/openldap seems to have problems restarting the container when TLS is enabled.
+            #LDAP_TLS_ENFORCE: "true"
+            #LDAP_TLS_VERIFY_CLIENT: try
+          extraLabels:
+            app: "{{k8s_app_openldap_internal.app_name}}"
+          fullnameOverride: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"
+          persistence:
+            enabled: true
+            existingClaim: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"
+          replicaCount: "{{k8s_app_openldap_params.replicas | default(k8s_app_openldap_defaults.replicas)}}"
+          service:
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: "{{k8s_app_openldap_params.hostname}}"
+            type: LoadBalancer
+          # Disabled: osixia/openldap seems to have problems restarting the container when TLS is enabled.
+          #tls:
+          #  enabled: true
+          #  secret: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}-tls"
+        namespace: "{{k8s_app_openldap_params.namespace | default(k8s_app_openldap_defaults.namespace)}}"
+        release: "{{k8s_app_openldap_params.name | default(k8s_app_openldap_defaults.name)}}"

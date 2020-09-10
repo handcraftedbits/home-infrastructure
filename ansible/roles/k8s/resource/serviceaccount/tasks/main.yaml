@@ -1,0 +1,5 @@
+- name: create service account '{{k8s_resource_serviceaccount_params.name}}'
+  k8s:
+    definition: "{{lookup('template', 'serviceaccount.yaml.j2')}}"
+    state: present
+  delegate_to: localhost

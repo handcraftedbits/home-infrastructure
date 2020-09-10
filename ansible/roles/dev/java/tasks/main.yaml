@@ -1,0 +1,25 @@
+- block:
+  - name: install packages
+    apt:
+      force_apt_get: true
+      name: "{{packages}}"
+      state: present
+    vars:
+      packages:
+        - maven
+        - openjdk-{{dev_java_params.version | default(dev_java_defaults.version)}}-jdk
+        - openjdk-{{dev_java_params.version | default(dev_java_defaults.version)}}-source
+
+  - name: update Java alternatives
+    alternatives:
+      name: java
+      path: /usr/lib/jvm/java-{{dev_java_params.version | default(dev_java_defaults.version)}}-openjdk-amd64/bin/java
+  become: true
+
+- name: update Zsh configuration
+  lineinfile:
+    create: yes
+    dest: /home/{{dev_java_params.username}}/.zshrc-extra
+    line: export JAVA_HOME=/usr/lib/jvm/java-{{dev_java_params.version | default(dev_java_defaults.version)}}-openjdk-amd64
+    regexp: ^export JAVA_HOME
+    state: present

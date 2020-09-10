@@ -1,0 +1,22 @@
+- block:
+  - name: wait for LDAP server to become available
+    wait_for:
+      host: "{{k8s_app_openldap_params.hostname}}"
+      port: 389
+
+  - name: create OUs
+    ldap_entry:
+      bind_dn: cn=admin,{{k8s_app_openldap_internal.dn_suffix}}
+      bind_pw: "{{k8s_app_openldap_params.password}}"
+      dn: ou={{item.value}},{{k8s_app_openldap_internal.dn_suffix}}
+      objectClass:
+        - organizationalUnit
+      server_uri: "{{k8s_app_openldap_internal.uri}}"
+      validate_certs: false
+    loop: "{{k8s_app_openldap_params.entries.ous | dict2items}}"
+
+  - include_tasks: users.yaml
+    loop: "{{k8s_app_openldap_params.entries.users | dict2items}}"
+    when: k8s_app_openldap_params.entries.users is defined and k8s_app_openldap_params.entries.ous.users is defined
+  delegate_to: localhost
+  when: k8s_app_openldap_params.entries is defined and k8s_app_openldap_params.entries.ous is defined

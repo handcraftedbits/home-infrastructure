@@ -1,0 +1,94 @@
+- name: check for existing VM
+  vmware_guest_info:
+    datacenter: "{{esxi_vm_params.server.datacenter}}"
+    hostname: "{{esxi_vm_params.server.hostname}}"
+    name: "{{inventory_hostname}}"
+    password: "{{esxi_vm_params.server.password}}"
+    username: "{{esxi_vm_params.server.username}}"
+    validate_certs: false
+  delegate_to: localhost
+  failed_when: esxi_vm_internal_vm.msg is defined and "non-existing VM" not in esxi_vm_internal_vm.msg
+  register: esxi_vm_internal_vm
+
+- block:
+  - name: check for existing ISO '{{esxi_vm_params.iso | basename}}' in datastore '{{esxi_vm_params.datastore.iso.name | default(esxi_vm_defaults.datastore.iso.name)}}:{{esxi_vm_params.datastore.iso.path | default(esxi_vm_defaults.datastore.iso.path)}}'
+    vsphere_file:
+      datacenter: "{{esxi_vm_params.server.datacenter}}"
+      datastore: "{{esxi_vm_params.datastore.iso.name | default(esxi_vm_defaults.datastore.iso.name)}}"
+      hostname: "{{esxi_vm_params.server.hostname}}"
+      password: "{{esxi_vm_params.server.password}}"
+      path: "{{esxi_vm_params.datastore.iso.path | default(esxi_vm_defaults.datastore.iso.path)}}/{{esxi_vm_params.iso | basename}}"
+      state: file
+      username: "{{esxi_vm_params.server.username}}"
+      validate_certs: false
+    delegate_to: localhost
+    failed_when: esxi_vm_internal_iso.rc is defined and esxi_vm_internal_iso.rc == 1
+    register: esxi_vm_internal_iso
+
+  - name: upload ISO '{{esxi_vm_params.iso}}' to datastore '{{esxi_vm_params.datastore.iso.name | default(esxi_vm_defaults.datastore.iso.name)}}:{{esxi_vm_params.datastore.iso.path | default(esxi_vm_defaults.datastore.iso.path)}}'
+    vsphere_copy:
+      datacenter: "{{esxi_vm_params.server.datacenter}}"
+      datastore: "{{esxi_vm_params.datastore.iso.name | default(esxi_vm_defaults.datastore.iso.name)}}"
+      hostname: "{{esxi_vm_params.server.hostname}}"
+      password: "{{esxi_vm_params.server.password}}"
+      path: "{{esxi_vm_params.datastore.iso.path | default(esxi_vm_defaults.datastore.iso.path)}}/{{esxi_vm_params.iso | basename}}"
+      src: "{{esxi_vm_params.iso}}"
+      username: "{{esxi_vm_params.server.username}}"
+      validate_certs: false
+    delegate_to: localhost
+    when: esxi_vm_internal_iso.status == 404
+
+  - name: generate MD5 hash from hostname
+    set_fact:
+      esxi_vm_internal_md5: "{{inventory_hostname | hash('md5')}}"
+
+  - name: generate MAC address from MD5 hash
+    set_fact:
+      esxi_vm_internal_mac: >-
+        02:{{esxi_vm_internal_md5[0:2]}}:{{esxi_vm_internal_md5[2:4]}}:{{esxi_vm_internal_md5[4:6]}}:{{esxi_vm_internal_md5[6:8]}}:{{esxi_vm_internal_md5[8:10]}}
+
+  - name: create VM
+    vmware_guest:
+      cdrom:
+        iso_path: "[{{esxi_vm_params.datastore.iso.name | default(esxi_vm_defaults.datastore.iso.name)}}] {{esxi_vm_params.datastore.iso.path | default(esxi_vm_defaults.datastore.iso.path)}}/{{esxi_vm_params.iso | basename}}"
+        type: iso
+      datacenter: "{{esxi_vm_params.server.datacenter}}"
+      datastore: "{{esxi_vm_params.datastore.vm.name | default(esxi_vm_defaults.datastore.vm.name)}}"
+      disk:
+        - datastore: "{{esxi_vm_params.datastore.vm.name | default(esxi_vm_defaults.datastore.vm.name)}}"
+          size_gb: "{{esxi_vm_params.vm_settings.disk_size}}"
+      esxi_hostname: "{{esxi_vm_params.server.hostname}}"
+      folder: "/{{esxi_vm_params.server.datacenter}}{{esxi_vm_params.datastore.vm.path | default(esxi_vm_defaults.datastore.vm.path)}}"
+      guest_id: "{{esxi_vm_params.vm_settings.guest_id}}"
+      hardware:
+        boot_firmware: "{{esxi_vm_params.vm_settings.boot_firmware}}"
+        memory_mb: "{{esxi_vm_params.vm_settings.memory}}"
+        num_cpus: "{{esxi_vm_params.vm_settings.num_cpus}}"
+        num_cpu_cores_per_socket: "{{esxi_vm_params.vm_settings.num_cpus}}"
+        version: "{{esxi_vm_params.vm_settings.version}}"
+      hostname: "{{esxi_vm_params.server.hostname}}"
+      name: "{{inventory_hostname}}"
+      networks:
+        - device_type: vmxnet3
+          mac: "{{esxi_vm_internal_mac}}"
+          name: "{{esxi_vm_params.vm_settings.network}}"
+          start_connected: true
+          type: dhcp
+      password: "{{esxi_vm_params.server.password}}"
+      state: poweredon
+      username: "{{esxi_vm_params.server.username}}"
+      validate_certs: false
+    delegate_to: localhost
+
+  - name: remove host from local known_hosts
+    known_hosts:
+      name: "{{inventory_hostname}}"
+      state: absent
+    delegate_to: localhost
+
+  - name: wait for SSH to become available
+    wait_for:
+      host: "{{inventory_hostname}}"
+      port: 22
+    delegate_to: localhost
+  when: esxi_vm_internal_vm.instance is not defined

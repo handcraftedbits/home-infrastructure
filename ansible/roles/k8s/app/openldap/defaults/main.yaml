@@ -1,0 +1,3 @@
+k8s_app_openldap_defaults:
+  namespace: ldap
+  replicas: 1

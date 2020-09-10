@@ -1,0 +1,16 @@
+- name: install cert-manager custom resource definitions
+  k8s:
+    definition: "{{lookup('url', k8s_component_certmanager_internal.crd_url, split_lines=false) | from_yaml_all | list | difference(k8s_component_certmanager_internal.empty_list)}}"
+  delegate_to: localhost
+
+- include_role:
+    name: k8s/resource/helm
+  vars:
+    k8s_resource_helm_params:
+      chart: jetstack/cert-manager
+      chart_values: "{{k8s_component_certmanager_params.config}}"
+      repository:
+        name: jetstack
+        url: https://charts.jetstack.io
+      namespace: "{{k8s_component_certmanager_params.namespace}}"
+      release: "{{k8s_component_certmanager_params.prefix}}"

@@ -1,0 +1,31 @@
+FROM alpine:latest AS build
+
+RUN apk add bash build-base curl libffi-dev openldap-dev openssl openssl-dev postgresql-dev python3 python3-dev
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python3 get-pip.py -U
+RUN rm get-pip.py
+RUN pip install -U ansible grpcio hvac openshift psycopg2 pyhelm python-ldap pyvmomi PyMySQL
+
+FROM alpine:latest
+
+ARG VERSION_HELM=v3.2.4
+ARG VERSION_PYTHON=3.8
+
+RUN apk add ca-certificates jq libstdc++ libldap libpq python3 openssh sshpass vault
+
+COPY --from=build /usr/lib/python${VERSION_PYTHON}/site-packages/ /usr/lib/python${VERSION_PYTHON}/site-packages
+COPY --from=build /usr/bin/ansible* /usr/bin/
+COPY data/ansible-playbook.sh /
+
+RUN wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(wget -q -O - https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+RUN chmod +x /usr/local/bin/kubectl
+RUN cd /tmp && \
+  wget -O - https://get.helm.sh/helm-${VERSION_HELM}-linux-amd64.tar.gz | tar -xzf - && \
+  mv linux-amd64/helm /usr/local/bin && \
+  cd && \
+  rm -rf /tmp/linux-amd64
+
+VOLUME /work
+WORKDIR /work
+
+ENTRYPOINT ["sh", "/ansible-playbook.sh"]

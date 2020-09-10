@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+{% if k8s_resource_persistentvolumeclaim_params.annotations is defined %}
+  annotations:
+    {{k8s_resource_persistentvolumeclaim_params.annotations | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+{% if k8s_resource_persistentvolumeclaim_params.labels is defined %}
+  labels:
+    {{k8s_resource_persistentvolumeclaim_params.labels | to_nice_yaml(indent=2) | indent(width=4, indentfirst=false)}}
+{% endif %}
+  name: {{k8s_resource_persistentvolumeclaim_params.name}}
+  namespace: {{k8s_resource_persistentvolumeclaim_params.namespace}}
+spec:
+  {{k8s_resource_persistentvolumeclaim_params.spec | to_nice_yaml(indent=2) | indent(width=2, indentfirst=false)}}

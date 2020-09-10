@@ -1,0 +1,5 @@
+- name: create cluster role '{{k8s_resource_clusterrole_params.name}}'
+  k8s:
+    definition: "{{lookup('template', 'clusterrole.yaml.j2')}}"
+    state: present
+  delegate_to: localhost

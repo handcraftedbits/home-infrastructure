@@ -1,0 +1,48 @@
+- block:
+  - name: create directories
+    file:
+      group: "{{dev_go_params.username}}"
+      owner: "{{dev_go_params.username}}"
+      path: "{{item}}"
+      state: directory
+    loop:
+      - "{{dev_go_params.paths.gopath | default(dev_go_defaults.paths.gopath)}}"
+      - "{{dev_go_params.paths.goroot | default(dev_go_defaults.paths.goroot)}}"
+
+  - name: check for existing Go installation
+    stat:
+      path: "{{dev_go_params.paths.goroot | default(dev_go_defaults.paths.goroot)}}/bin/go"
+    register: dev_go_internal_installed
+
+  - name: install Go
+    unarchive:
+      dest: "{{dev_go_params.paths.goroot | default(dev_go_defaults.paths.goroot)}}/.."
+      group: "{{dev_go_params.username}}"
+      owner: "{{dev_go_params.username}}"
+      remote_src: true
+      src: https://dl.google.com/go/go{{dev_go_params.version | default(dev_go_defaults.version)}}.linux-amd64.tar.gz
+    when: dev_go_internal_installed.stat.exists == false
+  become: true
+
+- name: install extra packages
+  shell: "{{dev_go_params.paths.goroot | default(dev_go_defaults.paths.goroot)}}/bin/go get {{item}}"
+  environment:
+    GO111MODULE: "on"
+    GOPATH: "{{dev_go_params.paths.gopath | default(dev_go_defaults.paths.gopath)}}"
+  loop: "{{dev_go_params.extra_packages}}"
+  when: dev_go_params.extra_packages is defined
+
+- name: update Zsh configuration
+  lineinfile:
+    create: yes
+    dest: /home/{{dev_go_params.username}}/.zshrc-extra
+    line: "{{item.line}}"
+    regexp: "{{item.regexp}}"
+    state: present
+  loop:
+    - line: export GOPATH={{dev_go_params.paths.gopath | default(dev_go_defaults.paths.gopath)}}
+      regexp: ^export GOPATH
+    - line: export GOROOT={{dev_go_params.paths.goroot | default(dev_go_defaults.paths.goroot)}}
+      regexp: ^export GOROOT
+    - line: export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+      regexp: ^export PATH

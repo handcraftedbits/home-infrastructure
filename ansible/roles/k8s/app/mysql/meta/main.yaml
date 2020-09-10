@@ -1,0 +1,66 @@
+dependencies:
+  - role: k8s/resource/namespace
+    vars:
+      k8s_resource_namespace_params:
+        labels:
+          app: "{{k8s_app_mysql_internal.app_name}}"
+        name: "{{k8s_app_mysql_params.namespace | default(k8s_app_mysql_defaults.namespace)}}"
+
+  - role: k8s/resource/persistentvolume
+    vars:
+      k8s_resource_persistentvolume_params:
+        labels:
+          app: "{{k8s_app_mysql_internal.app_name}}"
+        name: "{{k8s_app_mysql_internal.app_name}}"
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          capacity:
+            storage: "{{k8s_app_mysql_params.size}}"
+          persistentVolumeReclaimPolicy: Retain
+          readOnly: false
+          storageClassName: ""
+          volumeMode: Filesystem
+        volume_info: "{{k8s_app_mysql_params.volume_info}}"
+
+  - role: k8s/resource/persistentvolumeclaim
+    vars:
+      k8s_resource_persistentvolumeclaim_params:
+        labels:
+          app: "{{k8s_app_mysql_internal.app_name}}"
+        name: "{{k8s_app_mysql_params.name | default(k8s_app_mysql_defaults.name)}}"
+        namespace: "{{k8s_app_mysql_params.namespace | default(k8s_app_mysql_defaults.namespace)}}"
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: "{{k8s_app_mysql_params.size}}"
+          selector:
+            matchLabels:
+              app: "{{k8s_app_mysql_internal.app_name}}"
+          storageClassName: ""
+          volumeMode: Filesystem
+
+  - role: k8s/resource/helm
+    vars:
+      k8s_resource_helm_params:
+        chart: stable/mysql
+        chart_values:
+          master:
+            labels:
+              app: "{{k8s_app_mysql_internal.app_name}}"
+          mysqlDatabase: mysql
+          mysqlPassword: "{{k8s_app_mysql_params.password}}"
+          mysqlRootPassword: "{{k8s_app_mysql_params.password}}"
+          fullnameOverride: "{{k8s_app_mysql_params.name | default(k8s_app_mysql_defaults.name)}}"
+          persistence:
+            enabled: true
+            existingClaim: "{{k8s_app_mysql_params.name | default(k8s_app_mysql_defaults.name)}}"
+          service:
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: "{{k8s_app_mysql_params.hostname}}"
+            port: "{{k8s_app_mysql_params.port | default(k8s_app_mysql_defaults.port)}}"
+            type: LoadBalancer
+        namespace: "{{k8s_app_mysql_params.namespace | default(k8s_app_mysql_defaults.namespace)}}"
+        release: "{{k8s_app_mysql_params.name | default(k8s_app_mysql_defaults.name)}}"

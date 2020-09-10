@@ -1,0 +1,10 @@
+- name: install package
+  apt:
+    force_apt_get: true
+    name: cifs-utils
+    state: present
+  become: true
+
+- include_tasks: shares.yaml
+  loop: "{{dev_cifs_client_params.shares | dict2items}}"
+  when: dev_cifs_client_params.shares is defined
