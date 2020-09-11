@@ -55,6 +55,14 @@
             - golang.org/x/tools/gopls@latest
           username: "{{accounts.dev.username}}"
 
+    - role: dev/gpg
+      tags:
+        - dev.gpg
+      vars:
+        dev_gpg_params:
+          key: "0xBCB3656DC6035119"
+          username: "{{accounts.dev.username}}"
+
     - role: dev/java
       tags:
         - dev.java

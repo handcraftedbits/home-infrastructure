@@ -1,0 +1,64 @@
+- block:
+  - name: install packages
+    apt:
+      force_apt_get: true
+      name: "{{item}}"
+      state: present
+    loop:
+      - dirmngr
+      - gnupg
+      - pinentry-curses
+      - scdaemon
+
+  - name: fetch keyserver certificate
+    get_url:
+      dest: /etc/ssl/certs/sks-keyservers.netCA.pem
+      url: https://sks-keyservers.net/sks-keyservers.netCA.pem
+  become: true
+
+- name: fetch key
+  shell: gpg --keyserver pool.sks-keyservers.net --recv-keys {{dev_gpg_params.key}}
+  changed_when: "dev_gpg_internal_key_fetch.stderr is not search('unchanged: 1')"
+  register: dev_gpg_internal_key_fetch
+
+- name: trust key
+  shell: >
+    echo "$(gpg --list-keys --fingerprint | grep {{dev_gpg_params.key}} -A 1 | tail -1 | tr -d '[:space:]'
+    | awk 'BEGIN { FS = "=" } ; { print $2 }'):6:" | gpg --import-ownertrust
+  when: "dev_gpg_internal_key_fetch.stderr is not search('unchanged: 1')"
+
+- name: link dotfiles
+  file:
+    dest: /home/{{dev_gpg_params.username}}/{{item.dest}}
+    force: yes
+    src: /home/{{dev_gpg_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  with_items:
+    - dest: .gnupg/dirmngr.conf
+      src: gnupg/dirmngr.conf
+    - dest: .gnupg/gpg-agent.conf
+      src: gnupg/gpg-agent.conf
+    - dest: .gnupg/gpg.conf
+      src: gnupg/gpg.conf
+
+# Taken from https://blog.tersmitten.nl/how-to-ultimately-trust-a-public-key-non-interactively.html
+
+- name: get user ID
+  shell: id -u {{dev_gpg_params.username}}
+  register: dev_gpg_internal_uid
+
+- name: update Zsh configuration to use gpg-agent for ssh-agent
+  lineinfile:
+    create: yes
+    dest: /home/{{dev_gpg_params.username}}/.zshrc-extra
+    line: "export SSH_AUTH_SOCK=/run/user/{{dev_gpg_internal_uid.stdout}}/gnupg/S.gpg-agent.ssh"
+    regexp: "^export SSH_AUTH_SOCK"
+    state: present
+
+- name: update Zsh configuration to update gpg-agent TTY for pinentry-curses
+  lineinfile:
+    create: yes
+    dest: /home/{{dev_gpg_params.username}}/.zshrc-extra
+    line: "echo UPDATESTARTUPTTY | gpg-connect-agent > /dev/null"
+    regexp: "^echo UPDATESTARTUPTTY"
+    state: present

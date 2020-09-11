@@ -20,6 +20,8 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
   Used to install [Docker](https://www.docker.com/) and associated tooling/configuration.
 * [dev/dotfiles](roles/dev/dotfiles/README.md)\
   Used to install dot files.
+* [dev/gpg](roles/dev/gpg/README.md)\
+  Used to install [GnuPG](https://gnupg.org/) and associated tooling/configuration.
 * [dev/go](roles/dev/go/README.md)\
   Used to install [Go](https://golang.org/) and associated tooling/configuration.
 * [dev/java](roles/dev/java/README.md)\

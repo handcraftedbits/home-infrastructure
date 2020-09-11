@@ -14,6 +14,7 @@ The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbook
   * `dev.docker` (install [Docker](https://www.docker.com/) and associated tooling/configuration)
   * `dev.dotfiles` (install dot files)
   * `dev.go` (install [Go](https://golang.org/) and associated tooling/configuration)
+  * `dev.gpg` (install [GnuPG](https://gnupg.org/) and associated tooling/configuration)
   * `dev.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and associated
     tooling/configuration).
   * `dev.misc` (install miscellaneous packages).
