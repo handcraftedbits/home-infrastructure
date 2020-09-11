@@ -16,6 +16,14 @@
       path: /usr/lib/jvm/java-{{dev_java_params.version | default(dev_java_defaults.version)}}-openjdk-amd64/bin/java
   become: true
 
+- name: add Maven settings file
+  template:
+    dest: /home/{{dev_java_params.username}}/.m2/settings.xml
+    group: "{{dev_java_params.username}}"
+    mode: "0600"
+    owner: "{{dev_java_params.username}}"
+    src: settings.j2
+
 - name: update Zsh configuration
   lineinfile:
     create: yes

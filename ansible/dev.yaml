@@ -68,6 +68,9 @@
         - dev.java
       vars:
         dev_java_params:
+          nexus:
+            password: "{{accounts.nexus.password}}"
+            username: "{{accounts.nexus.username}}"
           username: "{{accounts.dev.username}}"
 
     - role: dev/misc
