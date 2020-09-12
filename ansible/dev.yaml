@@ -60,7 +60,8 @@
         - dev.gpg
       vars:
         dev_gpg_params:
-          key: "0xBCB3656DC6035119"
+          private_key: "{{gpg.master}}"
+          public_key: "0xBCB3656DC6035119"
           username: "{{accounts.dev.username}}"
 
     - role: dev/java

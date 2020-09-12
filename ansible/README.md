@@ -289,10 +289,18 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
     ```
 * See these roles for additional setup instructions:
   * [`dev/cifs_client`](roles/dev/cifs_client/README.md#setup)
+  * [`dev/gpg`](roles/dev/gpg/README.md#setup)
+  * [`dev/java`](roles/dev/java/README.md#setup)
   * [`dev/nfs`](roles/dev/nfs_client/README.md#setup)
+  * [`k8s/app/mysql`](roles/k8s/app/mysql/README.md#setup):
+    * `<cluster_name>`: `stable`
+    * `<mysql_instance_name>`: `default`
   * [`k8s/app/openldap`](roles/k8s/app/openldap/README.md#setup):
     * `<cluster_name>`: `stable`
     * `<ldap_instance_name>`: `default`
+  * [`k8s/app/postgresql`](roles/k8s/app/postgresql/README.md#setup):
+    * `<cluster_name>`: `stable`
+    * `<postgresql_instance_name>`: `default`
   * [`k8s/app/sslterminator`](roles/k8s/app/sslterminator/README.md#setup):
     * `<cluster_domain>`: `<cluster domain suffix>`
     * `<cluster_name>`: `stable`

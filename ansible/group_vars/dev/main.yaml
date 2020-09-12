@@ -1,3 +1,4 @@
+gpg: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/dev/gpg')}}"
 paths:
   dev: /opt/devel
   projects: /opt/devel/projects

@@ -16,15 +16,26 @@
       url: https://sks-keyservers.net/sks-keyservers.netCA.pem
   become: true
 
-- name: fetch key
-  shell: gpg --keyserver pool.sks-keyservers.net --recv-keys {{dev_gpg_params.key}}
+- name: fetch public key
+  shell: gpg --keyserver pool.sks-keyservers.net --recv-keys {{dev_gpg_params.public_key}}
   changed_when: "dev_gpg_internal_key_fetch.stderr is not search('unchanged: 1')"
   register: dev_gpg_internal_key_fetch
 
-- name: trust key
-  shell: >
-    echo "$(gpg --list-keys --fingerprint | grep {{dev_gpg_params.key}} -A 1 | tail -1 | tr -d '[:space:]'
-    | awk 'BEGIN { FS = "=" } ; { print $2 }'):6:" | gpg --import-ownertrust
+- block:
+  # Taken from https://blog.tersmitten.nl/how-to-ultimately-trust-a-public-key-non-interactively.html
+
+  - name: trust public key
+    shell: >
+      echo "$(gpg --list-keys --fingerprint --keyid-format 0xlong | grep {{dev_gpg_params.public_key}} -A 1 | tail -1
+      | tr -d '[:space:]' | awk 'BEGIN { FS = "=" } ; { print $2 }'):6:" | gpg --import-ownertrust
+
+  - name: import private key
+    shell: echo "{{dev_gpg_params.private_key}}" | gpg --import --batch
+
+  - name: add key to sshcontrol
+    shell: >
+      echo "$(gpg --list-keys --keyid-format 0xlong --with-keygrip | grep {{dev_gpg_params.public_key}} -A 2 | tail -1
+      | tr -d '[:space:]' | sed 's/^Keygrip=//')" > /home/{{dev_gpg_params.username}}/.gnupg/sshcontrol
   when: "dev_gpg_internal_key_fetch.stderr is not search('unchanged: 1')"
 
 - name: link dotfiles
@@ -40,8 +51,6 @@
       src: gnupg/gpg-agent.conf
     - dest: .gnupg/gpg.conf
       src: gnupg/gpg.conf
-
-# Taken from https://blog.tersmitten.nl/how-to-ultimately-trust-a-public-key-non-interactively.html
 
 - name: get user ID
   shell: id -u {{dev_gpg_params.username}}
