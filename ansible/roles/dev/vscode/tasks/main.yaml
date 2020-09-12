@@ -1,24 +1,33 @@
+- name: create code-server configuration directories
+  file:
+    group: "{{dev_vscode_params.username}}"
+    mode: "0775"
+    owner: "{{dev_vscode_params.username}}"
+    path: /home/{{dev_vscode_params.username}}/{{item}}
+    state: directory
+  loop:
+    - .config/code-server
+    - .local/share/code-server
+    - .local/share/code-server/User
+
+- name: create code-server configuration
+  template:
+    dest: /home/{{dev_vscode_params.username}}/.config/code-server/config.yaml
+    src: config.yaml.j2
+
+- name: link dotfiles
+  file:
+    dest: /home/{{dev_vscode_params.username}}/.local/share/code-server/User/settings.json
+    src: /home/{{dev_vscode_params.username}}/.cloned-repos/dotfiles/vscode/settings.json
+    state: link
+
 - block:
   - name: install code-server
     apt:
       force_apt_get: true
       deb: https://github.com/cdr/code-server/releases/download/v{{(dev_vscode_params.version | default(dev_vscode_defaults.version))}}/code-server_{{dev_vscode_params.version | default(dev_vscode_defaults.version)}}_amd64.deb
       state: present
-    become: true
 
-  - name: create code-server configuration directory
-    file:
-      group: "{{dev_vscode_params.username}}"
-      owner: "{{dev_vscode_params.username}}"
-      path: /home/{{dev_vscode_params.username}}/.config/code-server
-      state: directory
-
-  - name: create code-server configuration
-    template:
-      dest: /home/{{dev_vscode_params.username}}/.config/code-server/config.yaml
-      src: config.yaml.j2
-
-- block:
   - name: create systemd service
     template:
       dest: /etc/systemd/system/code-server.service

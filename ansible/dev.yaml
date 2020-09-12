@@ -149,7 +149,6 @@
             - vscoss.vscode-ansible
             - wayou.vscode-todo-highlight
             - yzhang.markdown-all-in-one
-          password: "{{accounts.dev.password}}"
           port: 8888
           username: "{{accounts.dev.username}}"
 

@@ -18,7 +18,6 @@ The parameters for this role.
 
 ```yaml
 extensions:
-password:
 port:
 username:
 version:
@@ -27,7 +26,6 @@ version:
 | Name         | Type       | Required? | Description                                         |
 |--------------|------------|-----------|-----------------------------------------------------|
 | `extensions` | `string[]` | no        | Any additional extensions to install.               |
-| `password`   | `string`   | **yes**   | The password used to protect code-server.           |
 | `port`       | `integer`  | **yes**   | The port code-server will run on.                   |
 | `username`   | `string`   | **yes**   | The name of the OS user for whom this role applies. |
 | `version`    | `string`   | no        | The version of code-server to install.              |
