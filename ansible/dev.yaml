@@ -136,6 +136,7 @@
             - EditorConfig.EditorConfig
             - formulahendry.auto-close-tag
             - formulahendry.auto-rename-tag
+            - gabrielbb.vscode-lombok
             - golang.go
             - hashicorp.terraform
             - humao.rest-client
