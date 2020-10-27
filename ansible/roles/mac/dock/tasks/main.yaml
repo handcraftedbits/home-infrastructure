@@ -1,0 +1,6 @@
+- name: remove all items from dock
+  shell: /usr/local/bin/dockutil --remove all --no-restart
+
+- name: add items to dock
+  shell: /usr/local/bin/dockutil --add {{ item }} --no-restart
+  loop: "{{mac_dock_params.dock_items}}"

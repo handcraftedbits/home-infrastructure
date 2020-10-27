@@ -1,0 +1,23 @@
+- name: install package
+  homebrew:
+    name: tmux
+    state: present
+
+- name: create configuration directory
+  become_user: "{{mac_tmux_params.username}}"
+  file:
+    path: /Users/{{mac_tmux_params.username}}/.tmux
+    state: directory
+
+- name: link dotfiles
+  become_user: "{{mac_tmux_params.username}}"
+  file:
+    dest: /Users/{{mac_tmux_params.username}}/{{item.dest}}
+    force: yes
+    src: /Users/{{mac_tmux_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .tmux/molokai.conf
+      src: tmux/molokai.conf
+    - dest: .tmux.conf
+      src: tmux/.tmux.conf

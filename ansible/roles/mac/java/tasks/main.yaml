@@ -1,0 +1,28 @@
+- name: install packages
+  homebrew:
+    name: "{{item}}"
+    state: present
+  loop:
+    - maven
+    - openjdk@{{mac_java_params.version | default(mac_java_defaults.version)}}
+
+- name: add symlink for system wrapper
+  file:
+    dest: /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+    src: /usr/local/opt/openjdk@{{mac_java_params.version | default(mac_java_defaults.version)}}/libexec/openjdk.jdk
+    state: link
+  become: true
+
+- name: add Maven directory
+  file:
+    dest: /Users/{{mac_java_params.username}}/.m2
+    state: directory
+
+- name: add Maven settings file
+  template:
+    dest: /Users/{{mac_java_params.username}}/.m2/settings.xml
+    group: staff
+    mode: "0600"
+    owner: "{{mac_java_params.username}}"
+    src: settings.j2
+

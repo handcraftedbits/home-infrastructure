@@ -1,0 +1,10 @@
+- name: check for existing clone
+  stat:
+    path: "{{mac_dotfiles_params.dir | default(mac_dotfiles_defaults.dir)}}"
+  register: mac_dotfiles_internal_dir
+
+- name: clone dotfiles repository
+  git:
+    dest: "{{mac_dotfiles_params.dir | default(mac_dotfiles_defaults.dir)}}"
+    repo: "{{mac_dotfiles_params.repo}}"
+  when: mac_dotfiles_internal_dir.stat.exists == false

@@ -4,8 +4,8 @@
 
 # Executing Playbooks
 
-Use `bin/ansible-playbook <dev|k8s> [options]` to run playbooks.  The script runs a Docker container that has all the
-necessary dependencies and will look up the inventory file and other data from Vault.
+Use `bin/ansible-playbook <dev|k8s|work> [options]` to run playbooks.  The script runs a Docker container that has all
+the necessary dependencies and will look up the inventory file and other data from Vault.
 
 The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html) are defined:
   * `dev.aws` (install [AWS](https://aws.amazon.com/) client and configuration)
@@ -17,7 +17,7 @@ The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbook
   * `dev.gpg` (install [GnuPG](https://gnupg.org/) and associated tooling/configuration)
   * `dev.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and associated
     tooling/configuration).
-  * `dev.misc` (install miscellaneous packages).
+  * `dev.misc` (install miscellaneous packages)
   * `dev.nfs_client` (install NFS client software and mount shares)
   * `dev.terraform` (install [Terraform](https://terraform.io/))
   * `dev.tmux` (install [tmux](https://github.com/tmux/tmux) and associated configuration)
@@ -38,3 +38,12 @@ The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbook
     * `k8s.apps.sslterminator` (install SSL termination for various services)
   * `k8s.core` (install core Kubernetes cluster components)
   * `vm.create` (create VMs)
+  * `work.base` (install base dependencies and settings on work system)
+  * `work.dock` (set up the macOS dock on work system)
+  * `work.dotfiles` (install dot files on work system)
+  * `work.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and associated tooling/configuration
+    on work system).
+  * `work.misc` (install miscellaneous packages on work system)
+  * `work.tmux` (install [tmux](https://github.com/tmux/tmux) and associated configuration on work system)
+  * `work.vim` (install [Neovim](https://neovim.io/), plugins, and configuration on a work system)
+  * `work.zsh` (install [Zsh](http://zsh.sourceforge.net/), plugins, and configuration on work system)

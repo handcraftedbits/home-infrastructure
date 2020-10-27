@@ -136,6 +136,26 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
   Used to create a Kubernetes [stateful set](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
   resource.
 
+## Mac
+
+* [mac/base](roles/mac/base/README.md)\
+  Used to install base dependencies and settings on a macOS system.
+* [mac/dock](roles/mac/dock/README.md)\
+  Used to set up the macOS dock.
+* [mac/dotfiles](roles/mac/dotfiles/README.md)\
+  Used to install dot files on a macOS system.
+* [mac/java](roles/mac/java/README.md)\
+  Used to install [Java](https://www.oracle.com/technetwork/java/index.html) and associated tooling/configuration on a
+  macOS system.
+* [mac/misc](roles/mac/misc/README.md)\
+  Used to install miscellaneous packages on a macOS system.
+* [mac/tmux](roles/mac/tmux/README.md)\
+  Used to install [tmux](https://github.com/tmux/tmux) and associated configuration on a macOS system.
+* [mac/vim](roles/mac/vim/README.md)\
+  Used to install [Neovim](https://neovim.io/), plugins, and configuration on a macOS system.
+* [mac/zsh](roles/mac/zsh/README.md)\
+  Used to install [Zsh](http://zsh.sourceforge.net/), plugins, and configuration on a macOS system.
+
 ## VM
 
 * [vm/alpine](roles/vm/alpine/README.md)\
@@ -166,6 +186,11 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
     {
       "all": {
         "children": {
+          "dev": {
+            "hosts": {
+              "<dev machine host name>": {}
+            }
+          },
           "k8s_agents": {
             "hosts": {
               "<agent node host names...>": {}
@@ -180,6 +205,11 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
             "hosts": {
               "<agent node host names...>": {},
               "<server node host names...>": {}
+            }
+          },
+          "work": {
+            "hosts": {
+              "<work machine host name>": {}
             }
           }
         }
@@ -287,6 +317,13 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
       "path": "<path where persistent volume storage is shared>"
     }
     ```
+  * `cubbyhole/work/accounts/default`:
+    ```json
+    {
+      "password": "<default user password>",
+      "username": "<default username>"
+    }
+    ```
 * See these roles for additional setup instructions:
   * [`dev/cifs_client`](roles/dev/cifs_client/README.md#setup)
   * [`dev/gpg`](roles/dev/gpg/README.md#setup)
@@ -304,6 +341,9 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
   * [`k8s/app/sslterminator`](roles/k8s/app/sslterminator/README.md#setup):
     * `<cluster_domain>`: `<cluster domain suffix>`
     * `<cluster_name>`: `stable`
+* On macOS systems:
+  * Enable SSH
+  * Install XCode
 
 # Types
 

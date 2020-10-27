@@ -1,0 +1,33 @@
+- name: install packages
+  homebrew:
+    name: "{{packages}}"
+    state: present
+  vars:
+    packages:
+      - ctags
+      - neovim
+
+- name: make NeoVim config directory
+  file:
+    dest: .config/nvim
+    state: directory
+
+- name: link dotfiles
+  file:
+    dest: /Users/{{mac_vim_params.username}}/{{item.dest}}
+    src: /Users/{{mac_vim_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .vimrc
+      src: vim/.vimrc
+    - dest: .config/nvim/init.vim
+      src: vim/.vimrc
+
+- name: install Vundle
+  git:
+    dest: /Users/{{mac_vim_params.username}}/.vim/bundle/Vundle.vim
+    repo: https://github.com/VundleVim/Vundle.vim.git
+
+# TODO: fix changed_when
+- name: install Vundle plugins
+  shell: vim -c VundleUpdate -c quitall > /dev/null

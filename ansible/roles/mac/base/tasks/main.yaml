@@ -1,0 +1,208 @@
+- name: install core Homebrew packages
+  homebrew:
+    name: "{{item}}"
+    state: present
+  loop:
+    - coreutils
+    - curl
+    - dockutil
+    - htop
+    - git
+    - jq
+    - p7zip
+    - python@3.9
+    - subversion
+    - tree
+    - unrar
+    - unzip
+    - wget
+    - xz
+    - zip
+
+- name: install core Homebrew cask packages
+  homebrew_cask:
+    name: "{{item}}"
+    state: present
+  loop:
+    - appcleaner
+    - docker
+    - google-chrome
+    - iterm2
+
+- name: install Pygments and monokai-hcb theme
+  pip:
+    name: "{{item}}"
+    state: present
+  loop:
+    - Pygments
+    - pygments-monokai-hcb
+  become: true
+
+- name: add default system settings
+  osx_defaults:
+    domain: "{{item.domain | default('NSGlobalDomain')}}"
+    host: "{{item.host | default(omit)}}"
+    key: "{{item.key}}"
+    state: present
+    type: "{{item.type | default('string')}}"
+    value: "{{item.value}}"
+  loop:
+    # Settings required to disable "tap to click".
+    - domain: com.apple.AppleMultitouchTrackpad
+      key: Clicking
+      type: boolean
+      value: false
+    - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+      key: Clicking
+      type: boolean
+      value: false
+
+    # Settings required to enable three finger window dragging.
+    - domain: com.apple.AppleMultitouchTrackpad
+      key: TrackpadThreeFingerDrag
+      type: boolean
+      value: true
+    - domain: com.apple.AppleMultitouchTrackpad
+      key: TrackpadThreeFingerHorizSwipeGesture
+      type: integer
+      value: 0
+    - domain: com.apple.AppleMultitouchTrackpad
+      key: TrackpadThreeFingerVertSwipeGesture
+      type: integer
+      value: 0
+    - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+      key: TrackpadThreeFingerDrag
+      type: boolean
+      value: true
+    - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+      key: TrackpadThreeFingerHorizSwipeGesture
+      type: integer
+      value: 0
+    - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+      key: TrackpadThreeFingerVertSwipeGesture
+      type: integer
+      value: 0
+
+    # Settings required to disable the creation of .DS_Store files on network shares.
+    - domain: com.apple.desktopservices
+      key: DSDontWriteNetworkStores
+      type: boolean
+      value: true
+
+    # Settings required to automatically hide the dock.
+    - domain: com.apple.dock
+      key: autohide
+      type: boolean
+      value: true
+
+    # Settings required to set the dock size.
+    - domain: com.apple.dock
+      key: tilesize
+      type: float
+      value: 64
+
+    # Settings required to show hidden files and extensions.
+    - domain: com.apple.finder
+      key: AppleShowAllExtensions
+      type: boolean
+      value: true
+    - domain: com.apple.finder
+      key: AppleShowAllFiles
+      type: boolean
+      value: true
+
+    # Settings required to default to list view in Finder.
+    - domain: com.apple.finder
+      key: FXPreferredViewStyle
+      value: Nlsv
+
+    # Settings required to show internal and external drives on the desktop.
+    - domain: com.apple.finder
+      key: ShowExternalHardDrivesOnDesktop
+      type: boolean
+      value: true
+    - domain: com.apple.finder
+      key: ShowHardDrivesOnDesktop
+      type: boolean
+      value: true
+    - domain: com.apple.finder
+      key: ShowRemovableHardDrivesOnDesktop
+      type: boolean
+      value: true
+
+    # Settings required to show path bar and status bar in Finder.
+    - domain: com.apple.finder
+      key: ShowPathbar
+      type: boolean
+      value: true
+    - domain: com.apple.finder
+      key: ShowStatusBar
+      type: boolean
+      value: true
+
+    # Settings required to show battery percentage in the menu bar.
+    - domain: com.apple.menuextra.battery
+      key: ShowPercent
+      type: string
+      value: YES
+
+    # Settings required to disable the screensaver.
+    - domain: com.apple.screensaver
+      host: currentHost
+      key: idleTime
+      type: integer
+      value: 0
+
+    # Settings required to disable the text input menu bar item.
+    - domain: com.apple.TextInputMenu
+      key: visible
+      type: boolean
+      value: false
+
+- name: allow ~/Library to be shown
+  shell: chflags -v nohidden ~/Library
+  changed_when: mac_base_internal_chflags.stdout != ""
+  register: mac_base_internal_chflags
+
+- name: check for custom fonts
+  find:
+    patterns: SourceCodePro*.otf
+    paths: /Library/Fonts
+  register: mac_base_internal_fonts
+
+- name: install custom fonts
+  get_url:
+    dest: /Library/Fonts/SourceCodePro-{{item}}.otf
+    url: https://github.com/adobe-fonts/source-code-pro/blob/release/OTF/SourceCodePro-{{item}}.otf?raw=true
+  loop:
+    - Black
+    - BlackIt
+    - Bold
+    - BoldIt
+    - ExtraLight
+    - ExtraLightIt
+    - It
+    - Light
+    - LightIt
+    - Medium
+    - MediumIt
+    - Regular
+    - Semibold
+    - SemiboldIt
+  when: mac_base_internal_fonts.files | length == 0
+
+- name: add default iTerm2 settings
+  shell: /usr/libexec/PlistBuddy -c "set {{item.key}} {{item.value}}" ~/Library/Preferences/com.googlecode.iterm2.plist
+  loop:
+    - key: :New\ Bookmarks:0:Columns
+      value: 160
+    - key: :New\ Bookmarks:0:Normal\ Font
+      value: SourceCodePro-Regular\ 12
+    - key: :New\ Bookmarks:0:Rows
+      value: 50
+    - key: :New\ Bookmarks:0:Window\ Type
+      value: 0
+    - key: OnlyWhenMoreTabs
+      value: 0
+    - key: PromptOnQuit
+      value: 0

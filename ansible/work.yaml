@@ -1,0 +1,63 @@
+- hosts: work
+  roles:
+    - role: mac/base
+      tags:
+        - work.base
+
+    - role: mac/misc
+      tags:
+        - work.misc
+      mac_misc_params:
+        homebrew_cask_packages:
+          - slack
+
+    - role: mac/dock
+      tags:
+        - work.dock
+      vars:
+        mac_dock_params:
+          dock_items:
+            - /System/Applications/Launchpad.app
+            - "\"/System/Applications/System Preferences.app\""
+            - "\"/System/Applications/Utilities/Activity Monitor.app\""
+            - /Applications/iTerm.app
+            - /Applications/Safari.app
+            - "\"/Applications/Google Chrome.app\""
+            - /System/Applications/Mail.app
+            - /System/Applications/Calendar.app
+            - /System/Applications/Messages.app
+            - /Applications/Slack.app
+            - "\"/System/Applications/App Store.app\""
+            - ~/Downloads --section others
+
+    - role: mac/dotfiles
+      tags:
+        - work.dotfiles
+      vars:
+        mac_dotfiles_params:
+          repo: https://github.com/handcraftedbits/dotfiles.git
+          username: "{{accounts.work.username}}"
+
+    - role: mac/java
+      tags:
+        - work.java
+      mac_java_params:
+        username: "{{accounts.work.username}}"
+
+    - role: mac/tmux
+      tags:
+        - work.tmux
+      mac_tmux_params:
+        username: "{{accounts.work.username}}"
+
+    - role: mac/vim
+      tags:
+        - work.vim
+      mac_vim_params:
+        username: "{{accounts.work.username}}"
+
+    - role: mac/zsh
+      tags:
+        - work.zsh
+      mac_zsh_params:
+        username: "{{accounts.work.username}}"

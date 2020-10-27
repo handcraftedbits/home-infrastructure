@@ -1,0 +1,49 @@
+- name: install Zsh
+  homebrew:
+    name: zsh
+    state: present
+
+- name: change shell to Zsh for user '{{mac_zsh_params.username}}'
+  user:
+    name: "{{mac_zsh_params.username}}"
+    shell: /usr/local/bin/zsh
+  become: true
+
+- name: install Oh My Zsh
+  git:
+    dest: /Users/{{mac_zsh_params.username}}/.oh-my-zsh
+    repo: https://github.com/robbyrussell/oh-my-zsh
+
+- name: install zsh-256color plugin
+  git:
+    dest: /Users/{{mac_zsh_params.username}}/.oh-my-zsh/custom/plugins/zsh-256color
+    repo: https://github.com/chrissicool/zsh-256color.git
+
+- name: install zsh-autosuggestions plugin
+  git:
+    dest: /Users/{{mac_zsh_params.username}}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+
+- name: create custom theme directory
+  file:
+    path: /Users/{{mac_zsh_params.username}}/.oh-my-zsh/custom/themes
+    state: directory
+
+- name: link dotfiles
+  file:
+    dest: /Users/{{mac_zsh_params.username}}/{{item.dest}}
+    src: /Users/{{mac_zsh_params.username}}/.cloned-repos/dotfiles/{{item.src}}
+    state: link
+  loop:
+    - dest: .zshrc
+      src: zsh/.zshrc-mac
+    - dest: .oh-my-zsh/custom/themes/handcraftedbits.zsh-theme
+      src: zsh/handcraftedbits.zsh-theme
+
+- name: fix permissions
+  file:
+    mode: "0755"
+    path: "{{item}}"
+  loop:
+    - /usr/local/share/zsh
+    - /usr/local/share/zsh/site-functions

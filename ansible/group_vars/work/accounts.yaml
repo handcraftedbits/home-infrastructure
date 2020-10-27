@@ -1,0 +1,2 @@
+accounts:
+  work: "{{lookup('hashi_vault', 'token={{vault.token}} url={{vault.url}} secret=cubbyhole/work/accounts/default')}}"
