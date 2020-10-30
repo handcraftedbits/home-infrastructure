@@ -19,6 +19,7 @@
           dock_items:
             - /System/Applications/Launchpad.app
             - "\"/System/Applications/System Preferences.app\""
+            - /Applications/Bitwarden.app
             - "\"/System/Applications/Utilities/Activity Monitor.app\""
             - /Applications/iTerm.app
             - /Applications/Safari.app

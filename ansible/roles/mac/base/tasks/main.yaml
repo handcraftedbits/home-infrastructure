@@ -6,8 +6,8 @@
     - coreutils
     - curl
     - dockutil
-    - htop
     - git
+    - htop
     - jq
     - p7zip
     - python@3.9
@@ -25,6 +25,7 @@
     state: present
   loop:
     - appcleaner
+    - bitwarden
     - docker
     - google-chrome
     - iterm2
