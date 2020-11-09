@@ -9,5 +9,6 @@
   homebrew_cask:
     name: "{{item}}"
     state: present
+    sudo_password: "{{mac_misc_params.sudo_password}}"
   loop: "{{mac_misc_params.homebrew_cask_packages}}"
   when: mac_misc_params.homebrew_cask_packages is defined

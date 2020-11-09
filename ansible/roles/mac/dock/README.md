@@ -1,4 +1,4 @@
-# dev/base
+# mac/dock
 
 An [Ansible](https://www.ansible.com) role used to set up the macOS dock.
 

@@ -1,4 +1,4 @@
-# dev/tmux
+# mac/tmux
 
 An [Ansible](https://www.ansible.com) role used to install [tmux](https://github.com/tmux/tmux) and associated
 configuration on a macOS system.

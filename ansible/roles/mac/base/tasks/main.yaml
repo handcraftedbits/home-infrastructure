@@ -23,6 +23,7 @@
   homebrew_cask:
     name: "{{item}}"
     state: present
+    sudo_password: "{{mac_base_params.sudo_password}}"
   loop:
     - appcleaner
     - bitwarden
@@ -100,7 +101,7 @@
     - domain: com.apple.dock
       key: tilesize
       type: float
-      value: 64
+      value: 48
 
     # Settings required to show hidden files and extensions.
     - domain: com.apple.finder
@@ -164,6 +165,28 @@
   shell: chflags -v nohidden ~/Library
   changed_when: mac_base_internal_chflags.stdout != ""
   register: mac_base_internal_chflags
+
+- name: create required directories
+  file:
+    dest: "{{item.name}}"
+    group: "{{mac_base_params.group}}"
+    mode: "{{item.mode}}"
+    owner: "{{mac_base_params.username}}"
+    state: directory
+  become: true
+  loop:
+    - mode: "0700"
+      name: /Users/{{mac_base_params.username}}/.ssh
+    - mode: "0755"
+      name: /opt/devel
+
+- name: create SSH client config file
+  template:
+    dest: /Users/{{mac_base_params.username}}/.ssh/config
+    group: "{{mac_base_params.group}}"
+    mode: "0600"
+    owner: "{{mac_base_params.username}}"
+    src: .ssh.config.j2
 
 - name: check for custom fonts
   find:

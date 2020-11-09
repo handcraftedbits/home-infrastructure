@@ -1,4 +1,4 @@
-# dev/java
+# mac/java
 
 An [Ansible](https://www.ansible.com) role used to install [Java](https://www.oracle.com/technetwork/java/index.html)
 and associated tooling/configuration on a macOS system.

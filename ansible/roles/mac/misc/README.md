@@ -1,4 +1,4 @@
-# dev/misc
+# mac/misc
 
 An [Ansible](https://www.ansible.com) role used to install miscellaneous packages on a macOS system.
 
@@ -18,9 +18,11 @@ The parameters for this role.
 ```yaml
 homebrew_packages:
 homebrew_cask_packages:
+sudo_password:
 ```
 
 | Name                     | Type       | Required? | Description                                                |
 | ------------------------ | ---------- | --------- | ---------------------------------------------------------- |
 | `homebrew_packages`      | `string[]` | no        | A list of [Homebrew](https://brew.sh) packages to install. |
 | `homebrew_cask_packages` | `string[]` | no        | A list of Homebrew cask packages to install.               |
+| `sudo_password`          | `string`   | **yes**   | The password to use when `sudo` is invoked.                |

@@ -3,13 +3,26 @@
     - role: mac/base
       tags:
         - work.base
+      vars:
+        mac_base_params:
+          group: staff
+          sudo_password: "{{accounts.work.password}}"
+          username: "{{accounts.work.username}}"
 
     - role: mac/misc
       tags:
         - work.misc
-      mac_misc_params:
-        homebrew_cask_packages:
-          - slack
+      vars:
+        mac_misc_params:
+          homebrew_cask_packages:
+            - eclipse-jee
+            - microsoft-excel
+            - microsoft-outlook
+            - microsoft-powerpoint
+            - onedrive
+            - slack
+            - zoomus
+          sudo_password: "{{accounts.work.password}}"
 
     - role: mac/dock
       tags:
@@ -22,12 +35,15 @@
             - /Applications/Bitwarden.app
             - "\"/System/Applications/Utilities/Activity Monitor.app\""
             - /Applications/iTerm.app
+            - "\"/Applications/Eclipse JEE.app\""
             - /Applications/Safari.app
             - "\"/Applications/Google Chrome.app\""
             - /System/Applications/Mail.app
+            - "\"/Applications/Microsoft Outlook.app\""
             - /System/Applications/Calendar.app
             - /System/Applications/Messages.app
             - /Applications/Slack.app
+            - /Applications/zoom.us.app
             - "\"/System/Applications/App Store.app\""
             - ~/Downloads --section others
 

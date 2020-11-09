@@ -1,4 +1,4 @@
-# dev/vim
+# mac/vim
 
 An [Ansible](https://www.ansible.com) role used to install [Neovim](https://neovim.io/), plugins, and configuration on a
 macOS system.

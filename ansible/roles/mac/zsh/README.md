@@ -1,4 +1,4 @@
-# dev/zsh
+# mac/zsh
 
 An [Ansible](https://www.ansible.com) role used to install [Zsh](http://zsh.sourceforge.net/), plugins, and
 configuration on a macOS system.
