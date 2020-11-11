@@ -14,13 +14,16 @@
         - work.misc
       vars:
         mac_misc_params:
+          homebrew_packages:
+            - node
           homebrew_cask_packages:
-            - eclipse-jee
+            - intellij-idea
             - microsoft-excel
             - microsoft-outlook
             - microsoft-powerpoint
             - onedrive
             - slack
+            - wkhtmltopdf
             - zoomus
           sudo_password: "{{accounts.work.password}}"
 
@@ -35,7 +38,7 @@
             - /Applications/Bitwarden.app
             - "\"/System/Applications/Utilities/Activity Monitor.app\""
             - /Applications/iTerm.app
-            - "\"/Applications/Eclipse JEE.app\""
+            - "\"/Applications/IntelliJ IDEA.app\""
             - /Applications/Safari.app
             - "\"/Applications/Google Chrome.app\""
             - /System/Applications/Mail.app
