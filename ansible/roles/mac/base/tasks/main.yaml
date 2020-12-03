@@ -30,6 +30,7 @@
     - docker
     - google-chrome
     - iterm2
+    - vlc
 
 - name: install Pygments and monokai-hcb theme
   pip:
