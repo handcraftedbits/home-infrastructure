@@ -25,13 +25,15 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
 * [dev/go](roles/dev/go/README.md)\
   Used to install [Go](https://golang.org/) and associated tooling/configuration.
 * [dev/java](roles/dev/java/README.md)\
-  Used to install [Java](https://www.oracle.com/technetwork/java/index.html) and associated tooling/configuration.
+  Used to install [Java](https://www.oracle.com/technetwork/java/index.html) configuration.
 * [dev/misc](roles/dev/misc/README.md)\
   Used to install miscellaneous packages.
 * [dev/nfs_client](roles/dev/nfs_client/README.md)\
   Used to mount NFS shares.
 * [dev/go](roles/dev/go/README.md)\
   Used to install [Terraform](https://terraform.io/).
+* [dev/sdkman](roles/dev/sdkman/README.md)\
+  Used to install [SDKMAN!](https://sdkman.io/) and associated tooling/configuration.
 * [dev/tmux](roles/dev/tmux/README.md)\
   Used to install [tmux](https://github.com/tmux/tmux) and associated configuration.
 * [dev/vim](roles/dev/vim/README.md)\
@@ -144,11 +146,10 @@ A collection of [Ansible](https://www.ansible.com) playbooks and roles for manag
   Used to set up the macOS dock.
 * [mac/dotfiles](roles/mac/dotfiles/README.md)\
   Used to install dot files on a macOS system.
-* [mac/java](roles/mac/java/README.md)\
-  Used to install [Java](https://www.oracle.com/technetwork/java/index.html) and associated tooling/configuration on a
-  macOS system.
 * [mac/misc](roles/mac/misc/README.md)\
   Used to install miscellaneous packages on a macOS system.
+* [mac/sdkman](roles/mac/sdkman/README.md)\
+  Used to install [SDKMAN!](https://sdkman.io/) and associated tooling/configuration on a macOS system.
 * [mac/tmux](roles/mac/tmux/README.md)\
   Used to install [tmux](https://github.com/tmux/tmux) and associated configuration on a macOS system.
 * [mac/vim](roles/mac/vim/README.md)\

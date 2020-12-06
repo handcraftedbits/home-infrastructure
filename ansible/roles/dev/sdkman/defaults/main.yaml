@@ -1,0 +1,16 @@
+dev_sdkman_defaults:
+  default_sdks:
+    - name: java
+      version: 11.0.2-open
+    - name: maven
+      version: 3.6.3
+
+  sdks:
+    - name: java
+      version: 20.3.0.r11-grl
+    - name: java
+      version: 8.0.275.hs-adpt
+    - name: java
+      version: 11.0.2-open
+    - name: maven
+      version: 3.6.3

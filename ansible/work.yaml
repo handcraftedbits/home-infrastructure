@@ -58,10 +58,10 @@
           repo: https://github.com/handcraftedbits/dotfiles.git
           username: "{{accounts.work.username}}"
 
-    - role: mac/java
+    - role: mac/sdkman
       tags:
-        - work.java
-      mac_java_params:
+        - work.sdkman
+      mac_sdkman_params:
         username: "{{accounts.work.username}}"
 
     - role: mac/tmux

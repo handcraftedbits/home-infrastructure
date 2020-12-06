@@ -15,10 +15,10 @@ The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbook
   * `dev.dotfiles` (install dot files)
   * `dev.go` (install [Go](https://golang.org/) and associated tooling/configuration)
   * `dev.gpg` (install [GnuPG](https://gnupg.org/) and associated tooling/configuration)
-  * `dev.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and associated
-    tooling/configuration).
+  * `dev.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and configuration)
   * `dev.misc` (install miscellaneous packages)
   * `dev.nfs_client` (install NFS client software and mount shares)
+  * `dev.sdkman` (install [SDKMAN!](https://sdkman.io/) and associated tooling/configuration)
   * `dev.terraform` (install [Terraform](https://terraform.io/))
   * `dev.tmux` (install [tmux](https://github.com/tmux/tmux) and associated configuration)
   * `dev.vim` (install [Neovim](https://neovim.io/), plugins, and configuration)
@@ -41,9 +41,8 @@ The following [tags](https://docs.ansible.com/ansible/latest/user_guide/playbook
   * `work.base` (install base dependencies and settings on work system)
   * `work.dock` (set up the macOS dock on work system)
   * `work.dotfiles` (install dot files on work system)
-  * `work.java` (install [Java](https://www.oracle.com/technetwork/java/index.html) and associated tooling/configuration
-    on work system).
   * `work.misc` (install miscellaneous packages on work system)
+  * `work.sdkman` (install [SDKMAN!](https://sdkman.io/) and associated tooling/configuration on work system)
   * `work.tmux` (install [tmux](https://github.com/tmux/tmux) and associated configuration on work system)
   * `work.vim` (install [Neovim](https://neovim.io/), plugins, and configuration on a work system)
   * `work.zsh` (install [Zsh](http://zsh.sourceforge.net/), plugins, and configuration on work system)

@@ -1,7 +1,7 @@
 # dev/java
 
 An [Ansible](https://www.ansible.com) role used to install [Java](https://www.oracle.com/technetwork/java/index.html)
-and associated tooling/configuration.
+configuration.
 
 # Setup
 
@@ -29,15 +29,14 @@ The parameters for this role.
 ### Schema
 
 ```yaml
+nexus:
 username:
-version:
 ```
 
 | Name       | Type                              | Required? | Description                                          |
 | ---------- | --------------------------------- | --------- | ---------------------------------------------------- |
 | `nexus`    | [`nexus_account`](#nexus_account) | **yes**   | The Nexus OSS repository account information to use. |
 | `username` | `string`                          | **yes**   | The name of the OS user for whom this role applies.  |
-| `version`  | `string`                          | no        | The version of Java to install.                      |
 
 ## `nexus_account`
 

@@ -104,6 +104,12 @@
           shares: "{{shares.nfs}}"
           username: "{{accounts.dev.username}}"
 
+    - role: dev/sdkman
+      tags:
+        - dev.sdkman
+      dev_sdkman_params:
+        username: "{{accounts.dev.username}}"
+
     - role: dev/terraform
       tags:
         - dev.terraform

@@ -1,0 +1,44 @@
+# Taken from https://github.com/Comcast/ansible-sdkman
+
+- name: check for sdkman installation
+  stat:
+    path: /home/{{dev_sdkman_params.username}}/.sdkman
+  register: dev_sdkman_internal_install_dir
+
+- name: install sdkman
+  shell: curl -s "https://get.sdkman.io?rcupdate=false" | bash
+  args:
+    warn: false
+  when: not dev_sdkman_internal_install_dir.stat.exists
+
+- name: install SDKs
+  shell: >-
+    . /home/{{dev_sdkman_params.username}}/.sdkman/bin/sdkman-init.sh &&
+    sdk install {{item.name}} {{item.version}}
+  args:
+    executable: /bin/bash
+  changed_when: not item.name + ' ' + item.version + ' is already installed.' in dev_sdkman_internal_install.stdout
+  failed_when: >-
+    dev_sdkman_internal_install.rc != 0 and
+    not item.name + ' ' + item.version + ' is already installed.' in dev_sdkman_internal_install.stdout
+  register: dev_sdkman_internal_install
+  loop: "{{dev_sdkman_params.sdks | default(dev_sdkman_defaults.sdks)}}"
+
+- name: get default SDKs
+  shell: >-
+    . /home/{{dev_sdkman_params.username}}/.sdkman/bin/sdkman-init.sh &&
+    sdk current {{item.name}}
+  args:
+    executable: /bin/bash
+  changed_when: false
+  register: dev_sdkman_internal_currents
+  loop: "{{dev_sdkman_params.default_sdks | default(dev_sdkman_defaults.default_sdks)}}"
+
+- name: set default SDKs
+  shell: >-
+    . /home/{{dev_sdkman_params.username}}/.sdkman/bin/sdkman-init.sh &&
+    sdk default {{ item.name }} {{ item.version }}
+  args:
+    executable: /bin/bash
+  loop: "{{dev_sdkman_params.default_sdks | default(dev_sdkman_defaults.default_sdks)}}"
+  changed_when: false
