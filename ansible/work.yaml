@@ -16,6 +16,7 @@
         mac_misc_params:
           homebrew_packages:
             - node
+            - terraform
           homebrew_cask_packages:
             - intellij-idea
             - microsoft-excel
