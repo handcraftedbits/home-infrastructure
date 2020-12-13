@@ -50,7 +50,6 @@
             - github.com/ramya-rao-a/go-outline
             - github.com/rogpeppe/godef
             - github.com/sqs/goreturns
-            - github.com/uudashr/gopkgs/cmd/gopkgs
             - golang.org/x/lint/golint
             - golang.org/x/tools/gopls@latest
           username: "{{accounts.dev.username}}"
@@ -91,6 +90,7 @@
           snap_packages:
             - name: goland
             - name: helm
+            - name: intellij-idea-ultimate
             - name: kubectl
             - name: node
               channel: "12"
