@@ -1,3 +1,10 @@
+- name: create .m2 directory
+  file:
+    group: "{{dev_java_params.username}}"
+    owner: "{{dev_java_params.username}}"
+    path: /home/{{dev_java_params.username}}/.m2
+    state: directory
+
 - name: add Maven settings file
   template:
     dest: /home/{{dev_java_params.username}}/.m2/settings.xml
