@@ -1,2 +1,0 @@
-k8s_app_dashboard_internal:
-  app_name: "{{k8s_app_dashboard_params.prefix | default(k8s_app_dashboard_defaults.prefix)}}"

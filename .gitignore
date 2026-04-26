@@ -1,3 +1,5 @@
-ansible/iso/
+.idea/
+.terraform/
 
-vault.json
+.DS_Store
+.terraform.lock.hcl

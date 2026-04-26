@@ -1,0 +1,99 @@
+http:
+  routers:
+    ap1:
+      rule: "Host(`admin.ap1.wlan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: ap1
+      tls:
+        certresolver: route53
+    esxi:
+      rule: "Host(`admin.esxi.lan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: esxi
+      tls:
+        certresolver: route53
+    firewall:
+      rule: "Host(`admin.firewall.lan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: firewall
+      tls:
+        certresolver: route53
+    ipmi:
+      rule: "Host(`admin.ipmi.esxi.lan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: ipmi
+      tls:
+        certresolver: route53
+    makemkv:
+      rule: "Host(`makemkv.app.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: makemkv
+      tls:
+        certresolver: route53
+    nas:
+      rule: "Host(`admin.nas.lan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: nas
+      tls:
+        certresolver: route53
+    vac1:
+      rule: "Host(`admin.vac1.wlan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: vac1
+      tls:
+        certresolver: route53
+    vac2:
+      rule: "Host(`admin.vac2.wlan.howard.estate`)"
+      entrypoints:
+        - websecure
+      service: vac2
+      tls:
+        certresolver: route53
+  serversTransports:
+    insecure:
+      insecureSkipVerify: true
+  services:
+    ap1:
+      loadbalancer:
+        servers:
+          - url: "https://ap1.wlan.howard.estate"
+        serversTransport: insecure
+    esxi:
+      loadbalancer:
+        servers:
+          - url: "https://esxi.lan.howard.estate"
+        serversTransport: insecure
+    firewall:
+      loadbalancer:
+        servers:
+          - url: "https://firewall.lan.howard.estate"
+        serversTransport: insecure
+    ipmi:
+      loadbalancer:
+        servers:
+          - url: "https://ipmi.esxi.lan.howard.estate"
+        serversTransport: insecure
+    makemkv:
+      loadbalancer:
+        servers:
+          - url: "http://nas.lan.howard.estate:9900"
+    nas:
+      loadbalancer:
+        servers:
+          - url: "https://nas.lan.howard.estate"
+        serversTransport: insecure
+    vac1:
+      loadbalancer:
+        servers:
+          - url: "http://vac1.wlan.howard.estate"
+    vac2:
+      loadbalancer:
+        servers:
+          - url: "http://vac2.wlan.howard.estate"

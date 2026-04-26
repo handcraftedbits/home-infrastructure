@@ -1,1 +1,0 @@
-root_account: "{{lookup('hashi_vault', vault_lookup~'accounts/root')}}"

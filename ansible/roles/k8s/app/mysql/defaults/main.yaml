@@ -1,4 +1,0 @@
-k8s_app_mysql_defaults:
-  port: 3306
-  namespace: mysql
-  username: root

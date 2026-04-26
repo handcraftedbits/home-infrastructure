@@ -1,2 +1,0 @@
-mac_dotfiles_defaults:
-  dir: /Users/{{mac_dotfiles_params.username}}/.cloned-repos/dotfiles

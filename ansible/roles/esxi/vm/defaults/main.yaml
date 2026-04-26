@@ -1,8 +1,0 @@
-esxi_vm_defaults:
-  datastore:
-    iso:
-      name: vm
-      path: /iso
-    vm:
-      name: vm
-      path: /vm

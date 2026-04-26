@@ -1,2 +1,0 @@
-dev_docker_defaults:
-  docker_compose_version: 1.24.1

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+exec > /dev/console 2>&1
+
+if [[ ! -f /etc/install-finished ]]
+then
+     # Copy age private key.
+     echo "${age_key}" | base64 -d > /etc/age-key
+     chmod 0400 /etc/age-key
+
+     # Enable swap
+     dd if=/dev/zero of=/swapfile bs=1M count=8192
+     chmod 0600 /swapfile
+     mkswap /swapfile
+     swapon /swapfile
+     sysctl vm.swappiness=10
+
+     # Install git
+     nix profile add nixpkgs#git
+     export PATH=$PATH:~/.nix-profile/bin
+
+     # Pull in real system configuration and apply.
+     cd /opt/config
+     git init .
+     git remote add origin "${anonymous_flake_url}"
+     git fetch
+     git checkout -f main
+     git remote set-url origin "${flake_url}"
+
+     nixos-generate-config
+     nixos-rebuild switch --flake /opt/config/${flake_path}#"${flake_host}" --impure
+     nix store gc --extra-experimental-features nix-command
+
+     # Disable swap
+     swapoff /swapfile
+     rm /swapfile
+
+     touch /etc/install-finished
+fi

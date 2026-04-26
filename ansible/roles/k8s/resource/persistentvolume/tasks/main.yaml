@@ -1,5 +1,0 @@
-- name: create persistent volume '{{k8s_resource_persistentvolume_params.name}}'
-  k8s:
-    definition: "{{lookup('template', 'persistentvolume.yaml.j2')}}"
-    state: present
-  delegate_to: localhost
