@@ -24,7 +24,7 @@ Image=docker.io/library/traefik:latest
 Network=traefik.network
 PublishPort=80:80
 PublishPort=443:443
-Volume=%h/.config/containers/data/traefik:/etc/traefik/config
+Volume=%h/.local/share/traefik:/etc/traefik/config:ro
 Volume=%h/.local/share/container/traefik/certs:/certs
 Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
 

@@ -5,6 +5,7 @@ let
   inherit (builtins) listToAttrs readDir filter attrNames stringLength substring concatLists;
 
   allFiles = concatLists (map (c: nixFilesIn c.directory) enabledContainers);
+  configEntries = concatLists (map mkConfigEntry enabledContainers);
   containerFiles = filter (f: !(isEnvironmentFile f)) allFiles;
   dataEntries = concatLists (map mkDataEntry enabledContainers);
   enabledContainers = filter (c: c.enabled or true) containers;
@@ -21,6 +22,18 @@ let
   isEnvironmentFile = file:
     hasSuffix ".environment.nix" (baseNameOf file);
 
+  mkConfigEntry = c:
+    let
+      configDir = c.directory + "/config";
+    in
+      if builtins.pathExists configDir then
+        [{
+          name = "${baseNameOf c.directory}";
+          value.source = configDir;
+        }]
+      else
+        [];
+  
   mkContainerEntry = file: {
     name = "containers/systemd/${stripSuffix ".nix" (baseNameOf file)}";
     value = {
@@ -35,7 +48,7 @@ let
     in
       if builtins.pathExists dataDir then
         [{
-          name = "containers/data/${baseNameOf c.directory}";
+          name = "${baseNameOf c.directory}";
           value.source = dataDir;
         }]
       else
@@ -72,5 +85,6 @@ let
 in
 {
   home.activation = listToAttrs (map mkEnvActivation environmentFiles);
-  xdg.configFile = listToAttrs (map mkContainerEntry containerFiles ++ dataEntries);
+  xdg.configFile = listToAttrs (map mkContainerEntry containerFiles ++ configEntries);
+  xdg.dataFile = listToAttrs dataEntries;
 }

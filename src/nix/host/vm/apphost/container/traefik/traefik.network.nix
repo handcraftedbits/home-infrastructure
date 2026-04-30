@@ -1,4 +1,5 @@
 { ... }:
 ''
 [Network]
+DisableDNS=true
 ''

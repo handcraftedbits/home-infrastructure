@@ -1,0 +1,110 @@
+server:
+  assets-path: /app/assets
+pages:
+  - name: Home
+    head-widgets:
+      - type: search
+        search-engine: google
+    columns:
+      - size: small
+        widgets:
+          - type: clock
+            hour-format: 12h
+          - type: calendar
+            first-day-of-week: sunday
+          - type: to-do
+      - size: full
+        widgets:
+          - type: monitor
+            cache: 1m
+            title: Applications
+            sites:
+              - title: adguard
+                icon: /assets/icons/adguard.svg
+                url: https://admin.dns.lan.howard.estate/login.html
+              - title: comfyui
+                icon: /assets/icons/comfyui.svg
+                url: https://comfyui.app.howard.estate
+              - title: forgejo
+                icon: /assets/icons/forgejo.svg
+                url: https://forgejo.app.howard.estate
+              - title: intranetflix
+                icon: /assets/icons/jellyfin.svg
+                url: https://jellyfin.app.howard.estate/web/
+              - title: linkwarden
+                icon: /assets/icons/linkwarden.svg
+                url: https://linkwarden.app.howard.estate
+              - title: makemkv
+                icon: /assets/icons/makemkv.png
+                url: https://makemkv.app.howard.estate
+              - title: mermaid
+                icon: /assets/icons/mermaid.svg
+                url: https://mermaid.app.howard.estate
+              - title: navidrome
+                icon: /assets/icons/navidrome.svg
+                url: https://navidrome.app.howard.estate/app/
+              - title: silverbullet
+                icon: /assets/icons/silverbullet.png
+                url: https://silverbullet.app.howard.estate
+              - title: vaultwarden
+                icon: auto-invert /assets/icons/vaultwarden.svg
+                url: https://vaultwarden.app.howard.estate
+          - type: custom-api
+            cache: 30m
+            headers:
+              Authorization: Bearer ${LINKWARDEN_API_KEY}
+            template: |
+              {{
+                $links := newRequest "https://linkwarden.app.howard.estate/api/v1/links"
+                  | withHeader "Authorization" "Bearer ${LINKWARDEN_API_KEY}"
+                  | getResponse
+              }}
+              {{ if eq $links.Response.StatusCode 200 }}
+                <ul class="dynamic-columns list-gap-20 list-with-separator">
+                  {{ range sortByString "name" "asc" (.JSON.Array "response") }}
+                    {{ if ne (.String "name") "Unorganized" }}
+                      {{ $collectionId := .Int "id" }}
+                      <li><p class="color-highlight size-h2">{{ .String "name" }}</p>
+                        <ul class="gap-10" style="display: flex; flex-direction: column">
+                          {{ range sortByString "name" "asc" ($links.JSON.Array "response") }}
+                            {{ if eq (.Int "collection.id") $collectionId }}
+                              <li class="gap-15">
+                                <a class="size-h4"
+                                   href="{{ .String "url" }}"
+                                   rel="noreferrer"
+                                   target="_blank">
+                                  {{ .String "name" }}
+                                </a>
+                                <ul class="list-horizontal-text">
+                                  {{ range sortByString "name" "asc" (.Array "tags") }}
+                                    <li class="color-primary size-h6">#{{ .String "name" }}</li>
+                                  {{ end }}
+                                </ul>
+                              </li>
+                            {{ end }}
+                          {{ end }}
+                        </ul>
+                      </li>
+                    {{ end }}
+                  {{ end }}
+                </ul>
+              {{ else }}
+                <p class="color-negative">
+                  Failed to fetch links: {{ $links.Response.Status }}
+                </p>
+              {{ end }}
+            title: Bookmarks
+            url: https://linkwarden.app.howard.estate/api/v1/collections
+      - size: small
+        widgets:
+          - type: weather
+            location: Pittsboro, North Carolina, United States
+            units: imperial
+            hour-format: 12h
+
+          - type: markets
+            markets:
+              - symbol: ^DJI
+                name: Dow Jones
+              - symbol: ^GSPC
+                name: S&P 500

@@ -19,6 +19,7 @@ in
     (util.mkUserQuadlets {
       containers = [
         { directory = ./container/forgejo; }
+        { directory = ./container/glance; }
         {
           directory = ./container/immich-server;
           enabled = false;

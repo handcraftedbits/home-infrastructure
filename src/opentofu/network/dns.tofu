@@ -22,6 +22,7 @@ module "dns" {
 
     "apphost.vm.lan" = [
       "forgejo.app",
+      "frontdoor",
       "immich.app",
       "jellyfin.app",
       "linkwarden.app",

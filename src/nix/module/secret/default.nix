@@ -13,6 +13,11 @@
         mode = "0400";
         owner = vars.user.username;
       };
+      "linkwarden/apiKey" = {
+        file = ./linkwarden/apiKey.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
       "linkwarden/nextauth/password" = {
         file = ./linkwarden/nextauth/password.age;
         mode = "0400";
