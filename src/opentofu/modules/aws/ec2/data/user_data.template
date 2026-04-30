@@ -19,20 +19,14 @@ then
      export PATH=$PATH:~/.nix-profile/bin
 
      # Pull in real system configuration and apply.
+     mkdir -p /opt
+     git clone "${anonymous_flake_url}" /opt/config
      cd /opt/config
-     git init .
-     git remote add origin "${anonymous_flake_url}"
-     git fetch
-     git checkout -f main
      git remote set-url origin "${flake_url}"
 
      nixos-generate-config
      nixos-rebuild switch --flake /opt/config/${flake_path}#"${flake_host}" --impure
      nix store gc --extra-experimental-features nix-command
-
-     # Disable swap
-     swapoff /swapfile
-     rm /swapfile
 
      touch /etc/install-finished
 fi
