@@ -16,8 +16,8 @@ module "dns" {
     "aihost.vm.lan" = [
       "acestep.app",
       "aitoolkit.app",
-      "comfyui.app",
-      "llm.app"
+      "coding.llm",
+      "comfyui.app"
     ]
 
     "apphost.vm.lan" = [
@@ -28,6 +28,7 @@ module "dns" {
       "linkwarden.app",
       "mermaid.app",
       "navidrome.app",
+      "openwebui.app",
       "silverbullet.app",
       "vaultwarden.app"
     ]

@@ -32,6 +32,7 @@ in
         { directory = ./container/linkwarden; }
         { directory = ./container/mermaid; }
         { directory = ./container/navidrome; }
+        { directory = ./container/openwebui; }
         { directory = ./container/silverbullet; }
         { directory = ./container/traefik; }
         { directory = ./container/vaultwarden; }

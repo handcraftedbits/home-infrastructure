@@ -20,10 +20,7 @@ in
     (util.mkUserQuadlets {
       containers = [
         { directory = ./container/aitoolkit; }
-        {
-          directory = ./container/comfyui;
-          enabled = false;
-        }
+        { directory = ./container/comfyui; }
         { directory = ./container/immich-machine-learning; }
         { directory = ./container/traefik; }
         { directory = ./container/vllm-coding-agent; }

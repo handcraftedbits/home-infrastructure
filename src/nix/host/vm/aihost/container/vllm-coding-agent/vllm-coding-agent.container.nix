@@ -26,7 +26,7 @@ Exec= /opt/models/Qwen3.6-27B \
 Image=docker.io/vllm/vllm-openai:latest
 Label=traefik.enable=true
 Label=traefik.http.routers.vllmcodingagent.entrypoints=websecure
-Label=traefik.http.routers.vllmcodingagent.rule=Host(`llm.app.howard.estate`)
+Label=traefik.http.routers.vllmcodingagent.rule=Host(`coding.llm.howard.estate`)
 Label=traefik.http.routers.vllmcodingagent.tls.certresolver=route53
 Label=traefik.http.services.vllmcodingagent.loadbalancer.server.port=8000
 Network=traefik.network

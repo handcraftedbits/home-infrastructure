@@ -43,6 +43,9 @@ pages:
               - title: navidrome
                 icon: /assets/icons/navidrome.svg
                 url: https://navidrome.app.howard.estate/app/
+              - title: openwebui
+                icon: auto-invert /assets/icons/openwebui.svg
+                url: https://openwebui.app.howard.estate
               - title: silverbullet
                 icon: /assets/icons/silverbullet.png
                 url: https://silverbullet.app.howard.estate
