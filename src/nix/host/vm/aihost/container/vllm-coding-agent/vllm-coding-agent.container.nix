@@ -5,7 +5,7 @@ AddDevice=nvidia.com/gpu=0
 AutoUpdate=registry
 ContainerName=vllm-coding-agent
 EnvironmentFile=%h/.config/containers/environment/%N
-Exec= /opt/models/Qwen3.5-27B \
+Exec= /opt/models/Qwen3.6-27B \
   --attention-backend flashinfer \
   --dtype bfloat16 \
   --enable-auto-tool-choice \
@@ -19,8 +19,8 @@ Exec= /opt/models/Qwen3.5-27B \
   --max-model-len 262144 \
   --port 8000 \
   --reasoning-parser qwen3 \
-  --served-model-name qwen3.5-27b \
-  --speculative-config '{"method":"mtp","num_speculative_tokens":2}' \
+  --served-model-name qwen3.6-27b \
+  --speculative-config '{"method":"qwen3_next_mtp","num_speculative_tokens":2}' \
   --tensor-parallel-size 1 \
   --tool-call-parser qwen3_coder
 Image=docker.io/vllm/vllm-openai:latest

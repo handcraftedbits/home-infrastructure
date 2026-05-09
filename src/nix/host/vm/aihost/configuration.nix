@@ -26,10 +26,7 @@ in
         }
         { directory = ./container/immich-machine-learning; }
         { directory = ./container/traefik; }
-        {
-          directory = ./container/vllm-coding-agent;
-          enabled = false;
-        }
+        { directory = ./container/vllm-coding-agent; }
       ];
     })
   ];
