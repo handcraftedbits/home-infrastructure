@@ -22,7 +22,7 @@ Volume=/mnt/container/comfyui/workspace:/basedir
 WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/bash -c 'until [ -e /dev/nvidia0 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
+ExecStartPre=${pkgs.bash}/bin/bash -c 'until [ -e /dev/nvidia0 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
