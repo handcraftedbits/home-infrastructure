@@ -5,17 +5,16 @@ AddDevice=nvidia.com/gpu=0
 AutoUpdate=registry
 ContainerName=vllm-coding-agent
 EnvironmentFile=%h/.config/containers/environment/%N
-Exec= /opt/models/Qwen3.6-27B \
+Exec= /opt/models/Qwen3.6-27B-FP8 \
   --attention-backend flashinfer \
-  --dtype bfloat16 \
+  --dtype auto \
   --enable-auto-tool-choice \
   --enable-chunked-prefill \
   --enable-log-requests \
   --enable-prefix-caching \
-  --gpu-memory-utilization 0.90 \
+  --gpu-memory-utilization 0.80 \
   --host 0.0.0.0 \
-  --kv-cache-dtype auto \
-  --language-model-only \
+  --kv-cache-dtype bfloat16 \
   --max-model-len 262144 \
   --port 8000 \
   --reasoning-parser qwen3 \
