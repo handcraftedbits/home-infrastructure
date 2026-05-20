@@ -3,12 +3,12 @@ let
   util = import ../../../module/util { inherit vars; };
 in
 {
-  # Imports.
   imports = [
-    ../../../module/core/linux.vm.nix
     ../../../module/hardware/nvidia.nix
+    ../../../module/os/linux/internal/vm.nix
+    util.mkDefaultMounts
 
-    # Mounts.
+    # Mounts
     (util.mkNfsMount {
       localPath = "/mnt/container";
       remotePath = "/mnt/vault02/container_aihost_vm_lan_howard_estate";

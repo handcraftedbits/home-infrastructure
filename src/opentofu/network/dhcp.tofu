@@ -37,11 +37,11 @@ module "dhcp" {
     },
     {
       ip_address  = "10.0.1.20"
-      mac_address = "30:9C:23:A8:4D:FD"
+      mac_address = "14:98:77:4F:E7:95"
     },
     {
       ip_address  = "10.0.1.21",
-      mac_address = "14:98:77:4F:E7:95"
+      mac_address = "50:A0:30:0A:EF:BF"
     },
     {
       ip_address  = "10.0.1.22",

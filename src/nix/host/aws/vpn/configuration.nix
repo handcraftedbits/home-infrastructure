@@ -1,27 +1,23 @@
 { config, vars, ... }:
 {
-  # Imports.
   imports = [
-    ../../../module/core/linux.aws-minimal.nix
+    ../../../module/os/linux/aws-minimal.nix
   ];
 
-  # System settings.
+  # System settings
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
   };
 
-  # Wireguard.
+  # Wireguard
   age.secrets."wireguard/vpn/privateKey" = {
     file = ../../../module/secret/wireguard/vpn/privateKey.age;
     mode = "0400";
   };
 
   networking = {
-    firewall.enable = false;
-    hostName = vars.hostName;
     nameservers = [ "10.0.0.1" ];
-    networkmanager.enable = true;
 
     wireguard.interfaces.wg0 = {
       ips = [ "10.0.2.2/24" ];

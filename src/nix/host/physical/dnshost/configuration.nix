@@ -3,24 +3,25 @@ let
   util = import ../../../module/util { inherit vars; };
 in
 {
-  # Imports.
   imports = [
-    ../../../module/core/linux.vm.nix
+    ../../../module/os/linux/internal/physical.nix
     ./service
 
-    # Mounts.
     (util.mkNfsMount {
       localPath = "/mnt/container";
       remotePath = "/mnt/vault02/container_dnshost_vm_lan_howard_estate";
     })
   ];
 
-  # System settings.
+  # System settings
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv4.ip_unprivileged_port_start" = lib.mkForce 53;
     "net.ipv6.conf.all.forwarding" = 1;
   };
+
+  # Packages
+  environment.systemPackages = [ pkgs.unison ];
 
   # Quadlets
   home-manager.users.${vars.user.username}.imports = [
@@ -32,16 +33,11 @@ in
     })
   ];
 
-  # Additional packages.
-  environment.systemPackages = [ pkgs.unison ];
-
-  # Wireguard.
+  # Wireguard
   age.secrets."wireguard/dnshost/privateKey" = {
     file = ../../../module/secret/wireguard/dnshost/privateKey.age;
     mode = "0400";
   };
-
-  #networking.firewall.trustedInterfaces = [ "wg0" ];
 
   networking = {
     nameservers = [ "10.0.0.1" ];

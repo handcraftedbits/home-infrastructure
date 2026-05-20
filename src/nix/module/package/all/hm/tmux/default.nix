@@ -7,6 +7,6 @@
       source-file ${config.xdg.configHome}/tmux/molokai.conf
     '';
   };
-  
+
   xdg.configFile."tmux/molokai.conf".source = ./molokai.conf;
 }

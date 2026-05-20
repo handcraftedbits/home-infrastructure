@@ -15,20 +15,19 @@ in
 {
   # Additional required packages.
   home.packages = with pkgs; [
+    bash-language-server
     dockerfile-language-server
-    fd
     lemminx
     nil
-    nodePackages.bash-language-server
-    nodePackages.typescript-language-server
-    nodePackages.vscode-langservers-extracted
     terraform-ls
+    typescript-language-server
+    vscode-langservers-extracted
     yaml-language-server
   ];
 
   programs.nixvim = {
     colorscheme = "molokai";
-    
+
     diagnostic.settings = {
       signs = true;
       underline = true;
@@ -143,7 +142,7 @@ in
           };
         };
       };
-      
+
       lsp = {
         enable = true;
         servers = {
