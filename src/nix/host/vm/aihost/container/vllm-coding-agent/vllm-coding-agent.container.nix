@@ -19,7 +19,7 @@ Exec= /opt/models/Qwen3.6-27B-FP8 \
   --port 8000 \
   --reasoning-parser qwen3 \
   --served-model-name qwen3.6-27b \
-  --speculative-config '{"method":"qwen3_next_mtp","num_speculative_tokens":2}' \
+  --speculative-config '{"method":"mtp","num_speculative_tokens":2}' \
   --tensor-parallel-size 1 \
   --tool-call-parser qwen3_coder
 Image=docker.io/vllm/vllm-openai:latest
@@ -31,7 +31,8 @@ Label=traefik.http.services.vllmcodingagent.loadbalancer.server.port=8000
 Network=traefik.network
 ShmSize=16g
 Volume=/mnt/container/models/llm:/opt/models
-Volume=/mnt/container/vllm/cache:/root/.cache/vllm
+Volume=/mnt/container/vllm/cache/default:/root/.cache/vllm
+Volume=/mnt/container/vllm/cache/triton:/root/.triton/cache
 
 [Install]
 WantedBy=default.target
