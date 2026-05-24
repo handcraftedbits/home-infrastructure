@@ -53,6 +53,6 @@ in
   };
 
   home.activation.createZshDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD mkdir -p ${config.xdg.dataHome}/zsh ${config.xdg.cacheHome}/zsh
+    mkdir -p ${config.xdg.dataHome}/zsh ${config.xdg.cacheHome}/zsh
   '';
 }

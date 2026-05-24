@@ -7,16 +7,6 @@
   ];
 
   home-manager.users = {
-    ${vars.user.username} = { ... }: {
-      imports = [
-        ../../package/all/hm/git.nix
-        ../../package/all/hm/openssh.nix
-        ../../package/all/hm/zsh
-      ];
-
-      xdg.enable = true;
-    };
-
     root = { ... }: {
       home = {
         homeDirectory = "/root";

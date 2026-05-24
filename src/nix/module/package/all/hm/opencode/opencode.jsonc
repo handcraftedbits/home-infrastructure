@@ -1,0 +1,42 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "coding/qwen3.6-27b",
+  "provider": {
+    "coding": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "coding",
+      "options": {
+        "baseURL": "https://coding.llm.howard.estate/v1"
+      },
+      "models": {
+        "qwen3.6-27b": {
+          "name": "Qwen3.6 27B",
+          "options": {
+            "contextLength": 262144,
+            "maxTokens": 81920
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "build": {
+      "description": "Default coding agent",
+      "mode": "primary",
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "topK": 20,
+      "minP": 0,
+      "repetition_penalty": 1
+    },
+    "plan": {
+      "description": "Default coding agent",
+      "mode": "primary",
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "topK": 20,
+      "minP": 0,
+      "repetition_penalty": 1
+    }
+  }
+}

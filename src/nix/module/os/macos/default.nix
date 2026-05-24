@@ -19,16 +19,6 @@ in
     util.mkDefaultMounts
   ];
 
-  home-manager.users.${vars.user.username} = { ... }: {
-    imports = [
-      ../../package/all/hm/git.nix
-      ../../package/all/hm/neovim
-      ../../package/all/hm/openssh.nix
-    ];
-
-    xdg.enable = true;
-  };
-
   # System settings
   system = {
     primaryUser = vars.user.username;

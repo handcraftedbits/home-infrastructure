@@ -3,6 +3,18 @@ let
   isLinux = lib.hasSuffix "-linux" system;
 in
 {
+
+  home-manager.users.${vars.user.username} = { ... }: {
+    imports = [
+      ../package/all/hm/git.nix
+      ../package/all/hm/neovim
+      ../package/all/hm/opencode
+      ../package/all/hm/openssh.nix
+    ];
+
+    xdg.enable = true;
+  };
+
   # System settings
   nix = {
     gc = {
@@ -33,6 +45,7 @@ in
     file
     jq
     ripgrep
+    tree
     wget
   ];
 }
