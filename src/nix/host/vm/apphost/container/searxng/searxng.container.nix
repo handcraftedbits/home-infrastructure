@@ -3,6 +3,7 @@
 [Container]
 AutoUpdate=registry
 ContainerName=searxng
+EnvironmentFile=%h/.config/containers/environment/%N
 HostName=searxng.app.howard.estate
 Image=docker.io/searxng/searxng:latest
 Label=traefik.enable=true
