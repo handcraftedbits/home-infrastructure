@@ -6,7 +6,7 @@ in
   imports = [
     ../../../module/os/linux/internal/vm.nix
     util.mkDefaultMounts
-    
+
     # Mounts
     (util.mkNfsMount {
       localPath = "/mnt/container";
@@ -33,6 +33,7 @@ in
         { directory = ./container/mermaid; }
         { directory = ./container/navidrome; }
         { directory = ./container/openwebui; }
+        { directory = ./container/searxng; }
         { directory = ./container/silverbullet; }
         { directory = ./container/traefik; }
         { directory = ./container/vaultwarden; }

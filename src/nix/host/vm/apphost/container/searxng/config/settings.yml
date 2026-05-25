@@ -1,0 +1,58 @@
+general:
+  debug: false
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 15.0
+  pool_connections: 100
+  pool_maxsize: 20
+search:
+  default_lang: "en"
+  formats:
+    - html
+    - json
+  safe_search: 0
+server:
+  limiter: false
+  bind_address: "0.0.0.0"
+  port: 8080
+use_default_settings:
+  engines:
+    keep_only:
+      - alpine linux packages
+      - arch linux wiki
+      - askubuntu
+      - brave
+      - brave.images
+      - brave.news
+      - brave.videos
+      - dailymotion
+      - devicons
+      - docker hub
+      - duckduckgo
+      - duckduckgo images
+      - duckduckgo news
+      - duckduckgo videos
+      - flickr
+      - genius
+      - github
+      - google
+      - google images
+      - google news
+      - google scholar
+      - google videos
+      - huggingface
+      - imgur
+      - nixos wiki
+      - npm
+      - pkg.go.dev
+      - pypi
+      - reddit
+      - reuters
+      - stackoverflow
+      - superuser
+      - vimeo
+      - wikinews
+      - wikipedia
+      - wiktionary
+      - wolframalpha
+      - youtube

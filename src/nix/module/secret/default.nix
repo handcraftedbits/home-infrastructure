@@ -43,6 +43,11 @@
         mode = "0600";
         owner = vars.user.username;
       };
+      "searxng/secret" = {
+        file = ./searxng/secret.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
     };
   };
 }

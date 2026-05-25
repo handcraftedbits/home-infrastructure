@@ -29,6 +29,7 @@ module "dns" {
       "mermaid.app",
       "navidrome.app",
       "openwebui.app",
+      "searxng.app",
       "silverbullet.app",
       "vaultwarden.app"
     ]

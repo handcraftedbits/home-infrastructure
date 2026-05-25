@@ -46,6 +46,9 @@ pages:
               - title: openwebui
                 icon: auto-invert /assets/icons/openwebui.svg
                 url: https://openwebui.app.howard.estate
+              - title: searxng
+                icon: /assets/icons/searxng.svg
+                url: https://searxng.app.howard.estate
               - title: silverbullet
                 icon: /assets/icons/silverbullet.png
                 url: https://silverbullet.app.howard.estate
