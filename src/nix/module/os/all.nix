@@ -46,6 +46,9 @@ in
     jq
     ripgrep
     tree
+    unrar
+    unzip
     wget
+    zip
   ];
 }

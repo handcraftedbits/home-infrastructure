@@ -7,6 +7,7 @@ in
     ../../../module/os/linux/internal/physical.nix
     ./service
 
+    util.mkDefaultMounts
     (util.mkNfsMount {
       localPath = "/mnt/container";
       remotePath = "/mnt/vault02/container_dnshost_vm_lan_howard_estate";

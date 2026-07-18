@@ -3,7 +3,6 @@
 [Container]
 AutoUpdate=registry
 ContainerName=openwebui
-HostName=openwebui.app.howard.estate
 Image=ghcr.io/open-webui/open-webui:main
 Label=traefik.enable=true
 Label=traefik.http.routers.openwebui.entrypoints=websecure

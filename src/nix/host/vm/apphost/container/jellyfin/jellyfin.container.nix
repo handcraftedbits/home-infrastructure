@@ -3,7 +3,6 @@
 [Container]
 AutoUpdate=registry
 ContainerName=jellyfin
-HostName=jellyfin.app.howard.estate
 Image=docker.io/jellyfin/jellyfin:latest
 Label=traefik.enable=true
 Label=traefik.http.routers.jellyfin.entrypoints=websecure

@@ -7,10 +7,12 @@ in {
   "linkwarden/nextauth/password.age".publicKeys = [ age-key ];
   "postgresql/immich/password.age".publicKeys = [ age-key ];
   "postgresql/password.age".publicKeys = [ age-key ];
+  "romm/secretKey.age".publicKeys = [ age-key ];
   "samba/credentials.age".publicKeys = [ age-key ];
   "searxng/secret.age".publicKeys = [ age-key ];
   "user/curtiss/password.age".publicKeys = [ age-key ];
   "user/curtiss/privateKey.age".publicKeys = [ age-key ];
   "wireguard/dnshost/privateKey.age".publicKeys = [ age-key ];
   "wireguard/vpn/privateKey.age".publicKeys = [ age-key ];
+  "wireguard/work/privateKey.age".publicKeys = [ age-key ];
 }

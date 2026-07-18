@@ -7,6 +7,12 @@
   ];
 
   home-manager.users = {
+    ${vars.user.username} = { ... }: {
+      imports = [
+        ../../package/all/hm/zsh
+      ];
+    };
+
     root = { ... }: {
       home = {
         homeDirectory = "/root";

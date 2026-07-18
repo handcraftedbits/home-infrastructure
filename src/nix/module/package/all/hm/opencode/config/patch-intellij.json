@@ -1,0 +1,60 @@
+{
+  "agent": {
+    "main": {
+      "permission": {
+        "bash": "deny",
+        "edit": "deny",
+        "glob": "deny",
+        "grep": "deny",
+        "intellij_*": "deny",
+        "intellij_build_project": "allow",
+        "intellij_cancel_sql_query": "allow",
+        "intellij_create_file": "allow",
+        "intellij_create_scratch_file": "allow",
+        "intellij_database_*": "allow",
+        "intellij_delete_file": "allow",
+        "intellij_edit_text": "allow",
+        "intellij_execute_sql_query": "allow",
+        "intellij_find_*": "allow",
+        "intellij_format_code": "allow",
+        "intellij_get_active_file": "allow",
+        "intellij_get_call_hierarchy": "allow",
+        "intellij_get_class_outline": "allow",
+        "intellij_get_compilation_errors": "allow",
+        "intellij_get_database_object_description": "allow",
+        "intellij_get_documentation": "allow",
+        "intellij_get_file_outline": "allow",
+        "intellij_get_highlights": "allow",
+        "intellij_get_problems": "allow",
+        "intellij_get_project_*": "allow",
+        "intellij_get_symbol_info": "allow",
+        "intellij_get_type_hierarchy": "allow",
+        "intellij_go_to_declaration": "allow",
+        "intellij_insert_*": "allow",
+        "intellij_list_database_*": "allow",
+        "intellij_list_directory_tree": "allow",
+        "intellij_list_project_files": "allow",
+        "intellij_list_recent_sql_queries": "allow",
+        "intellij_list_schema_*": "allow",
+        "intellij_move_file": "allow",
+        "intellij_optimize_imports": "allow",
+        "intellij_read_file": "allow",
+        "intellij_refactor": "allow",
+        "intellij_reload_*": "allow",
+        "intellij_rename_file": "allow",
+        "intellij_replace_symbol_body": "allow",
+        "intellij_search_*": "allow",
+        "intellij_write_file": "allow",
+        "read": "deny",
+        "write": "deny"
+      }
+    }
+  },
+  "mcp": {
+    "intellij": {
+      "enabled": true,
+      "type": "remote",
+      "url": "http://host.docker.internal:${agent_bridge_port}/mcp"
+    }
+  }
+}

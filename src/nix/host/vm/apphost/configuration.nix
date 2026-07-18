@@ -29,10 +29,12 @@ in
           enabled = false;
         }
         { directory = ./container/jellyfin; }
+        { directory = ./container/kokoro; }
         { directory = ./container/linkwarden; }
         { directory = ./container/mermaid; }
         { directory = ./container/navidrome; }
         { directory = ./container/openwebui; }
+        { directory = ./container/romm; }
         { directory = ./container/searxng; }
         { directory = ./container/silverbullet; }
         { directory = ./container/traefik; }

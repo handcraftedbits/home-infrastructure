@@ -17,7 +17,11 @@ module "dns" {
       "acestep.app",
       "aitoolkit.app",
       "coding.llm",
-      "comfyui.app"
+      "comfyui.app",
+      "jina.app",
+      "jina.mcp",
+      "localai.app",
+      "searxng.mcp"
     ]
 
     "apphost.vm.lan" = [
@@ -29,6 +33,7 @@ module "dns" {
       "mermaid.app",
       "navidrome.app",
       "openwebui.app",
+      "romm.app",
       "searxng.app",
       "silverbullet.app",
       "vaultwarden.app"

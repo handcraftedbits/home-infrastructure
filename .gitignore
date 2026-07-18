@@ -1,3 +1,5 @@
+.agent-work/
+.agentbridge/
 .idea/
 .terraform/
 

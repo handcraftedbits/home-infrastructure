@@ -6,7 +6,6 @@ ContainerName=forgejo
 Environment=USER_GID=%G
 Environment=USER_UID=%U
 EnvironmentFile=%h/.config/containers/environment/%N
-HostName=forgejo.app.howard.estate
 Image=codeberg.org/forgejo/forgejo:15-rootless
 Label=traefik.enable=true
 Label=traefik.http.routers.forgejo.entrypoints=websecure

@@ -13,6 +13,7 @@
 
   environment.systemPackages = with pkgs; [
     audacity
+    ffmpeg
     mkvtoolnix
     yt-dlp
   ];
@@ -22,6 +23,7 @@
     "gimp"
     "inkscape"
     "mp3tag"
+    "tinymediamanager"
     "xnviewmp"
   ];
 }

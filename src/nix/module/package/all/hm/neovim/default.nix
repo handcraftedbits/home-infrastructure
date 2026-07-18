@@ -302,5 +302,6 @@ in
 
     viAlias = true;
     vimAlias = true;
+    wrapRc = true;
   };
 }

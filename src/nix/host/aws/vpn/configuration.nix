@@ -43,6 +43,12 @@
           persistentKeepalive = 30;
           publicKey = "gAa/8GP6ExxUxbDZGJjtHTLhgmkD9wHRjikgHT4f8HU=";
         }
+        {
+          # work
+          allowedIPs = [ "10.0.2.5/32" ];
+          persistentKeepalive = 30;
+          publicKey = "jDa8VCefQWnM15ImQMiORjTgRG45mzXFtBEtjdTa7E0=";
+        }
       ];
     };
   };

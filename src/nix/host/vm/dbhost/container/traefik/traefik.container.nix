@@ -14,11 +14,13 @@ Exec=\
   --entrypoints.postgresql.address=:5432 \
   --log.level=INFO \
   --providers.docker=true \
-  --providers.docker.exposedbydefault=false
+  --providers.docker.exposedbydefault=false \
+  --providers.file.directory=/etc/traefik/dynamic
 Image=docker.io/library/traefik:latest
 Network=traefik.network
 PublishPort=5432:5432
 Volume=/mnt/container/traefik/certs:/certs
+Volume=%h/.config/traefik:/etc/traefik/dynamic:ro
 Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
 
 [Install]

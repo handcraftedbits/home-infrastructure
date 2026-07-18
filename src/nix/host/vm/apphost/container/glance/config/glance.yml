@@ -34,6 +34,9 @@ pages:
               - title: linkwarden
                 icon: /assets/icons/linkwarden.svg
                 url: https://linkwarden.app.howard.estate
+              - title: localai
+                icon: /assets/icons/localai.png
+                url: https://localai.app.howard.estate
               - title: makemkv
                 icon: /assets/icons/makemkv.png
                 url: https://makemkv.app.howard.estate
@@ -46,6 +49,9 @@ pages:
               - title: openwebui
                 icon: auto-invert /assets/icons/openwebui.svg
                 url: https://openwebui.app.howard.estate
+              - title: romm
+                icon: /assets/icons/romm.svg
+                url: https://romm.app.howard.estate
               - title: searxng
                 icon: /assets/icons/searxng.svg
                 url: https://searxng.app.howard.estate

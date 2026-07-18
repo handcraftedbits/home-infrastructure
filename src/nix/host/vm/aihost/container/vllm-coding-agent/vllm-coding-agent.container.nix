@@ -5,23 +5,25 @@ AddDevice=nvidia.com/gpu=0
 AutoUpdate=registry
 ContainerName=vllm-coding-agent
 EnvironmentFile=%h/.config/containers/environment/%N
-Exec= /opt/models/Qwen3.6-27B-FP8 \
-  --attention-backend flashinfer \
+Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
+  --chat-template examples/tool_chat_template_gemma4.jinja \
+  --default-chat-template-kwargs '{"enable_thinking": true, "preserve_thinking": true}' \
   --dtype auto \
   --enable-auto-tool-choice \
   --enable-chunked-prefill \
   --enable-log-requests \
   --enable-prefix-caching \
-  --gpu-memory-utilization 0.80 \
+  --gpu-memory-utilization 0.95 \
   --host 0.0.0.0 \
   --kv-cache-dtype bfloat16 \
   --max-model-len 262144 \
+  --max-num-batched-tokens 32768 \
   --port 8000 \
-  --reasoning-parser qwen3 \
-  --served-model-name qwen3.6-27b \
-  --speculative-config '{"method":"mtp","num_speculative_tokens":2}' \
+  --reasoning-parser gemma4 \
+  --served-model-name gemma4-31b \
+  --speculative-config '{"model":"/opt/models/gemma-4-31B-it-assistant","num_speculative_tokens":4}' \
   --tensor-parallel-size 1 \
-  --tool-call-parser qwen3_coder
+  --tool-call-parser gemma4
 Image=docker.io/vllm/vllm-openai:latest
 Label=traefik.enable=true
 Label=traefik.http.routers.vllmcodingagent.entrypoints=websecure

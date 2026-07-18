@@ -2,9 +2,14 @@
 {
   programs.git = {
     enable = true;
-    settings.user = {
-      email = vars.user.git.email;
-      name = vars.user.git.name;
+    settings = {
+      core.editor = "nvim";
+      init.defaultBranch = "main";
+      pull.rebase = false;
+      user = {
+        email = vars.user.git.email;
+        name = vars.user.git.name;
+      };
     };
   };
 }

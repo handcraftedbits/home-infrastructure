@@ -3,7 +3,6 @@
 [Container]
 AutoUpdate=registry
 ContainerName=navidrome
-HostName=navidrome.app.howard.estate
 Image=docker.io/deluan/navidrome:latest
 Label=traefik.enable=true
 Label=traefik.http.routers.navidrome.entrypoints=websecure
