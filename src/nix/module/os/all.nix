@@ -42,6 +42,7 @@ in
     awscli
     curl
     fd
+    ffmpeg
     file
     jq
     ripgrep

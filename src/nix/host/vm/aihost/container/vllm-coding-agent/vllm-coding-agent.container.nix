@@ -13,9 +13,9 @@ Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --enable-chunked-prefill \
   --enable-log-requests \
   --enable-prefix-caching \
-  --gpu-memory-utilization 0.95 \
   --host 0.0.0.0 \
   --kv-cache-dtype bfloat16 \
+  --kv-cache-memory-bytes 49G \
   --max-model-len 262144 \
   --max-num-batched-tokens 32768 \
   --port 8000 \
