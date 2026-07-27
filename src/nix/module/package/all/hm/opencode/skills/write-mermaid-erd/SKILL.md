@@ -1,11 +1,11 @@
 ---
 name: write-mermaid-erd
 description: >
-  Generates a Mermaid erDiagram from one or more SQL CREATE TABLE statements. Use this skill whenever the user provides
-  DDL (CREATE TABLE), a database schema, or asks to visualize, diagram, or map table relationships — even if they say
-  "just a quick ER diagram" or paste only one table. Triggers on phrases like "draw the schema", "ER diagram",
-  "entity relationship", "map these tables", "visualize the schema", or whenever raw CREATE TABLE SQL appears in the
-  conversation.
+  Generates a Mermaid entity-relationship diagram from one or more SQL CREATE TABLE statements. Use this skill whenever
+  the user provides DDL (CREATE TABLE), a database schema, or asks to visualize, diagram, or map table relationships --
+  even if they say "just a quick ER diagram" or paste only one table. Triggers on phrases like "draw the schema", "ER
+  diagram", "entity relationship", "map these tables", "document these tables", "visualize the schema", or whenever raw
+  CREATE TABLE SQL appears in the conversation.
 ---
 # Mermaid Entity-Relationship Diagram Writing Skill
 
@@ -27,12 +27,14 @@ erDiagram
 ### 1. Parse tables
 
 For each `CREATE TABLE` statement extract:
-- Table name
-- Each column: name and type (strip length/precision, e.g. `VARCHAR(255)` → `varchar`, `TIMESTAMP(6)` → `timestamp`)
-- Foreign key constraints (inline or table-level), noting the referencing column and the referenced table
+- Table name.
+- Each column: name and type (strip length/precision, e.g. `VARCHAR(255)` -> `VARCHAR`, `TIMESTAMP(6)` -> `TIMESTAMP`).
+- Normalize known type names to uppercase regardless of how they appear in the source DDL (e.g. `bigint` or `BigInt` ->
+  `BIGINT`, `varchar` -> `VARCHAR`, `text` -> `TEXT`).
+- Foreign key constraints (inline or table-level), noting the referencing column and the referenced table.
 
 Ignore: `PRIMARY KEY`, `NOT NULL`, `DEFAULT`, `CHECK`, `UNIQUE`, `GENERATED ALWAYS AS`, `ON DELETE`, constraint names,
-and all other modifiers — columns carry name + type only.
+and all other modifiers -- columns carry name and type only.
 
 ### 2. Sort
 
@@ -43,12 +45,25 @@ and all other modifiers — columns carry name + type only.
 
 ```
 entity_name {
-  column_name type
+  column_name type key
   ...
 }
 ```
 
-One entity block per table. No PKs, FKs, or other markers inside the block.
+`key` is optional and marks constraints on that column, using Mermaid's key tokens:
+
+| Constraint on column                               | Key token |
+|----------------------------------------------------|-----------|
+| Column is part of the `PRIMARY KEY`                | `PK`      |
+| Column is a foreign key (references another table) | `FK`      |
+| Column has a `UNIQUE` constraint                   | `UK`      |
+
+- Omit the key token entirely for columns with none of these constraints.
+- If a column has more than one applicable constraint (e.g. a composite key column that is both part of the primary key
+  and a foreign key), separate tokens with a comma: `PK, FK`.
+- Alphabetical sort order (step 2) is by column name and is unaffected by whether a key token is present.
+- Do not add quoted `"comment"` annotations unless the user explicitly asks for column descriptions -- this skill only
+  adds PK/FK/UK markers.
 
 ### 4. Declare relationships
 
@@ -107,26 +122,26 @@ CREATE TABLE employee (
 ```
 
 Output:
-````
 ```mermaid
 erDiagram
   department {
-    id bigint
-    name text
+    id BIGINT PK
+    name TEXT
   }
   employee {
-    department_id bigint
-    id bigint
-    manager_id bigint
-    name text
+    department_id BIGINT FK
+    id BIGINT PK
+    manager_id BIGINT FK
+    name TEXT
   }
 
   department only one to one or more employee : "1..n"
   employee only one to zero or more employee : "0..n"
 ```
-````
 
 Explanation:
-- `department_id` is `NOT NULL` → `one or more`
-- `manager_id` is nullable → `zero or more`
-- Self-referential FK is valid — emit the relationship with the same table on both sides
+- `id` is part of `PRIMARY KEY` in both tables -> `PK`.
+- `department_id` is a foreign key referencing `department` -> `FK`; it's also `NOT NULL` -> `one or more` on the
+  relationship.
+- `manager_id` is a foreign key referencing `employee` -> `FK`; it's nullable -> `zero or more` on the relationship.
+- Self-referential foreign key is valid -- emit the relationship with the same table on both sides.

@@ -145,14 +145,14 @@ enum type.
 When writing a description for a getter method, use natural, readable English rather than mechanically restating the
 method name. The goal is a description that reads fluently and conveys meaning clearly.
 
-* Prefer the pattern "Returns this [object]'s [property]." or "Retrieves this [object]'s [property]." as a starting
-  point, but adapt it when the property name does not translate naturally into English. For example, a method named
-  `getCreatedAt` should be documented as "Returns the timestamp when this user was created." rather than "Returns this
-  user's created at."
+* Prefer the pattern "Returns this [object]'s [property]" or "Retrieves this [object]'s [property]" as a starting point,
+  but adapt it when the property name does not translate naturally into English. For example, a method named
+  `getCreatedAt` should be documented as "Returns the timestamp when this user was created" rather than "Returns this
+  user's created at".
 * For static getter methods, do not use "this"; describe the value as class-level, global, default, configured, or
   otherwise appropriate to the context.
 * For computed getters, describe the value returned rather than implying that a stored field is retrieved.
-* For collection getters, describe the collection semantically, such as "Returns the users assigned to this group."
+* For collection getters, describe the collection semantically, such as "Returns the users assigned to this group".
 * For `Optional`-returning getters, describe the value that may be present without over-explaining `Optional` unless the
   distinction is useful.
 * Derive the `[object]` term from the class name, but use the most natural and concise form. For example, a class named
@@ -166,14 +166,14 @@ method name. The goal is a description that reads fluently and conveys meaning c
 ## Setter Methods
 
 Setter method descriptions follow the same principles as getter methods, but use the pattern "Sets this [object]'s
-[property]." as a starting point.
+[property]" as a starting point.
 
 * Apply the same judgment about `[object]` and `[property]` as described for getter methods. Rephrase when the raw
   method name would produce awkward English.
 * For static setter methods, do not use "this"; describe the class-level, global, default, configured, or otherwise
   appropriate value being set.
 * For fluent or builder-style setters that return the receiver or builder, include a meaningful `@return` tag such as
-  `@return this builder` or another natural description of the returned object.
+  "@return this builder" or another natural description of the returned object.
 * When in doubt about terminology, look for context clues in existing Javadoc comments, including those on the
   corresponding getter method if one exists.
 
@@ -189,7 +189,7 @@ Methods beginning with `is`, `has`, `can`, or `should` should not use "Retrieves
   as "Returns whether this operation can be retried."
 * Use `@return whether ...` for the return tag when that reads naturally.
 * Rephrase `[property]` naturally. For example, `isActive()` should be documented as "Returns whether this user is
-  active." rather than "Returns whether this user is active-status."
+  active" rather than "Returns whether this user is active-status".
 * Apply the same judgment about `[object]` terminology as described for getter methods.
 * When in doubt about terminology, look for context clues in existing Javadoc comments in the same class or related
   classes.
@@ -198,8 +198,8 @@ Methods beginning with `is`, `has`, `can`, or `should` should not use "Retrieves
 
 Document each parameter with a direct semantic description of what the parameter represents.
 
-* Prefer natural descriptions such as "@param count the number of retry attempts.", "@param enabled whether the feature
-  is enabled.", or "@param name the user's display name."
+* Prefer natural descriptions such as "@param count the number of retry attempts", "@param enabled whether the feature
+  is enabled", or "@param name the user's display name".
 * Do not mechanically describe primitive values or objects as "containing" something when a direct description is
   clearer.
 * Mention the parameter type only when it clarifies the meaning.
@@ -207,7 +207,7 @@ Document each parameter with a direct semantic description of what the parameter
   project convention clearly does so or the type reference adds useful clarity.
 * Use `{@link ...}` primarily for domain types or less obvious API types when linking the type helps the reader.
 * For arrays, varargs, wildcards, nested generics, and generic type variables, prefer semantic descriptions over
-  type-heavy descriptions. For example, document `User... users` as "@param users the users to add.", not as an array
+  type-heavy descriptions. For example, document `User... users` as "@param users the users to add", not as an array
   unless array behavior is relevant.
 * Infer the description from the overall class and method context. Rephrase when the raw parameter name would produce
   awkward English, and look to existing Javadoc comments in the same class for terminology and conventions.
@@ -216,8 +216,8 @@ Document each parameter with a direct semantic description of what the parameter
 
 Document the return value with a direct semantic description of what is returned.
 
-* Prefer natural descriptions such as "@return the number of retry attempts.", "@return whether the user is active.", or
-  "@return the user's display name."
+* Prefer natural descriptions such as "@return the number of retry attempts", "@return whether the user is active", or
+  "@return the user's display name".
 * Do not mechanically describe primitive values or objects as "containing" something when a direct description is
   clearer.
 * Mention the return type only when it clarifies the meaning.
@@ -231,11 +231,11 @@ Document the return value with a direct semantic description of what is returned
 
 ## Throws Documentation
 
-Document each thrown exception using the pattern "@throws [exceptionClassName] if [description]."
+Document each thrown exception using the pattern "@throws [exceptionClassName] if [description]".
 
 * Infer `[description]` from the overall class and method context, following the same judgment and convention-seeking
   approach as for parameters.
-* List checked exceptions in the same order they appear in the method's `throws` clause.
+* List exceptions in alphabetical order by unqualified class name.
 
 ## Non-Null Parameters
 
@@ -244,11 +244,11 @@ If one or more parameters are annotated with a non-null annotation (e.g., `jakar
 other `@throws` tags as described above.
 
 * If exactly one parameter is annotated non-null, write: "@throws IllegalArgumentException if {@code [param]} is
-  {@code null}."
+  {@code null}".
 * If two or more parameters are annotated non-null, list them using natural English enumeration with "or" before the
   last item, and use "are" instead of "is": "@throws IllegalArgumentException if {@code [param1]} or {@code [param2]}
-  are {@code null}." for two params, or "@throws IllegalArgumentException if {@code [param1]}, {@code [param2]}, or
-  {@code [param3]} are {@code null}." for three or more.
+  are {@code null}" for two params, or "@throws IllegalArgumentException if {@code [param1]}, {@code [param2]}, or
+  {@code [param3]} are {@code null}" for three or more.
 * Only include parameters that are actually annotated with a non-null annotation. Unannotated parameters are not listed
   even if they appear alongside annotated ones.
 
@@ -257,7 +257,7 @@ other `@throws` tags as described above.
 When adding Javadoc to an element annotated with `@Deprecated`, include a `@deprecated` tag if the replacement, reason,
 or migration path is clear from code, annotations, or nearby documentation.
 
-* If a replacement is clear, describe it with a concise reference, such as `@deprecated use {@link NewType} instead`.
+* If a replacement is clear, describe it with a concise reference, such as "@deprecated use {@link NewType} instead".
 * If the reason is clear but no replacement is available, describe the reason concisely.
 * Do not invent a replacement or reason when it is not evident from the code or surrounding context.
 
