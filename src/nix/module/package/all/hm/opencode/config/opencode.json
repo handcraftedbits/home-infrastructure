@@ -4,20 +4,60 @@
     "build": {
       "disable": true
     },
+    "code-explorer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+      },
+      "temperature": 1.0,
+      "top_k": 64,
+      "top_p": 0.95
+    },
+    "documenter": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "skill": {
+          "*": "deny",
+          "write-*": "allow"
+        }
+      },
+      "temperature": 1.0,
+      "top_k": 64,
+      "top_p": 0.95
+    },
+    "explore": {
+      "disable": true
+    },
+    "general": {
+      "disable": true
+    },
     "main": {
       "mode": "primary",
       "permission": {
-        "searxng_*": "deny",
-        "searxng_searxng_web_search": "allow",
-        "webfetch": "deny"
+        "*": "deny",
+        "question": "allow",
+        "task": "allow"
       },
-      "presence_penalty": 0.0,
-      "repetition_penalty": 1.0,
       "temperature": 1.0,
       "top_k": 64,
       "top_p": 0.95
     },
     "plan": {
+      "disable": true
+    },
+    "researcher": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "jina_*": "allow",
+        "searxng_searxng_web_search": "allow"
+      },
+      "temperature": 1.0,
+      "top_k": 64,
+      "top_p": 0.95
+    },
+    "summary": {
       "disable": true
     },
     "title": {
@@ -61,3 +101,4 @@
     }
   }
 }
+

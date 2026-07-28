@@ -1,1 +1,25 @@
-{}
+{
+  "agent": {
+    "code-explorer": {
+      "permission": {
+        "bash": {
+          "*": "deny",
+          "git *": "allow"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "read": "allow"
+      }
+    },
+    "documenter": {
+      "permission": {
+        "edit": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "read": "allow"
+      }
+    }
+  }
+}

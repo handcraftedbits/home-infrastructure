@@ -21,7 +21,6 @@ let
 in
 {
   xdg.configFile= {
-    "opencode/opencode.jsonc".text = "{}";
     "opencode/opencode-default.json".source  = toJson "opencode-default.json"
       (lib.recursiveUpdate opencodeConfigBase opencodeConfigDefault);
     "opencode/opencode-intellij.json".source = toJson "opencode-intellij.json"

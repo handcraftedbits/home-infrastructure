@@ -6,8 +6,16 @@
   mkdir -p ${config.xdg.dataHome}/opencode
 
   touch ${config.xdg.configHome}/opencode/.gitignore
-  touch ${config.xdg.configHome}/opencode/package.json
-  touch ${config.xdg.configHome}/opencode/package-lock.json
+
+  if [ ! -f ${config.xdg.configHome}/opencode/package.json ]
+  then
+    echo "{}" > ${config.xdg.configHome}/opencode/package.json
+  fi
+
+  if [ ! -f ${config.xdg.configHome}/opencode/package-lock.json ]
+  then
+    echo "{}" > ${config.xdg.configHome}/opencode/package-lock.json
+  fi
 
   ${containerRuntime} run -it --rm \
     --env KITTY_WINDOW_ID="''${KITTY_WINDOW_ID}" \
@@ -21,7 +29,7 @@
     --volume "$(realpath ${config.xdg.configHome}/opencode/node_modules)":/root/.config/opencode/node_modules \
     --volume "$(realpath ${config.xdg.configHome}/opencode/skills)":/root/.config/opencode/skills \
     --volume "${config.xdg.dataHome}/opencode":/root/.local/share/opencode \
-    --volume "$(realpath ${config.xdg.configHome}/opencode/opencode-default.json)":/root/.config/opencode/opencode.jsonc \
+    --volume "$(realpath ${config.xdg.configHome}/opencode/opencode-default.json)":/root/.config/opencode/opencode.json \
     --volume "$(realpath ${config.xdg.configHome}/opencode/tui.json)":/root/.config/opencode/tui.json \
     --volume "$(pwd):$(pwd)" \
     --workdir "$(pwd)" \

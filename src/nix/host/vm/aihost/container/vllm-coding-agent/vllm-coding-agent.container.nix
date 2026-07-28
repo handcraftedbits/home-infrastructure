@@ -15,7 +15,7 @@ Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --enable-prefix-caching \
   --host 0.0.0.0 \
   --kv-cache-dtype bfloat16 \
-  --kv-cache-memory-bytes 49G \
+  --kv-cache-memory-bytes 48G \
   --max-model-len 262144 \
   --max-num-batched-tokens 32768 \
   --port 8000 \
@@ -24,7 +24,7 @@ Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --speculative-config '{"model":"/opt/models/gemma-4-31B-it-assistant","num_speculative_tokens":4}' \
   --tensor-parallel-size 1 \
   --tool-call-parser gemma4
-Image=docker.io/vllm/vllm-openai:latest
+Image=docker.io/vllm/vllm-openai:v0.25.1
 Label=traefik.enable=true
 Label=traefik.http.routers.vllmcodingagent.entrypoints=websecure
 Label=traefik.http.routers.vllmcodingagent.rule=Host(`coding.llm.howard.estate`)
