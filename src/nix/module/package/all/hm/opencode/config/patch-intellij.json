@@ -19,18 +19,28 @@
         "intellij_list_external_dirs": "allow",
         "intellij_list_project_files": "allow",
         "intellij_read_file": "allow",
-        "intellij_search_*": "allow",
-        "question": "allow"
+        "intellij_search_*": "allow"
+      }
+    },
+    "database-explorer": {
+      "permission": {
+        "intellij_get_database_object_description": "allow",
+        "intellij_list_database_connections": "allow",
+        "intellij_list_database_schemas": "allow",
+        "intellij_list_schema_object_kinds": "allow",
+        "intellij_list_schema_objects": "allow"
       }
     },
     "documenter": {
-      "intellij_edit_text": "allow",
-      "intellij_find_file": "allow",
-      "intellij_insert_*": "allow",
-      "intellij_list_directory_tree": "allow",
-      "intellij_read_file": "allow",
-      "intellij_search_*": "allow",
-      "intellij_write_file": "allow"
+      "permission": {
+        "intellij_edit_text": "allow",
+        "intellij_find_file": "allow",
+        "intellij_insert_*": "allow",
+        "intellij_list_directory_tree": "allow",
+        "intellij_read_file": "allow",
+        "intellij_search_*": "allow",
+        "intellij_write_file": "allow"
+      }
     }
   },
   "mcp": {

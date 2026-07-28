@@ -8,6 +8,17 @@
       "mode": "subagent",
       "permission": {
         "*": "deny",
+        "question": "allow"
+      },
+      "temperature": 1.0,
+      "top_k": 64,
+      "top_p": 0.95
+    },
+    "database-explorer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "question": "allow"
       },
       "temperature": 1.0,
       "top_k": 64,
@@ -17,6 +28,7 @@
       "mode": "subagent",
       "permission": {
         "*": "deny",
+        "question": "allow",
         "skill": {
           "*": "deny",
           "write-*": "allow"

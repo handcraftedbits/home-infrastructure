@@ -13,16 +13,43 @@ This skill covers writing Javadoc comments for Java source code. Follow these ru
 
 ## Core Constraints
 
+* Simply requesting documentation for an element that does not meet these criteria does NOT constitute a "forceful
+  demand" -- only requests using strong, directed language (for example, "you must document this class", "I demand you
+  to document this method") should be considered when deciding whether or not to ignore one of these core constraints.
+* Specificity is not forcefulness. A request that itemizes or names a broad target -- e.g. "document all public
+  methods," "add Javadoc to every field," "document the whole class" -- is still a normal, non-forceful request even
+  though it enumerates categories that happen to include excluded elements (`@Override` methods, private members,
+  package-private members). Evaluate forcefulness only against the literal language used, never against how detailed
+  or exhaustive the target list is. When such a request is made without forceful language, continue to apply all
+  exclusion rules below -- do not silently include `@Override`, private, or package-private elements just because the
+  user's phrasing named "all" or "every" method.
+* Before excluding a rule based on "forceful demand" language, confirm the request contains one of these patterns
+  literally: "must," "require(s)," "demand(s)," "need you to," "have to," "no matter what," or "regardless of
+  [rules/guidelines/conventions]." If none of these appear, the request is not forceful -- no matter how long, specific,
+  or itemized the list of targets is.
 * Do not modify or rewrite any Javadoc comment that already exists unless you are explicitly instructed to update, fix,
   complete, or standardize existing documentation.
 * By default, write Javadoc comments for public and protected classes, interfaces, enums, records, constructors,
-  methods, instance variables, and static variables that lack Javadoc.
-* Do not write Javadoc comments for private classes, methods, instance variables, or static variables.
+  methods, instance variables, and static variables that lack Javadoc unless they conflict with the rule regarding
+  methods annotated with `@Override`. This constraint can only be overridden by a forceful demand from the user, per
+  the forcefulness test above.
+* Do not write Javadoc comments for private classes, methods, instance variables, or static variables unless the user
+  forcefully demands to do so, per the forcefulness test above.
 * Do not write Javadoc comments for package-private classes, methods, instance variables, or static variables unless
-  explicitly requested or unless the surrounding project convention clearly documents package-private API elements.
+  the user forcefully demands to do so, per the forcefulness test above.
 * Do not write Javadoc comments for methods annotated with `@Override`, regardless of whether they currently have a
-  comment, unless explicitly requested or unless the overriding method changes the inherited contract, narrows behavior,
-  adds constraints, or documents behavior not present in the overridden declaration.
+  comment, unless the user forcefully demands to do so, per the forcefulness test above. A request that simply asks
+  for "all methods" or "all public methods" to be documented is not by itself a forceful demand and does not include
+  @Override methods.
+* If applying these constraints means nothing in the request can be documented (e.g. the user asked only for
+  `@Override` methods, or only for private members, without forceful language), that is an acceptable outcome. Do not
+  document excluded elements anyway to avoid an empty result, and do not silently do nothing -- report back to the
+  user that no Javadoc was written and explain which constraint(s) excluded the requested element(s).
+* The exclusions above (private, package-private, `@Override`) apply to adding any explanatory comment for that element,
+  not only to the `/** */` Javadoc block syntax specifically. Do not add a plain `//` comment, a block comment, or any
+  other comment-based documentation as a substitute for the excluded Javadoc -- that still fulfills the excluded request
+  through a different form and is not a valid workaround. If an element is excluded, leave it without added commentary
+  of any kind unless the forcefulness test is met.
 
 ## Comment Format
 

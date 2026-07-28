@@ -8,16 +8,17 @@
         },
         "glob": "allow",
         "grep": "allow",
-        "question": "allow",
         "read": "allow"
       }
+    },
+    "database-explorer": {
+      "disable": true
     },
     "documenter": {
       "permission": {
         "edit": "allow",
         "glob": "allow",
         "grep": "allow",
-        "question": "allow",
         "read": "allow"
       }
     }

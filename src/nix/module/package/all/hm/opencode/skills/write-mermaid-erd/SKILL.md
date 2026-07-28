@@ -13,33 +13,37 @@ Given one or more SQL `CREATE TABLE` statements, produce a Mermaid `erDiagram` b
 
 ## Output format
 
-Produce a fenced code block:
+Produce a Mermaid erDiagram:
 
-````
 ```mermaid
 erDiagram
   ...
 ```
-````
+
+Your response must consist of the Mermaid diagram itself, exactly as specified above -- not a description of the
+diagram, not the entities/relationships listed in prose, and never strip any details. If you are asked to explain or
+summarize the diagram in addition, include the digram in full regardless -- never substitute prose for it.
 
 ## Step-by-step instructions
 
 ### 1. Parse tables
 
 For each `CREATE TABLE` statement extract:
-- Table name.
-- Each column: name and type (strip length/precision, e.g. `VARCHAR(255)` -> `VARCHAR`, `TIMESTAMP(6)` -> `TIMESTAMP`).
-- Normalize known type names to uppercase regardless of how they appear in the source DDL (e.g. `bigint` or `BigInt` ->
-  `BIGINT`, `varchar` -> `VARCHAR`, `text` -> `TEXT`).
-- Foreign key constraints (inline or table-level), noting the referencing column and the referenced table.
 
-Ignore: `PRIMARY KEY`, `NOT NULL`, `DEFAULT`, `CHECK`, `UNIQUE`, `GENERATED ALWAYS AS`, `ON DELETE`, constraint names,
-and all other modifiers -- columns carry name and type only.
+* Table name.
+* Each column: name and type (strip length/precision, e.g. `VARCHAR(255)` -> `VARCHAR`, `TIMESTAMP(6)` -> `TIMESTAMP`).
+* Normalize known type names to uppercase regardless of how they appear in the source DDL (e.g. `bigint` or `BigInt` ->
+  `BIGINT`, `varchar` -> `VARCHAR`, `text` -> `TEXT`).
+* Foreign key constraints (inline or table-level), noting the referencing column and the referenced table.
+* Primary key and unique constraints.
+*
+Ignore: `NOT NULL`, `DEFAULT`, `CHECK`, `GENERATED ALWAYS AS`, `ON DELETE`, constraint names, and all other modifiers --
+columns carry name, type, and simple foreign key, primary key, or unique constraints only.
 
 ### 2. Sort
 
-- List tables in **alphabetical order**
-- List columns within each table in **alphabetical order**
+* List tables in **alphabetical order**
+* List columns within each table in **alphabetical order**
 
 ### 3. Declare entities
 
@@ -58,11 +62,11 @@ entity_name {
 | Column is a foreign key (references another table) | `FK`      |
 | Column has a `UNIQUE` constraint                   | `UK`      |
 
-- Omit the key token entirely for columns with none of these constraints.
-- If a column has more than one applicable constraint (e.g. a composite key column that is both part of the primary key
+* Omit the key token entirely for columns with none of these constraints.
+* If a column has more than one applicable constraint (e.g. a composite key column that is both part of the primary key
   and a foreign key), separate tokens with a comma: `PK, FK`.
-- Alphabetical sort order (step 2) is by column name and is unaffected by whether a key token is present.
-- Do not add quoted `"comment"` annotations unless the user explicitly asks for column descriptions -- this skill only
+* Alphabetical sort order (step 2) is by column name and is unaffected by whether a key token is present.
+* Do not add quoted `"comment"` annotations unless the user explicitly asks for column descriptions -- this skill only
   adds PK/FK/UK markers.
 
 ### 4. Declare relationships
@@ -75,10 +79,11 @@ TableA <left-cardinality> to <right-cardinality> TableB : "label"
 ```
 
 **Valid long-form cardinality tokens:**
-- `only one`
-- `zero or one`
-- `one or more`
-- `zero or more`
+
+* `only one`
+* `zero or one`
+* `one or more`
+* `zero or more`
 
 **Relationship string rules:**
 
@@ -140,8 +145,8 @@ erDiagram
 ```
 
 Explanation:
-- `id` is part of `PRIMARY KEY` in both tables -> `PK`.
-- `department_id` is a foreign key referencing `department` -> `FK`; it's also `NOT NULL` -> `one or more` on the
+* `id` is part of `PRIMARY KEY` in both tables -> `PK`.
+* `department_id` is a foreign key referencing `department` -> `FK`; it's also `NOT NULL` -> `one or more` on the
   relationship.
-- `manager_id` is a foreign key referencing `employee` -> `FK`; it's nullable -> `zero or more` on the relationship.
-- Self-referential foreign key is valid -- emit the relationship with the same table on both sides.
+* `manager_id` is a foreign key referencing `employee` -> `FK`; it's nullable -> `zero or more` on the relationship.
+* Self-referential foreign key is valid -- emit the relationship with the same table on both sides.
