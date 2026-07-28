@@ -75,6 +75,8 @@ in
       }
     ];
 
+    nixpkgs.pkgs = pkgs;
+
     opts = {
       encoding = "utf-8";
       expandtab = true;

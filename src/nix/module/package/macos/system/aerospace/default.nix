@@ -1,5 +1,15 @@
 { lib, vars, ... }:
 let
+  util = import ../../../../util { inherit vars; };
+
+  aerospaceApp = util.mkSignedApp {
+    name = "AeroSpace";
+    executableName = "AeroSpace";
+    bundle = "/Users/${vars.user.username}/Applications/Home Manager Apps/AeroSpace.app";
+    deep = true;
+    onChange = ''/bin/launchctl kickstart -k "gui/$(id -u)/org.nix-community.home.aerospace" || true'';
+  };
+
   disabledHotKeys = with hotkeyEnums; [
     ctrlLeft
     ctrlRight
@@ -19,10 +29,14 @@ let
   };
 in
 {
+  imports = [ aerospaceApp.module ];
+
   home-manager.users.${vars.user.username} = { ... }: {
     imports = [
       ./aerospace-hm.nix
     ];
+
+    launchd.agents.aerospace.config.Program = lib.mkForce aerospaceApp.execPath;
   };
 
   system.defaults.CustomUserPreferences = {

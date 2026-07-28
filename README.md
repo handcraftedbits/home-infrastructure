@@ -41,6 +41,34 @@ If [Nix](https://nixos.org/) is not already installed:
 
 Run `nix-rebuild` to rebuild the system.
 
+#### Code Signing
+
+nixpkgs signs macOS binaries ad-hoc, which leaves them with no stable identity, so permission grants (Accessibility,
+Full Disk Access, etc.) are lost on every rebuild. `mkSignedApp` re-signs the affected applications during activation
+using a self-signed certificate that must be created by hand once per machine, before the first rebuild.
+
+1. Open **Keychain Access**
+2. **Keychain Access -> Certificate Assistant -> Create a Certificate...**
+3. **Name:** `nix-codesign`
+4. **Identity Type:** Self Signed Root
+5. **Certificate Type:** Code Signing
+6. Create, leaving it in the `login` keychain
+
+Certificate Assistant does not mark the certificate as trusted, and `codesign` refuses to use an untrusted identity, so
+trust it for code signing:
+
+```shell
+security find-certificate -c nix-codesign -p > /tmp/nix-codesign.pem
+sudo security add-trusted-cert -d -r trustRoot -p codeSign -k /Library/Keychains/System.keychain /tmp/nix-codesign.pem
+```
+
+Verify with `security find-identity -v -p codesigning`, which should now list `nix-codesign` twice -- once for the login
+keychain and once for the copy the command above placed in the system keychain. That is expected.
+
+Some applications will still need their permissions granted once in System Settings afterwards, as macOS offers no
+supported way to script this. Those grants then persist across rebuilds, though regenerating the certificate invalidates
+them.
+
 ## Virtual Machine Hosts
 
 Run `bin/vm.sh -a <age_key> -d <directory> -p <port>` where:
