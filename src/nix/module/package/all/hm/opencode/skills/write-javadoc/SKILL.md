@@ -7,51 +7,46 @@ description: >
   class", or similar. Also use when the user asks about Javadoc formatting conventions, tag usage, or how to document a
   specific Java construct such as a generic class, a record, or a method with non-null parameters.
 ---
+
 # Javadoc Writing Skill
 
 This skill covers writing Javadoc comments for Java source code. Follow these rules precisely.
 
-## Core Constraints
+## Core constraints
 
-* Simply requesting documentation for an element that does not meet these criteria does NOT constitute a "forceful
-  demand" -- only requests using strong, directed language (for example, "you must document this class", "I demand you
-  to document this method") should be considered when deciding whether or not to ignore one of these core constraints.
-* Specificity is not forcefulness. A request that itemizes or names a broad target -- e.g. "document all public
-  methods," "add Javadoc to every field," "document the whole class" -- is still a normal, non-forceful request even
-  though it enumerates categories that happen to include excluded elements (`@Override` methods, private members,
-  package-private members). Evaluate forcefulness only against the literal language used, never against how detailed
-  or exhaustive the target list is. When such a request is made without forceful language, continue to apply all
-  exclusion rules below -- do not silently include `@Override`, private, or package-private elements just because the
-  user's phrasing named "all" or "every" method.
-* Before excluding a rule based on "forceful demand" language, confirm the request contains one of these patterns
-  literally: "must," "require(s)," "demand(s)," "need you to," "have to," "no matter what," or "regardless of
-  [rules/guidelines/conventions]." If none of these appear, the request is not forceful -- no matter how long, specific,
-  or itemized the list of targets is.
-* Do not modify or rewrite any Javadoc comment that already exists unless you are explicitly instructed to update, fix,
-  complete, or standardize existing documentation.
-* By default, write Javadoc comments for public and protected classes, interfaces, enums, records, constructors,
-  methods, instance variables, and static variables that lack Javadoc unless they conflict with the rule regarding
-  methods annotated with `@Override`. This constraint can only be overridden by a forceful demand from the user, per
-  the forcefulness test above.
-* Do not write Javadoc comments for private classes, methods, instance variables, or static variables unless the user
-  forcefully demands to do so, per the forcefulness test above.
-* Do not write Javadoc comments for package-private classes, methods, instance variables, or static variables unless
-  the user forcefully demands to do so, per the forcefulness test above.
-* Do not write Javadoc comments for methods annotated with `@Override`, regardless of whether they currently have a
-  comment, unless the user forcefully demands to do so, per the forcefulness test above. A request that simply asks
-  for "all methods" or "all public methods" to be documented is not by itself a forceful demand and does not include
-  @Override methods.
-* If applying these constraints means nothing in the request can be documented (e.g. the user asked only for
-  `@Override` methods, or only for private members, without forceful language), that is an acceptable outcome. Do not
-  document excluded elements anyway to avoid an empty result, and do not silently do nothing -- report back to the
-  user that no Javadoc was written and explain which constraint(s) excluded the requested element(s).
-* The exclusions above (private, package-private, `@Override`) apply to adding any explanatory comment for that element,
-  not only to the `/** */` Javadoc block syntax specifically. Do not add a plain `//` comment, a block comment, or any
-  other comment-based documentation as a substitute for the excluded Javadoc -- that still fulfills the excluded request
-  through a different form and is not a valid workaround. If an element is excluded, leave it without added commentary
-  of any kind unless the forcefulness test is met.
+Two independent decisions govern what gets documented; keep them separate.
 
-## Comment Format
+**What is in scope** is determined solely by each element's own properties -- its visibility, and whether it is
+annotated `@Override` -- never by how the request is phrased or how many elements it names. "Document this class,"
+"add Javadoc to all public methods," and a pasted list of every method signature all produce the same result. Breadth,
+specificity, enumeration, and insistent wording do not expand scope.
+
+By default, document public and protected classes, interfaces, enums, records, constructors, methods, instance
+variables, and static variables that lack Javadoc. Do not document:
+
+* Methods annotated with `@Override`.
+* Private classes, methods, instance variables, or static variables.
+* Package-private classes, methods, instance variables, or static variables.
+
+**Overriding an exclusion** happens only when the request explicitly names the excluded category itself as a target --
+that is, it literally refers to `@Override` methods, private members, or package-private members as something to
+document. A request that names a broad target ("document all methods," "every field," "the whole class"), or that lists
+specific signatures which happen to include excluded elements, does not name the category and does not override the
+exclusion. When in doubt, apply the exclusion.
+
+Additional rules:
+
+* Do not modify or rewrite Javadoc that already exists unless explicitly instructed to update, fix, complete, or
+  standardize existing documentation.
+* If applying these rules means nothing in the request can be documented -- e.g. every element it points to is excluded
+  and it did not name those categories as an override -- that is an acceptable outcome. Do not document excluded
+  elements to avoid an empty result, and do not silently do nothing: report back that no Javadoc was written and which
+  exclusion(s) applied.
+* The exclusions apply to any explanatory comment, not just the `/** */` Javadoc block. Do not substitute a `//`
+  comment, a block comment, or any other commentary for excluded Javadoc -- that fulfills the excluded request through a
+  different form. Leave an excluded element without added commentary of any kind.
+
+## Comment format
 
 Every Javadoc comment must follow this general structure:
 
@@ -83,7 +78,7 @@ Tag rules:
   unchecked exceptions if their conditions are relevant and worth documenting.
 * Omit any tag section entirely if it does not apply (e.g., no `@param` section if the method takes no parameters).
 
-## Writing the Description
+## Writing the description
 
 * Write the description as a short, clear summary of what the method, class, or field does.
 * Begin with a third-person singular verb when it reads naturally (e.g., "Returns", "Computes", "Validates").
@@ -91,8 +86,10 @@ Tag rules:
   verb phrase.
 * Do not begin with "This method" or "This class".
 * Focus on what the element does, not how it does it.
+* Throughout these rules, when unsure of the right terminology or framing, take cues from existing Javadoc in the same
+  or related classes and follow their conventions.
 
-## Class-Level Comments
+## Class-level comments
 
 Every Javadoc comment for a public or protected class, interface, enum, or record must follow this structure:
 
@@ -112,7 +109,7 @@ Tag rules:
   the order they appear. These describe the record's components, not constructor parameters.
 * Omit any tag section entirely if it does not apply.
 
-## Writing the Class Description
+## Writing the class description
 
 * Write the description as a short, clear summary of what the class, interface, enum, or record represents or is
   responsible for.
@@ -120,8 +117,6 @@ Tag rules:
 * For an enum, describe what the enumerated type represents and, if useful, what the constants collectively mean.
 * For a record, describe what the record models or represents as a data carrier.
 * Do not begin with "This class", "This interface", "This enum", or "This record".
-* When in doubt about the right terminology or framing for the description, look for context clues in any existing
-  Javadoc comments in the same file or related classes and follow their conventions.
 
 ## Constructors
 
@@ -135,12 +130,12 @@ Document public and protected constructors unless they are canonical record cons
 * For overloaded constructors, describe the distinction between overloads when the difference is meaningful from the
   signature or surrounding context.
 
-## Records: Canonical Constructor
+## Records: canonical constructor
 
 * Do not write a Javadoc comment for the canonical constructor of a record. Its parameters are already documented by the
   `@param` tags on the record class comment.
 
-## Field and Constant Comments
+## Field and constant comments
 
 Document public and protected fields and constants that lack Javadoc.
 
@@ -151,7 +146,7 @@ Document public and protected fields and constants that lack Javadoc.
   naturally than a verb phrase.
 * Do not force field comments to begin with a verb when a noun phrase is clearer.
 
-## Enum Constants
+## Enum constants
 
 When writing a description for an enum constant, describe the meaning of the constant in the context of the enclosing
 enum type.
@@ -164,10 +159,8 @@ enum type.
 * Avoid repetitive or overly mechanical wording when several enum constants are documented together.
 * Rephrase when the raw constant name would produce awkward English, applying the same judgment about naturalness used
   for getter and setter methods.
-* When in doubt about the right terminology, look for context clues in any existing Javadoc comments in the same enum or
-  related classes and follow their conventions.
 
-## Getter Methods
+## Getter methods
 
 When writing a description for a getter method, use natural, readable English rather than mechanically restating the
 method name. The goal is a description that reads fluently and conveys meaning clearly.
@@ -187,10 +180,8 @@ method name. The goal is a description that reads fluently and conveys meaning c
   context.
 * Derive the `[property]` term from the method name, but rephrase it when the raw method name would produce awkward
   English. Use judgment to determine what the property actually represents and describe it in plain language.
-* When in doubt about the right terminology for either `[object]` or `[property]`, look for context clues in any
-  existing Javadoc comments in the same class or related classes and follow their conventions.
 
-## Setter Methods
+## Setter methods
 
 Setter method descriptions follow the same principles as getter methods, but use the pattern "Sets this [object]'s
 [property]" as a starting point.
@@ -201,10 +192,9 @@ Setter method descriptions follow the same principles as getter methods, but use
   appropriate value being set.
 * For fluent or builder-style setters that return the receiver or builder, include a meaningful `@return` tag such as
   "@return this builder" or another natural description of the returned object.
-* When in doubt about terminology, look for context clues in existing Javadoc comments, including those on the
-  corresponding getter method if one exists.
+* Take cues from the corresponding getter's Javadoc when one exists.
 
-## Boolean Accessor Methods
+## Boolean accessor methods
 
 Methods beginning with `is`, `has`, `can`, or `should` should not use "Retrieves" in their description. Instead, use
 "Returns whether..." or "Indicates whether..." as a starting point.
@@ -218,10 +208,8 @@ Methods beginning with `is`, `has`, `can`, or `should` should not use "Retrieves
 * Rephrase `[property]` naturally. For example, `isActive()` should be documented as "Returns whether this user is
   active" rather than "Returns whether this user is active-status".
 * Apply the same judgment about `[object]` terminology as described for getter methods.
-* When in doubt about terminology, look for context clues in existing Javadoc comments in the same class or related
-  classes.
 
-## Parameter Documentation
+## Parameter documentation
 
 Document each parameter with a direct semantic description of what the parameter represents.
 
@@ -237,9 +225,9 @@ Document each parameter with a direct semantic description of what the parameter
   type-heavy descriptions. For example, document `User... users` as "@param users the users to add", not as an array
   unless array behavior is relevant.
 * Infer the description from the overall class and method context. Rephrase when the raw parameter name would produce
-  awkward English, and look to existing Javadoc comments in the same class for terminology and conventions.
+  awkward English.
 
-## Return Value Documentation
+## Return value documentation
 
 Document the return value with a direct semantic description of what is returned.
 
@@ -253,18 +241,16 @@ Document the return value with a direct semantic description of what is returned
 * Use `{@link ...}` primarily for domain types or less obvious API types when linking the type helps the reader.
 * For arrays, varargs-like return values, wildcards, nested generics, and generic type variables, prefer semantic
   descriptions over type-heavy descriptions.
-* Infer the description from the overall class and method context, following the same judgment and convention-seeking
-  approach as for parameters.
+* Infer the description from the overall class and method context, following the same judgment as for parameters.
 
-## Throws Documentation
+## Throws documentation
 
 Document each thrown exception using the pattern "@throws [exceptionClassName] if [description]".
 
-* Infer `[description]` from the overall class and method context, following the same judgment and convention-seeking
-  approach as for parameters.
+* Infer `[description]` from the overall class and method context, following the same judgment as for parameters.
 * List exceptions in alphabetical order by unqualified class name.
 
-## Non-Null Parameters
+## Non-null parameters
 
 If one or more parameters are annotated with a non-null annotation (e.g., `jakarta.annotation.Nonnull`), always add a
 "@throws IllegalArgumentException" tag documenting the null check. This tag participates in alphabetical ordering with
@@ -279,7 +265,7 @@ other `@throws` tags as described above.
 * Only include parameters that are actually annotated with a non-null annotation. Unannotated parameters are not listed
   even if they appear alongside annotated ones.
 
-## Deprecated Elements
+## Deprecated elements
 
 When adding Javadoc to an element annotated with `@Deprecated`, include a `@deprecated` tag if the replacement, reason,
 or migration path is clear from code, annotations, or nearby documentation.
@@ -305,7 +291,7 @@ public User(final String name) {
 }
 ```
 
-## Scope of Work
+## Scope of work
 
 * When given a Java source file or snippet, identify all public and protected elements that lack Javadoc and write
   comments only for those by default.

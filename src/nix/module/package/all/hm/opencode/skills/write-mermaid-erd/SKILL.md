@@ -7,6 +7,7 @@ description: >
   diagram", "entity relationship", "map these tables", "document these tables", "visualize the schema", or whenever raw
   CREATE TABLE SQL appears in the conversation.
 ---
+
 # Mermaid Entity-Relationship Diagram Writing Skill
 
 Given one or more SQL `CREATE TABLE` statements, produce a Mermaid `erDiagram` block.
@@ -36,9 +37,8 @@ For each `CREATE TABLE` statement extract:
   `BIGINT`, `varchar` -> `VARCHAR`, `text` -> `TEXT`).
 * Foreign key constraints (inline or table-level), noting the referencing column and the referenced table.
 * Primary key and unique constraints.
-*
-Ignore: `NOT NULL`, `DEFAULT`, `CHECK`, `GENERATED ALWAYS AS`, `ON DELETE`, constraint names, and all other modifiers --
-columns carry name, type, and simple foreign key, primary key, or unique constraints only.
+* Ignore: `NOT NULL`, `DEFAULT`, `CHECK`, `GENERATED ALWAYS AS`, `ON DELETE`, constraint names, and all other
+  modifiers -- columns carry name, type, and simple foreign key, primary key, or unique constraints only.
 
 ### 2. Sort
 
