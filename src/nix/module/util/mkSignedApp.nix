@@ -7,9 +7,9 @@ in
 # Re-signs an application so its TCC grants survive nix updates.
 { name, bundleId ? null, executableName ? null, binary ? null, bundle ? null, deep ? false, onChange ? "" }:
 let
-  inPlace = bundle != null;
-
+  appPath = if inPlace then bundle else "${homeDirectory}/Applications/${name}.app";
   execPath = "${appPath}/Contents/MacOS/${executableName}";
+  inPlace = bundle != null;
   slug = builtins.replaceStrings [ " " "." ] [ "-" "-" ] name;
 in
 {
