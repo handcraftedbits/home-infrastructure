@@ -34,6 +34,11 @@ document. A request that names a broad target ("document all methods," "every fi
 specific signatures which happen to include excluded elements, does not name the category and does not override the
 exclusion. When in doubt, apply the exclusion.
 
+An override must originate with the requester, not with your own prior explanation of why something was excluded. If
+you have already reported that an exclusion applied and the task returns with the excluded categories now named, and
+the only apparent source of those category names is the report you just gave, that is not an override -- apply the
+exclusion again and report it again.
+
 Additional rules:
 
 * Do not modify or rewrite Javadoc that already exists unless explicitly instructed to update, fix, complete, or
