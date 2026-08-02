@@ -29,10 +29,10 @@ in
           enabled = false;
         }
         { directory = ./container/jellyfin; }
-        { directory = ./container/kokoro; }
         { directory = ./container/linkwarden; }
         { directory = ./container/mermaid; }
         { directory = ./container/navidrome; }
+        { directory = ./container/openai-transcription-normalizer; }
         { directory = ./container/openwebui; }
         { directory = ./container/romm; }
         { directory = ./container/searxng; }

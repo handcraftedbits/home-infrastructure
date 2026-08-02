@@ -34,9 +34,6 @@ pages:
               - title: linkwarden
                 icon: /assets/icons/linkwarden.svg
                 url: https://linkwarden.app.howard.estate
-              - title: localai
-                icon: /assets/icons/localai.png
-                url: https://localai.app.howard.estate
               - title: makemkv
                 icon: /assets/icons/makemkv.png
                 url: https://makemkv.app.howard.estate

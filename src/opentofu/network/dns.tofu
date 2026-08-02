@@ -14,13 +14,12 @@ module "dns" {
     ]
 
     "aihost.vm.lan" = [
-      "acestep.app",
+      "audiocpp.app",
       "aitoolkit.app",
       "coding.llm",
       "comfyui.app",
       "jina.app",
       "jina.mcp",
-      "localai.app",
       "searxng.mcp"
     ]
 

@@ -44,15 +44,16 @@
   mkdir -p ${config.xdg.configHome}/opencode
   mkdir -p ${config.xdg.configHome}/opencode/node_modules
   mkdir -p ${config.xdg.dataHome}/opencode
+  mkdir -p ${config.xdg.stateHome}/opencode
 
   touch ${config.xdg.configHome}/opencode/.gitignore
 
-  if [ ! -f ${config.xdg.configHome}/opencode/package.json ]
+  if [ ! -s ${config.xdg.configHome}/opencode/package.json ]
   then
     echo "{}" > ${config.xdg.configHome}/opencode/package.json
   fi
 
-  if [ ! -f ${config.xdg.configHome}/opencode/package-lock.json ]
+  if [ ! -s ${config.xdg.configHome}/opencode/package-lock.json ]
   then
     echo "{}" > ${config.xdg.configHome}/opencode/package-lock.json
   fi
@@ -68,6 +69,7 @@
     --volume "$(realpath ${config.xdg.configHome}/opencode/agents)":/root/.config/opencode/agents \
     --volume "$(realpath ${config.xdg.configHome}/opencode/skills)":/root/.config/opencode/skills \
     --volume "${config.xdg.dataHome}/opencode":/root/.local/share/opencode \
+    --volume "${config.xdg.stateHome}/opencode":/root/.local/state/opencode \
     --volume "/tmp/opencode-intellij/opencode.jsonc":/root/.config/opencode/opencode.json \
     --volume "$(realpath ${config.xdg.configHome}/opencode/tui.json)":/root/.config/opencode/tui.json \
     --volume "''${PROJECT_DIR:-$(pwd)}:''${PROJECT_DIR:-$(pwd)}" \
