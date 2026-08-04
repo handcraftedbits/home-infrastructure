@@ -116,13 +116,13 @@
     "coding": {
       "models": {
         "gemma4-31b": {
+          "limit": {
+            "context": 262144,
+            "output": 81920
+          },
           "name": "Gemma4 31B",
           "temperature": true,
-          "reasoning": true,
-          "options": {
-            "contextLength": 262144,
-            "maxTokens": 81920
-          }
+          "reasoning": true
         }
       },
       "name": "coding",

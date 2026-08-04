@@ -64,14 +64,15 @@
     --network=host \
     --volume "${config.xdg.cacheHome}/opencode":/root/.cache/opencode \
     --volume "${config.xdg.configHome}/opencode/.gitignore":/root/.config/opencode/.gitignore \
+    --volume "$(realpath ${config.xdg.configHome}/opencode/agents)":/root/.config/opencode/agents \
+    --volume "$(realpath ${config.xdg.configHome}/opencode/node_modules)":/root/.config/opencode/node_modules \
+    --volume "/tmp/opencode-intellij/opencode.jsonc":/root/.config/opencode/opencode.json \
     --volume "${config.xdg.configHome}/opencode/package.json":/root/.config/opencode/package.json \
     --volume "${config.xdg.configHome}/opencode/package-lock.json":/root/.config/opencode/package-lock.json \
-    --volume "$(realpath ${config.xdg.configHome}/opencode/agents)":/root/.config/opencode/agents \
     --volume "$(realpath ${config.xdg.configHome}/opencode/skills)":/root/.config/opencode/skills \
+    --volume "$(realpath ${config.xdg.configHome}/opencode/tui.json)":/root/.config/opencode/tui.json \
     --volume "${config.xdg.dataHome}/opencode":/root/.local/share/opencode \
     --volume "${config.xdg.stateHome}/opencode":/root/.local/state/opencode \
-    --volume "/tmp/opencode-intellij/opencode.jsonc":/root/.config/opencode/opencode.json \
-    --volume "$(realpath ${config.xdg.configHome}/opencode/tui.json)":/root/.config/opencode/tui.json \
     --volume "''${PROJECT_DIR:-$(pwd)}:''${PROJECT_DIR:-$(pwd)}" \
     --workdir "''${PROJECT_DIR:-$(pwd)}" \
     ghcr.io/handcraftedbits/opencode-runner "$@"

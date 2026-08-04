@@ -30,7 +30,7 @@ module "dns" {
       "linkwarden.app",
       "mermaid.app",
       "navidrome.app",
-      "openwebui.app",
+      "openchamber.app",
       "romm.app",
       "searxng.app",
       "silverbullet.app",

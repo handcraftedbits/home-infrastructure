@@ -46,9 +46,9 @@ pages:
               - title: navidrome
                 icon: /assets/icons/navidrome.svg
                 url: https://navidrome.app.howard.estate/app/
-              - title: openwebui
-                icon: auto-invert /assets/icons/openwebui.svg
-                url: https://openwebui.app.howard.estate
+              - title: openchamber
+                icon: /assets/icons/openchamber.svg
+                url: https://openchamber.app.howard.estate
               - title: romm
                 icon: /assets/icons/romm.svg
                 url: https://romm.app.howard.estate

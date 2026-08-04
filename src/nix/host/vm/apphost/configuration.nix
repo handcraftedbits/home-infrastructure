@@ -33,7 +33,7 @@ in
         { directory = ./container/mermaid; }
         { directory = ./container/navidrome; }
         { directory = ./container/openai-transcription-normalizer; }
-        { directory = ./container/openwebui; }
+        { directory = ./container/openchamber; }
         { directory = ./container/romm; }
         { directory = ./container/searxng; }
         { directory = ./container/silverbullet; }

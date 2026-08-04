@@ -8,7 +8,7 @@ Image=ghcr.io/handcraftedbits/openai-transcription-normalizer:latest
 Network=traefik.network
 
 [Install]
-WantedBy=default.target openwebui.service
+WantedBy=default.target openchamber.service
 
 [Service]
 ExecStartPre=/bin/sh -c 'until ${pkgs.netcat-openbsd}/bin/nc -z audiocpp.app.howard.estate 443; do echo "Waiting for audio.cpp server..."; ${pkgs.coreutils}/bin/sleep 2; done'
@@ -16,7 +16,7 @@ Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=openwebui.service traefik.service
-BindsTo=openwebui.service
+After=openchamber.service traefik.service
+BindsTo=openchamber.service
 Description=OpenAI Transcription Normalizer
 ''
