@@ -19,8 +19,7 @@ module "dns" {
       "coding.llm",
       "comfyui.app",
       "jina.app",
-      "jina.mcp",
-      "searxng.mcp"
+      "mcp"
     ]
 
     "apphost.vm.lan" = [

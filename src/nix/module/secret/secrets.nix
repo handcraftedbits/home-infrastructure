@@ -3,8 +3,10 @@ let
 in {
   "aws/accessKeyId.age".publicKeys = [ age-key ];
   "aws/secretAccessKey.age".publicKeys = [ age-key ];
+  "github/pat/mcp".publicKeys = [ age-key ];
   "linkwarden/apiKey.age".publicKeys = [ age-key ];
   "linkwarden/nextauth/password.age".publicKeys = [ age-key ];
+  "mcphub/adminPassword.age".publicKeys = [ age-key ];
   "postgresql/immich/password.age".publicKeys = [ age-key ];
   "postgresql/password.age".publicKeys = [ age-key ];
   "romm/secretKey.age".publicKeys = [ age-key ];

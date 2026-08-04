@@ -26,6 +26,7 @@ in
         { directory = ./container/jina; }
         { directory = ./container/mcp-jina; }
         { directory = ./container/mcp-searxng; }
+        { directory = ./container/mcphub; }
         { directory = ./container/traefik; }
         { directory = ./container/vllm-coding-agent; }
       ];

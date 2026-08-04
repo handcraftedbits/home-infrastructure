@@ -5,11 +5,6 @@ AutoUpdate=registry
 ContainerName=mcp-searxng
 EnvironmentFile=%h/.config/containers/environment/%N
 Image=docker.io/isokoliuk/mcp-searxng:latest
-Label=traefik.enable=true
-Label=traefik.http.routers.mcpsearxng.entrypoints=websecure
-Label=traefik.http.routers.mcpsearxng.rule=Host(`searxng.mcp.howard.estate`)
-Label=traefik.http.routers.mcpsearxng.tls.certresolver=route53
-Label=traefik.http.services.mcpsearxng.loadbalancer.server.port=3000
 Network=traefik.network
 
 [Install]
@@ -21,6 +16,5 @@ Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=traefik.service
 Description=SearXNG MCP Server
 ''
