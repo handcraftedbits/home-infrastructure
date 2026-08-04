@@ -1,48 +1,4 @@
 {
-  "agent": {
-    "code-explorer": {
-      "permission": {
-        "intellij_download_sources": "allow",
-        "intellij_find_*": "allow",
-        "intellij_get_call_hierarchy": "allow",
-        "intellij_get_class_outline": "allow",
-        "intellij_get_documentation": "allow",
-        "intellij_get_file_*": "allow",
-        "intellij_get_project_*": "allow",
-        "intellij_get_symbol_info": "allow",
-        "intellij_get_type_hierarchy": "allow",
-        "intellij_git_diff": "allow",
-        "intellij_git_log": "allow",
-        "intellij_git_show": "allow",
-        "intellij_go_to_declaration": "allow",
-        "intellij_list_directory_tree": "allow",
-        "intellij_list_external_dirs": "allow",
-        "intellij_list_project_files": "allow",
-        "intellij_read_file": "allow",
-        "intellij_search_*": "allow"
-      }
-    },
-    "database-explorer": {
-      "permission": {
-        "intellij_get_database_object_description": "allow",
-        "intellij_list_database_connections": "allow",
-        "intellij_list_database_schemas": "allow",
-        "intellij_list_schema_object_kinds": "allow",
-        "intellij_list_schema_objects": "allow"
-      }
-    },
-    "documenter": {
-      "permission": {
-        "intellij_edit_text": "allow",
-        "intellij_find_file": "allow",
-        "intellij_insert_*": "allow",
-        "intellij_list_directory_tree": "allow",
-        "intellij_read_file": "allow",
-        "intellij_search_*": "allow",
-        "intellij_write_file": "allow"
-      }
-    }
-  },
   "mcp": {
     "intellij": {
       "enabled": true,

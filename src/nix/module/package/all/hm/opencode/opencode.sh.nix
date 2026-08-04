@@ -24,7 +24,7 @@
     --network=host \
     --volume "${config.xdg.cacheHome}/opencode":/root/.cache/opencode \
     --volume "${config.xdg.configHome}/opencode/.gitignore":/root/.config/opencode/.gitignore \
-    --volume "$(realpath ${config.xdg.configHome}/opencode/agents)":/root/.config/opencode/agents \
+    --volume "$(realpath ${config.xdg.configHome}/opencode/agents-default)":/root/.config/opencode/agents \
     --volume "$(realpath ${config.xdg.configHome}/opencode/node_modules)":/root/.config/opencode/node_modules \
     --volume "$(realpath ${config.xdg.configHome}/opencode/opencode-default.json)":/root/.config/opencode/opencode.json \
     --volume "${config.xdg.configHome}/opencode/package.json":/root/.config/opencode/package.json \

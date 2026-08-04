@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 let
+  agents = import ./agents { inherit lib pkgs; };
+
   configDirs = [
-    "agents"
     "skills"
   ];
 
@@ -13,18 +14,20 @@ let
       "opencode/${subdir}".source = path;
     }) {} configDirs;
 
+  opencodeConfig = profile: patch: toJson "opencode-${profile}.json" (lib.recursiveUpdate
+    (lib.recursiveUpdate opencodeConfigBase { agent = agents.${profile}.settings; })
+    (lib.optionalAttrs (builtins.pathExists patch) (builtins.fromJSON (builtins.readFile patch))));
+
   opencodeConfigBase = builtins.fromJSON (builtins.readFile ./config/opencode.json);
-  opencodeConfigDefault = builtins.fromJSON (builtins.readFile ./config/patch-default.json);
-  opencodeConfigIntellij = builtins.fromJSON (builtins.readFile ./config/patch-intellij.json);
 
   toJson = (pkgs.formats.json {}).generate;
 in
 {
   xdg.configFile= {
-    "opencode/opencode-default.json".source  = toJson "opencode-default.json"
-      (lib.recursiveUpdate opencodeConfigBase opencodeConfigDefault);
-    "opencode/opencode-intellij.json".source = toJson "opencode-intellij.json"
-      (lib.recursiveUpdate opencodeConfigBase opencodeConfigIntellij);
+    "opencode/opencode-default.json".source  = opencodeConfig "default" ./config/patch-default.json;
+    "opencode/opencode-intellij.json".source = opencodeConfig "intellij" ./config/patch-intellij.json;
+    "opencode/agents-default".source  = agents.default.directory;
+    "opencode/agents-intellij".source = agents.intellij.directory;
     "opencode/tui.json" = {
       text = builtins.toJSON {
         theme = "monokai";
