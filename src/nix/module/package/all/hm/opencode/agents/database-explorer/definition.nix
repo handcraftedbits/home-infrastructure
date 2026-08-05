@@ -18,7 +18,7 @@
       query data or make changes, so use it purely to inform decisions or documentation.
     '';
 
-    title = "Database exploration";
+    title = "Database Exploration";
   };
 
   description = ''
@@ -38,7 +38,6 @@
       "intellij_list_database_schemas" = "allow";
       "intellij_list_schema_object_kinds" = "allow";
       "intellij_list_schema_objects" = "allow";
-      "question" = "allow";
     };
   };
 

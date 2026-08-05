@@ -1,44 +1,56 @@
 {
-  delegatesTo = { };
+  delegatesTo = {
+    remote-code-explorer = { };
+    web-explorer = { };
+  };
 
   delegation = {
     briefing = [
-      "Exactly what needs to be found or answered."
       ''
-        How much effort to spend: a quick single check versus a thorough, cross-checked investigation. The
-        `researcher`'s effort level comes entirely from what you tell it, so don't leave this vague if it matters.
+        The question itself, stated as precisely as you can, along with why you're asking if that narrows what counts as
+        a good answer.
       ''
-      "Any specific sources or constraints you already know about."
+      ''
+        How much effort to spend: `quick`, `standard`, or `exhaustive`. `researcher` defaults to standard, which
+        cross-checks the claims a conclusion turns on -- say so explicitly when a question is worth more or less than
+        that.
+      ''
+      "Anything you already know: sources you trust or have ruled out, versions that matter, answers you've discarded."
+      ''
+        What you'll do with the answer, if it affects the shape -- a decision to make, a claim to verify, an approach to
+        compare.
+      ''
     ];
 
     intro = ''
-      You do not have direct access to web search or page-fetching tools. Any time you need information from the web --
-      a fact check, a search, reading a URL -- delegate it to the `researcher` subagent.
+      For questions that need more than a single lookup -- comparing approaches, establishing why something behaves the
+      way it does, checking a claim that several sources might disagree about -- delegate to the `researcher` subagent.
+      It plans an investigation, runs several lines of inquiry in parallel, and reconciles what conflicts.
     '';
 
     outro = ''
-      The `researcher` will return a distilled, synthesized answer with source URLs -- expect a summary, not raw search
-      results or full page dumps.
+      The `researcher` returns a synthesized answer with its sources and an explicit note of what it could not verify.
+      It is slower and costlier than a direct lookup, so send it questions that genuinely need investigating rather than
+      single facts. It reaches the web and external repositories only -- it cannot see the local codebase or any
+      database.
     '';
 
-    title = "Research and web content";
+    title = "Research and Investigation";
   };
 
   description = ''
-    Handles web search and page-fetching without polluting the primary session's context. Use for any question requiring
-    web search or reading external pages. Invoke with a clear statement of what's needed and how much effort to spend
-    (e.g. "quick check", "just confirm X", "thorough -- cross-check 3+ sources").
+    Investigates open-ended or contested questions that need more than one lookup to answer well. Plans the
+    investigation, delegates gathering to explorer subagents in parallel, and reconciles conflicting sources into a
+    single answer with citations and stated confidence. Use for "why does X behave this way", "compare X and Y", "is
+    this claim true", or any question worth cross-checking. Specify effort as quick, standard, or exhaustive; standard
+    is the default.
   '';
 
   mode = "subagent";
 
-  model = "task/gemma4-e4b";
-
   permission = {
     both = {
       "*" = "deny";
-      "tools_jina-*" = "allow";
-      "tools_searxng-searxng_web_search" = "allow";
     };
   };
 
