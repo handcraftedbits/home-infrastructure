@@ -32,6 +32,8 @@
 
   mode = "subagent";
 
+  model = "task/gemma4-e4b";
+
   permission = {
     both = {
       "*" = "deny";

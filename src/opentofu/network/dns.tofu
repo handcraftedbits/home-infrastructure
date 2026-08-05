@@ -19,7 +19,8 @@ module "dns" {
       "coding.llm",
       "comfyui.app",
       "jina.app",
-      "mcp"
+      "mcp",
+      "task.llm"
     ]
 
     "apphost.vm.lan" = [

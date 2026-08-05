@@ -24,6 +24,7 @@ in
         { directory = ./container/comfyui; }
         { directory = ./container/immich-machine-learning; }
         { directory = ./container/jina; }
+        { directory = ./container/llama-task-agent; }
         { directory = ./container/mcp-jina; }
         { directory = ./container/mcp-searxng; }
         { directory = ./container/mcphub; }

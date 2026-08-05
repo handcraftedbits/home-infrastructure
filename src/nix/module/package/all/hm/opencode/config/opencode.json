@@ -4,6 +4,9 @@
     "build": {
       "disable": true
     },
+    "compaction": {
+      "model": "task/gemma4-e4b"
+    },
     "explore": {
       "disable": true
     },
@@ -14,10 +17,10 @@
       "disable": true
     },
     "summary": {
-      "disable": true
+      "disable": "task/gemma4-e4b"
     },
     "title": {
-      "disable": true
+      "model": "task/gemma4-e4b"
     }
   },
   "disabled_providers": [
@@ -40,14 +43,32 @@
             "output": 81920
           },
           "name": "Gemma4 31B",
-          "temperature": true,
-          "reasoning": true
+          "reasoning": true,
+          "temperature": true
         }
       },
       "name": "coding",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
         "baseURL": "https://coding.llm.howard.estate/v1"
+      }
+    },
+    "task": {
+      "models": {
+        "gemma4-e4b": {
+          "limit": {
+            "context": 98304,
+            "output": 32768
+          },
+          "name": "Gemma4 E4B",
+          "reasoning": true,
+          "temperature": true
+        }
+      },
+      "name": "task",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://task.llm.howard.estate/v1"
       }
     }
   }
