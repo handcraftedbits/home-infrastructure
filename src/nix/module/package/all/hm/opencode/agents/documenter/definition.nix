@@ -48,7 +48,6 @@
   permission = {
     both = {
       "*" = "deny";
-      "question" = "allow";
       "skill" = {
         "*" = "deny";
         "write-*" = "allow";
