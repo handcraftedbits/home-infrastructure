@@ -17,7 +17,7 @@
       "disable": true
     },
     "summary": {
-      "disable": "task/gemma4-e4b"
+      "model": "task/gemma4-e4b"
     },
     "title": {
       "model": "task/gemma4-e4b"
