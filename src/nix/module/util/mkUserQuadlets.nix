@@ -33,7 +33,7 @@ let
         }]
       else
         [];
-  
+
   mkContainerEntry = file: {
     name = "containers/systemd/${stripSuffix ".nix" (baseNameOf file)}";
     value = {
@@ -62,6 +62,7 @@ let
     {
       name = "writeEnv_${builtins.replaceStrings [ "/" "." ] [ "_" "_" ] name}";
       value = lib.hm.dag.entryAfter [ "writeBoundary" "agenix" ] ''
+        # secrets: ${secretsHash}
         mkdir -p ${config.xdg.configHome}/containers/environment
         echo "${import file { inherit pkgs vars; }}" > ${path}
         chmod 600 ${path}
@@ -76,6 +77,8 @@ let
   reloadCommand = ''
     ${pkgs.systemd}/bin/systemctl --user daemon-reload || true
   '';
+
+  secretsHash = import ./secretsHash.nix { inherit lib; };
 
   stripSuffix = suffix: s:
     if hasSuffix suffix s then
