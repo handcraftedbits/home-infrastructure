@@ -25,6 +25,9 @@ pages:
               - title: comfyui
                 icon: /assets/icons/comfyui.svg
                 url: https://comfyui.app.howard.estate
+              - title: docsgpt
+                icon: /assets/icons/docsgpt.svg
+                url: https://docsgpt.app.howard.estate
               - title: forgejo
                 icon: /assets/icons/forgejo.svg
                 url: https://forgejo.app.howard.estate

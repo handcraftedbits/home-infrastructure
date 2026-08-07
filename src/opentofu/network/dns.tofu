@@ -16,6 +16,7 @@ module "dns" {
     "aihost.vm.lan" = [
       "audiocpp.app",
       "aitoolkit.app",
+      "api.docsgpt.app",
       "coding.llm",
       "comfyui.app",
       "jina.app",
@@ -24,6 +25,7 @@ module "dns" {
     ]
 
     "apphost.vm.lan" = [
+      "docsgpt.app",
       "forgejo.app",
       "frontdoor",
       "immich.app",

@@ -18,6 +18,7 @@ in
   home-manager.users.${vars.user.username}.imports = [
     (util.mkUserQuadlets {
       containers = [
+        { directory = ./container/docsgpt; }
         { directory = ./container/forgejo; }
         { directory = ./container/glance; }
         {

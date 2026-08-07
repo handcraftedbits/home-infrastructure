@@ -22,12 +22,16 @@ in
         { directory = ./container/audio-cpp; }
         { directory = ./container/aitoolkit; }
         { directory = ./container/comfyui; }
+        { directory = ./container/docsgpt-valkey; }
+        { directory = ./container/docsgpt-api; }
+        { directory = ./container/docsgpt-worker; }
         { directory = ./container/immich-machine-learning; }
         { directory = ./container/jina; }
         { directory = ./container/llama-task-agent; }
         { directory = ./container/mcp-jina; }
         { directory = ./container/mcp-searxng; }
         { directory = ./container/mcphub; }
+        { directory = ./container/tei-embedding-model; }
         { directory = ./container/traefik; }
         { directory = ./container/vllm-coding-agent; }
       ];
