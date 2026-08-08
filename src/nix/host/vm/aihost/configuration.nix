@@ -27,6 +27,8 @@ in
         { directory = ./container/docsgpt-worker; }
         { directory = ./container/immich-machine-learning; }
         { directory = ./container/jina; }
+        { directory = ./container/labelstudio; }
+        { directory = ./container/labelstudio-ml-backend; }
         { directory = ./container/llama-task-agent; }
         { directory = ./container/mcp-jina; }
         { directory = ./container/mcp-searxng; }

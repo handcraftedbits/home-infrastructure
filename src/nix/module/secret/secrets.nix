@@ -4,6 +4,7 @@ in {
   "aws/accessKeyId.age".publicKeys = [ age-key ];
   "aws/secretAccessKey.age".publicKeys = [ age-key ];
   "github/pat/mcp".publicKeys = [ age-key ];
+  "labelstudio/apiKey.age".publicKeys = [ age-key ];
   "linkwarden/apiKey.age".publicKeys = [ age-key ];
   "linkwarden/nextauth/password.age".publicKeys = [ age-key ];
   "mcphub/adminPassword.age".publicKeys = [ age-key ];

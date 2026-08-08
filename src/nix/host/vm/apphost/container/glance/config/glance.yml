@@ -34,6 +34,9 @@ pages:
               - title: intranetflix
                 icon: /assets/icons/jellyfin.svg
                 url: https://jellyfin.app.howard.estate/web/
+              - title: labelstudio
+                icon: /assets/icons/labelstudio.svg
+                url: https://labelstudio.app.howard.estate
               - title: linkwarden
                 icon: /assets/icons/linkwarden.svg
                 url: https://linkwarden.app.howard.estate

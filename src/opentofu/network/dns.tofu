@@ -20,6 +20,7 @@ module "dns" {
       "coding.llm",
       "comfyui.app",
       "jina.app",
+      "labelstudio.app",
       "mcp",
       "task.llm"
     ]

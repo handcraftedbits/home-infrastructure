@@ -18,6 +18,11 @@
         mode = "0400";
         owner = vars.user.username;
       };
+      "labelstudio/apiKey" = {
+        file = ./labelstudio/apiKey.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
       "linkwarden/apiKey" = {
         file = ./linkwarden/apiKey.age;
         mode = "0400";
