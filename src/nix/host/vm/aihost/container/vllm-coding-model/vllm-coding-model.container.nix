@@ -32,7 +32,7 @@ Label=traefik.http.routers.vllm-coding-model.tls.certresolver=route53
 Label=traefik.http.services.vllm-coding-model.loadbalancer.server.port=8000
 Network=traefik.network
 ShmSize=16g
-Volume=/mnt/container/models/llm:/opt/models
+Volume=/mnt/container/models/llm:/opt/models:ro
 Volume=/mnt/container/vllm/cache/default:/root/.cache/vllm
 Volume=/mnt/container/vllm/cache/triton:/root/.triton/cache
 

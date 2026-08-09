@@ -12,7 +12,7 @@ Label=traefik.http.routers.glance.tls.certresolver=route53
 Label=traefik.http.services.glance.loadbalancer.server.port=8080
 Network=traefik.network
 UserNS=keep-id
-Volume=%h/.config/glance:/app/config
+Volume=%h/.config/glance:/app/config:ro
 Volume=%h/.local/share/glance/icons:/app/assets/icons:ro
 
 [Install]

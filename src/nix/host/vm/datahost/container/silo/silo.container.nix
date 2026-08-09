@@ -20,6 +20,7 @@ Label=traefik.http.services.silo-s3.loadbalancer.server.port=9000
 Network=traefik.network
 UserNS=keep-id
 Volume=/mnt/container/silo:/data
+Volume=/mnt/family:/volumes/family
 
 [Install]
 WantedBy=default.target

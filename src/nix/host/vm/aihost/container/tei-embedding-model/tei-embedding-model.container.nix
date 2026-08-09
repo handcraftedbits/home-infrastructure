@@ -16,7 +16,7 @@ Exec=--auto-truncate false \
   --served-model-name granite-embedding-311m-multilingual-r2
 Image=ghcr.io/huggingface/text-embeddings-inference:86-latest
 Network=traefik.network
-Volume=/mnt/container/models/llm/ibm-granite/granite-embedding-311m-multilingual-r2:/opt/models/granite-embedding-311m-multilingual-r2
+Volume=/mnt/container/models/llm/ibm-granite/granite-embedding-311m-multilingual-r2:/opt/models/granite-embedding-311m-multilingual-r2:ro
 
 [Install]
 WantedBy=default.target

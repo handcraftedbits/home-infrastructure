@@ -12,7 +12,7 @@ Label=traefik.http.routers.searxng.tls.certresolver=route53
 Label=traefik.http.services.searxng.loadbalancer.server.port=8080
 Network=traefik.network
 UserNS=keep-id
-Volume=%h/.config/searxng:/etc/searxng
+Volume=%h/.config/searxng:/etc/searxng:ro
 Volume=/mnt/container/searxng:/var/cache/searxng
 
 [Install]

@@ -7,7 +7,7 @@ ContainerName=labelstudio-ml-backend
 EnvironmentFile=%h/.config/containers/environment/%N
 Image=docker.io/heartexlabs/label-studio-ml-backend:yolo-master
 Network=traefik.network
-Volume=/mnt/container/models/vision:/app/models
+Volume=/mnt/container/models/vision:/app/models:ro
 
 [Install]
 WantedBy=default.target
