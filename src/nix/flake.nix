@@ -93,8 +93,8 @@
           hostType = "vm";
           mainUser = "curtiss";
         };
-        dbhost = mkHost {
-          hostName = "dbhost";
+        datahost = mkHost {
+          hostName = "datahost";
           hostType = "vm";
           mainUser = "curtiss";
         };

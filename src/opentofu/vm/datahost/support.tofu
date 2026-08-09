@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket  = "hcb-terraform-state"
     encrypt = true
-    key     = "vm/dbhost/terraform.tfstate"
+    key     = "vm/datahost/terraform.tfstate"
     region  = "us-east-1"
   }
 

@@ -9,7 +9,7 @@ in
 
     (util.mkNfsMount {
       localPath = "/mnt/container";
-      remotePath = "/mnt/vault02/container_dbhost_vm_lan_howard_estate";
+      remotePath = "/mnt/vault02/container_datahost_vm_lan_howard_estate";
     })
   ];
 
