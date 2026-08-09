@@ -18,7 +18,7 @@ in
     (util.mkUserQuadlets {
       containers = [
         { directory = ./container/postgresql; }
-        { directory = ./container/silo; }
+        { directory = ./container/s3-family; }
         { directory = ./container/traefik; }
       ];
     })

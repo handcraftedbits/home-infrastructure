@@ -53,13 +53,18 @@
         mode = "0400";
         owner = vars.user.username;
       };
-      "searxng/secret" = {
-        file = ./searxng/secret.age;
+      "s3/accessKeyId" = {
+        file = ./s3/accessKeyId.age;
         mode = "0400";
         owner = vars.user.username;
       };
-      "silo/rootPassword" = {
-        file = ./silo/rootPassword.age;
+      "s3/secretAccessKey" = {
+        file = ./s3/secretAccessKey.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
+      "searxng/secret" = {
+        file = ./searxng/secret.age;
         mode = "0400";
         owner = vars.user.username;
       };

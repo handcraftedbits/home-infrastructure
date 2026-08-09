@@ -43,8 +43,7 @@ module "dns" {
 
     "datahost.vm.lan" = [
       "postgresql.db",
-      "s3",
-      "silo.app"
+      "s3"
     ]
 
     "dnshost.lan" = [
