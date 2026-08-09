@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AddDevice=nvidia.com/gpu=1
@@ -15,11 +15,12 @@ Volume=/mnt/container/immich/machine-learning/model-cache:/cache
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until [ -e /dev/nvidia1 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=nvidia-gpu-1-available.service
 Description=Immich (Machine Learning)
+Wants=nvidia-gpu-1-available.service
 ''

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -16,11 +16,12 @@ Network=traefik.network
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until ${pkgs.netcat-openbsd}/bin/nc -z api.docsgpt.app.howard.estate 443; do echo "Waiting for DocsGPT API..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=mnt-container.mount
+After=docsgpt-api-available.service
+After=traefik.service
 Description=DocsGPT
+Wants=docsgpt-api-available.service
 ''

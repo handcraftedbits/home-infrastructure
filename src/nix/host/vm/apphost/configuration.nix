@@ -42,5 +42,53 @@ in
         { directory = ./container/vaultwarden; }
       ];
     })
+    (util.mkTcpAvailabilityService {
+      name = "audio-cpp-available";
+      host = "audiocpp.app.howard.estate";
+      port = 443;
+    })
+    (util.mkTcpAvailabilityService {
+      name = "docsgpt-api-available";
+      host = "api.docsgpt.app.howard.estate";
+      port = 443;
+    })
+    (util.mkTcpAvailabilityService {
+      name = "immich-machine-learning-available";
+      host = "aihost.vm.lan.howard.estate";
+      port = 3003;
+    })
+    (util.mkTcpAvailabilityService {
+      name = "llama-task-model-available";
+      host = "task.llm.howard.estate";
+      port = 443;
+    })
+    (util.mkTcpAvailabilityService {
+      name = "postgresql-available";
+      host = "postgresql.db.howard.estate";
+      port = 5432;
+    })
+    (util.mkTcpAvailabilityService {
+      name = "vllm-coding-model-available";
+      host = "coding.llm.howard.estate";
+      port = 443;
+    })
+    ({ config, lib, ... }: {
+      home.activation.opencodeBootstrap = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        mkdir -p ${config.home.homeDirectory}/.cache/opencode
+        mkdir -p ${config.home.homeDirectory}/.config/opencode/node_modules
+        mkdir -p ${config.home.homeDirectory}/.local/share/opencode
+        mkdir -p ${config.home.homeDirectory}/.local/state/opencode
+
+        touch ${config.home.homeDirectory}/.config/opencode/.gitignore
+
+        if [ ! -s ${config.home.homeDirectory}/.config/opencode/package.json ]; then
+          echo "{}" > ${config.home.homeDirectory}/.config/opencode/package.json
+        fi
+
+        if [ ! -s ${config.home.homeDirectory}/.config/opencode/package-lock.json ]; then
+          echo "{}" > ${config.home.homeDirectory}/.config/opencode/package-lock.json
+        fi
+      '';
+    })
   ];
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AddDevice=nvidia.com/gpu=1
@@ -22,12 +22,12 @@ Volume=/mnt/container/models/llm/ibm-granite/granite-embedding-311m-multilingual
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until [ -e /dev/nvidia1 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
-After=traefik.service
+After=nvidia-gpu-1-available.service
 Description=TEI Embedding Model
+Wants=nvidia-gpu-1-available.service
 ''

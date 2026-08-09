@@ -1,5 +1,4 @@
-
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -12,8 +11,8 @@ Label=traefik.http.routers.labelstudio.rule=Host(`labelstudio.app.howard.estate`
 Label=traefik.http.routers.labelstudio.tls.certresolver=route53
 Label=traefik.http.services.labelstudio.loadbalancer.server.port=8080
 Network=traefik.network
-Volume=/mnt/family:/media/family:ro
 Volume=/mnt/container/labelstudio:/label-studio/data
+Volume=/mnt/family:/media/family:ro
 
 [Install]
 WantedBy=default.target
@@ -24,5 +23,8 @@ TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=postgresql-available.service
+After=traefik.service
 Description=Label Studio
+Wants=postgresql-available.service
 ''

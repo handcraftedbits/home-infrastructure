@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -8,15 +8,16 @@ Image=ghcr.io/handcraftedbits/openai-transcription-normalizer:latest
 Network=traefik.network
 
 [Install]
-WantedBy=default.target openchamber.service
+WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/sh -c 'until ${pkgs.netcat-openbsd}/bin/nc -z audiocpp.app.howard.estate 443; do echo "Waiting for audio.cpp server..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=openchamber.service traefik.service
-BindsTo=openchamber.service
+After=audio-cpp-available.service
+After=openchamber.service
+After=traefik.service
 Description=OpenAI Transcription Normalizer
+Wants=audio-cpp-available.service
 ''

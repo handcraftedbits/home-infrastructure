@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AddDevice=nvidia.com/gpu=0
 AutoUpdate=registry
-ContainerName=vllm-coding-agent
+ContainerName=vllm-coding-model
 EnvironmentFile=%h/.config/containers/environment/%N
 Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --chat-template examples/tool_chat_template_gemma4.jinja \
@@ -26,10 +26,10 @@ Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --tool-call-parser gemma4
 Image=docker.io/vllm/vllm-openai:v0.25.1
 Label=traefik.enable=true
-Label=traefik.http.routers.vllmcodingagent.entrypoints=websecure
-Label=traefik.http.routers.vllmcodingagent.rule=Host(`coding.llm.howard.estate`)
-Label=traefik.http.routers.vllmcodingagent.tls.certresolver=route53
-Label=traefik.http.services.vllmcodingagent.loadbalancer.server.port=8000
+Label=traefik.http.routers.vllm-coding-model.entrypoints=websecure
+Label=traefik.http.routers.vllm-coding-model.rule=Host(`coding.llm.howard.estate`)
+Label=traefik.http.routers.vllm-coding-model.tls.certresolver=route53
+Label=traefik.http.services.vllm-coding-model.loadbalancer.server.port=8000
 Network=traefik.network
 ShmSize=16g
 Volume=/mnt/container/models/llm:/opt/models
@@ -40,12 +40,13 @@ Volume=/mnt/container/vllm/cache/triton:/root/.triton/cache
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until [ -e /dev/nvidia0 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=nvidia-gpu-0-available.service
 After=traefik.service
-Description=vLLM Coding Agent
+Description=vLLM Coding Model
+Wants=nvidia-gpu-0-available.service
 ''

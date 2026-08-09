@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -19,12 +19,20 @@ Volume=/mnt/container/docsgpt/vectors:/app/vectors
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until ${pkgs.netcat-openbsd}/bin/nc -z postgresql.db.howard.estate 5432; do echo "Waiting for database..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=docsgpt-valkey.service mnt-container.mount tei-embedding-model.service
-BindsTo=docsgpt-valkey.service tei-embedding-model.service
+After=docsgpt-valkey.service
+After=llama-task-model.service
+After=mnt-container.mount
+After=postgresql-available.service
+After=tei-embedding-model.service
+After=traefik.service
+BindsTo=docsgpt-valkey.service
+BindsTo=docsgpt-worker.service
+BindsTo=llama-task-model.service
+BindsTo=tei-embedding-model.service
 Description=DocsGPT (API)
+Wants=postgresql-available.service
 ''

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -13,15 +13,17 @@ Volume=/mnt/container/docsgpt/inputs:/app/inputs
 Volume=/mnt/container/docsgpt/vectors:/app/vectors
 
 [Install]
-WantedBy=docsgpt-api.service default.target
+WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until ${pkgs.netcat-openbsd}/bin/nc -z postgresql.db.howard.estate 5432; do echo "Waiting for database..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=docsgpt-api.service mnt-container.mount
+After=docsgpt-api.service
+After=mnt-container.mount
+After=postgresql-available.service
 BindsTo=docsgpt-api.service
 Description=DocsGPT (Worker)
+Wants=postgresql-available.service
 ''

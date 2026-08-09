@@ -13,9 +13,9 @@ WantedBy=default.target
 
 [Service]
 Restart=always
+TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
 Description=DocsGPT (Valkey)
 ''
-

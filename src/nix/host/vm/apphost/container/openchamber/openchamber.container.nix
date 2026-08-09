@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -29,30 +29,16 @@ Volume=/mnt/container/openchamber/workspaces:/home/openchamber/workspaces
 WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/sh -c '\
-  mkdir -p %h/.cache/opencode && \
-  mkdir -p %h/.config/opencode && \
-  mkdir -p %h/.config/opencode/node_modules && \
-  mkdir -p %h/.local/share/opencode && \
-  mkdir -p %h/.local/state/opencode && \
-  \
-  touch %h/.config/opencode/.gitignore && \
-  \
-  if [ ! -s %h/.config/opencode/package.json ]; then \
-    echo "{}" > %h/.config/opencode/package.json; \
-  fi; \
-  \
-  if [ ! -s %h/.config/opencode/package-lock.json ]; then \
-    echo "{}" > %h/.config/opencode/package-lock.json; \
-  fi; \
-  \
-  until ${pkgs.netcat-openbsd}/bin/nc -z coding.llm.howard.estate 443; do echo "Waiting for LLM server..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
+After=llama-task-model-available.service
 After=mnt-container.mount
 After=traefik.service
-Description=Open WebUI
+After=vllm-coding-model-available.service
+Description=OpenChamber
+Wants=llama-task-model-available.service
+Wants=openai-transcription-normalizer.service
+Wants=vllm-coding-model-available.service
 ''
-

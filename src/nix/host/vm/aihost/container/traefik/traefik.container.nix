@@ -23,8 +23,8 @@ Image=docker.io/library/traefik:latest
 Network=traefik.network
 PublishPort=80:80
 PublishPort=443:443
-Volume=/mnt/container/traefik/certs:/certs
 Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
+Volume=/mnt/container/traefik/certs:/certs
 
 [Install]
 WantedBy=default.target

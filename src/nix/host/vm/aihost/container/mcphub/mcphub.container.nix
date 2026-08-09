@@ -23,8 +23,12 @@ Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=mcp-jina.service mcp-searxng.service mnt-container.mount podman.socket traefik.service
+After=mcp-jina.service
+After=mcp-searxng.service
+After=mnt-container.mount
+After=podman.socket
+After=traefik.service
+BindsTo=podman.socket
 Description=MCPHub
-Requires=podman.socket
 Wants=mcp-jina.service mcp-searxng.service
 ''

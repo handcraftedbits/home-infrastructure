@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -16,12 +16,13 @@ Volume=/mnt/container/linkwarden:/data/data
 WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/sh -c 'until ${pkgs.netcat-openbsd}/bin/nc -z postgresql.db.howard.estate 5432; do echo "Waiting for database..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=postgresql-available.service
 After=traefik.service
 Description=Linkwarden
+Wants=postgresql-available.service
 ''

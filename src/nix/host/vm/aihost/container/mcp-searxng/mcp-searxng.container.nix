@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -11,10 +11,11 @@ Network=traefik.network
 WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/sh -c 'until ${pkgs.netcat-openbsd}/bin/nc -z searxng.app.howard.estate 443; do echo "Waiting for SearXNG..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
+After=searxng-available.service
 Description=SearXNG MCP Server
+Wants=searxng-available.service
 ''

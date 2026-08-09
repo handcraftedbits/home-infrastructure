@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AddDevice=nvidia.com/gpu=0
@@ -22,12 +22,13 @@ Volume=/mnt/container/comfyui/workspace:/basedir
 WantedBy=default.target
 
 [Service]
-ExecStartPre=${pkgs.bash}/bin/bash -c 'until [ -e /dev/nvidia0 ] && [ -e /dev/nvidia-modeset ] && [ -e /run/nvidia-persistenced/socket ]; do ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
 TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=nvidia-gpu-0-available.service
 After=traefik.service
 Description=ComfyUI
+Wants=nvidia-gpu-0-available.service
 ''

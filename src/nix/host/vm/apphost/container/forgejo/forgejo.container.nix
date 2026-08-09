@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -17,19 +17,20 @@ Label=traefik.tcp.routers.forgejo.rule=HostSNI(`*`)
 Label=traefik.tcp.services.forgejo.loadbalancer.server.port=2222
 Network=traefik.network
 UserNS=keep-id
-Volume=/mnt/container/forgejo:/var/lib/gitea
 Volume=/etc/localtime:/etc/localtime:ro
+Volume=/mnt/container/forgejo:/var/lib/gitea
 
 [Install]
 WantedBy=default.target
 
 [Service]
-ExecStartPre=/bin/sh -c 'until ${pkgs.netcat-openbsd}/bin/nc -z postgresql.db.howard.estate 5432; do echo "Waiting for database..."; ${pkgs.coreutils}/bin/sleep 2; done'
 Restart=always
-TimeoutStartSec=9000
+TimeoutStartSec=900
 
 [Unit]
 After=mnt-container.mount
+After=postgresql-available.service
 After=traefik.service
 Description=Forgejo
+Wants=postgresql-available.service
 ''

@@ -8,7 +8,7 @@ Image=ghcr.io/handcraftedbits/jina-reader-mcp:latest
 Network=traefik.network
 
 [Install]
-WantedBy=default.target jina.service
+WantedBy=default.target
 
 [Service]
 Restart=always

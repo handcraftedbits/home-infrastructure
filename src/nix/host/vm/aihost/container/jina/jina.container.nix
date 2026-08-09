@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 ''
 [Container]
 AutoUpdate=registry
@@ -21,4 +21,5 @@ TimeoutStartSec=900
 [Unit]
 After=traefik.service
 Description=Jina
+Wants=mcp-jina.service
 ''
