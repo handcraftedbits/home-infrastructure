@@ -31,4 +31,5 @@ After=traefik.service
 BindsTo=podman.socket
 Description=MCPHub
 Wants=mcp-jina.service mcp-searxng.service
+Wants=traefik.service
 ''

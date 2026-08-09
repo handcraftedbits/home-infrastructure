@@ -27,4 +27,5 @@ After=postgresql-available.service
 After=traefik.service
 Description=Label Studio
 Wants=postgresql-available.service
+Wants=traefik.service
 ''

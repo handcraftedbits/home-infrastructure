@@ -22,4 +22,5 @@ TimeoutStartSec=900
 After=traefik.service
 Description=Jina
 Wants=mcp-jina.service
+Wants=traefik.service
 ''

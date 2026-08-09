@@ -28,4 +28,5 @@ After=mnt-container.mount
 After=traefik.service
 Description=Glance
 Wants=linkwarden.service
+Wants=traefik.service
 ''

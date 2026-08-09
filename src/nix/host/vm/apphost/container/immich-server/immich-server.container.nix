@@ -31,4 +31,5 @@ BindsTo=immich-valkey.service
 Description=Immich
 Wants=immich-machine-learning-available.service
 Wants=postgresql-available.service
+Wants=traefik.service
 ''

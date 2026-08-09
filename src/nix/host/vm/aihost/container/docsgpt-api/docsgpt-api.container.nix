@@ -35,4 +35,5 @@ BindsTo=llama-task-model.service
 BindsTo=tei-embedding-model.service
 Description=DocsGPT (API)
 Wants=postgresql-available.service
+Wants=traefik.service
 ''

@@ -31,4 +31,5 @@ After=nvidia-gpu-0-available.service
 After=traefik.service
 Description=ComfyUI
 Wants=nvidia-gpu-0-available.service
+Wants=traefik.service
 ''

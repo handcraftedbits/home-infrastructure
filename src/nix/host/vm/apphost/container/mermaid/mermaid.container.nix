@@ -21,4 +21,5 @@ TimeoutStartSec=900
 [Unit]
 After=traefik.service
 Description=Mermaid
+Wants=traefik.service
 ''

@@ -30,4 +30,5 @@ After=postgresql-available.service
 After=traefik.service
 Description=RomM
 Wants=postgresql-available.service
+Wants=traefik.service
 ''

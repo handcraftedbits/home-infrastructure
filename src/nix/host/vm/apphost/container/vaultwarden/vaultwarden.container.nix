@@ -23,4 +23,5 @@ TimeoutStartSec=900
 After=mnt-container.mount
 After=traefik.service
 Description=Vaultwarden
+Wants=traefik.service
 ''

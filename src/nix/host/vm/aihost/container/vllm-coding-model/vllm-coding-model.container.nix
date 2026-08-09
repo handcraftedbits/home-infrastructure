@@ -49,4 +49,5 @@ After=nvidia-gpu-0-available.service
 After=traefik.service
 Description=vLLM Coding Model
 Wants=nvidia-gpu-0-available.service
+Wants=traefik.service
 ''

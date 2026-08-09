@@ -45,4 +45,5 @@ After=nvidia-gpu-1-available.service
 After=traefik.service
 Description=llama.cpp Task Model
 Wants=nvidia-gpu-1-available.service
+Wants=traefik.service
 ''

@@ -24,4 +24,5 @@ After=docsgpt-api-available.service
 After=traefik.service
 Description=DocsGPT
 Wants=docsgpt-api-available.service
+Wants=traefik.service
 ''

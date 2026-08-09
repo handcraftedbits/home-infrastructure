@@ -26,4 +26,5 @@ After=mnt-container.mount
 After=mnt-media.mount
 After=traefik.service
 Description=Navidrome
+Wants=traefik.service
 ''
