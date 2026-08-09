@@ -58,6 +58,11 @@
         mode = "0400";
         owner = vars.user.username;
       };
+      "silo/rootPassword" = {
+        file = ./silo/rootPassword.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
       "user/${vars.user.username}/password" = {
         file = ./user/${vars.user.username}/password.age;
         mode = "0400";

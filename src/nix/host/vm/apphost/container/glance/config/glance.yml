@@ -61,6 +61,9 @@ pages:
               - title: searxng
                 icon: /assets/icons/searxng.svg
                 url: https://searxng.app.howard.estate
+              - title: silo
+                icon: /assets/icons/silo.svg
+                url: https://silo.app.howard.estate
               - title: silverbullet
                 icon: /assets/icons/silverbullet.png
                 url: https://silverbullet.app.howard.estate
