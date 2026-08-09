@@ -23,6 +23,6 @@ TimeoutStartSec=900
 
 [Unit]
 After=traefik.service
-Description=S3 (Family)
+Description=Local S3 Buckets
 Wants=traefik.service
 ''
