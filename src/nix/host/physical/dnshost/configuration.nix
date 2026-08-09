@@ -10,7 +10,7 @@ in
     util.mkDefaultMounts
     (util.mkNfsMount {
       localPath = "/mnt/container";
-      remotePath = "/mnt/vault02/container_dnshost_vm_lan_howard_estate";
+      remotePath = "/mnt/vault02/container_dnshost_lan_howard_estate";
     })
   ];
 
