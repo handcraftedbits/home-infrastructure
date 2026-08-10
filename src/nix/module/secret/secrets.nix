@@ -11,9 +11,10 @@ in {
   "postgresql/immich/password.age".publicKeys = [ age-key ];
   "postgresql/password.age".publicKeys = [ age-key ];
   "romm/secretKey.age".publicKeys = [ age-key ];
+  "s3/accessKeyId.age".publicKeys = [ age-key ];
+  "s3/secretAccessKey.age".publicKeys = [ age-key ];
   "samba/credentials.age".publicKeys = [ age-key ];
   "searxng/secret.age".publicKeys = [ age-key ];
-  "silo/rootPassword.age".publicKeys = [ age-key ];
   "user/curtiss/password.age".publicKeys = [ age-key ];
   "user/curtiss/privateKey.age".publicKeys = [ age-key ];
   "wireguard/dnshost/privateKey.age".publicKeys = [ age-key ];
