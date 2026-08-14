@@ -43,12 +43,12 @@ pages:
               - title: makemkv
                 icon: /assets/icons/makemkv.png
                 url: https://makemkv.app.howard.estate
-              - title: mermaid
-                icon: /assets/icons/mermaid.svg
-                url: https://mermaid.app.howard.estate
               - title: mcphub
                 icon: /assets/icons/mcphub.png
                 url: https://mcp.howard.estate
+              - title: mermaid
+                icon: /assets/icons/mermaid.svg
+                url: https://mermaid.app.howard.estate
               - title: navidrome
                 icon: /assets/icons/navidrome.svg
                 url: https://navidrome.app.howard.estate/app/
