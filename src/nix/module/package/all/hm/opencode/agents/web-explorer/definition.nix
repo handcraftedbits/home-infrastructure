@@ -41,7 +41,7 @@
     both = {
       "*" = "deny";
       "tools_jina-web_fetch" = "allow";
-      "tools_searxng-searxng_web_search" = "allow";
+      "tools_tavily-tavily_search" = "allow";
       "webfetch" = "allow";
     };
   };

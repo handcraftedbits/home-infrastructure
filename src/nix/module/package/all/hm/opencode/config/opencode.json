@@ -71,6 +71,7 @@
         "baseURL": "https://task.llm.howard.estate/v1"
       }
     }
-  }
+  },
+  "subagent_depth": 8
 }
 

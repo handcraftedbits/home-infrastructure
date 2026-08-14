@@ -68,6 +68,12 @@
         mode = "0400";
         owner = vars.user.username;
       };
+      "tavily/apiKey" = {
+
+        file = ./tavily/apiKey.age;
+        mode = "0400";
+        owner = vars.user.username;
+      };
       "user/${vars.user.username}/password" = {
         file = ./user/${vars.user.username}/password.age;
         mode = "0400";
