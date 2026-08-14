@@ -57,7 +57,7 @@
       "models": {
         "gemma4-e4b": {
           "limit": {
-            "context": 98304,
+            "context": 131072,
             "output": 32768
           },
           "name": "Gemma4 E4B",

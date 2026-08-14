@@ -9,7 +9,7 @@ Exec=--alias gemma4-e4b \
   --cache-type-k f16 \
   --cache-type-v f16 \
   --cont-batching \
-  --ctx-size 393216 \
+  --ctx-size 524288 \
   --flash-attn on \
   --host 0.0.0.0 \
   --jinja \
