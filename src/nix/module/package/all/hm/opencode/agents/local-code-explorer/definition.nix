@@ -67,8 +67,4 @@
       "intellij_search_*" = "allow";
     };
   };
-
-  temperature = 1.0;
-  top_k = 64;
-  top_p = 0.95;
 }

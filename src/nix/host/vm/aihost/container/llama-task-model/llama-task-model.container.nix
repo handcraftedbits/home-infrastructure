@@ -5,7 +5,7 @@ AddDevice=nvidia.com/gpu=1
 AutoUpdate=registry
 ContainerName=llama-task-model
 Exec=--alias gemma4-e4b \
-  --batch-size 2048 \
+  --batch-size 8192 \
   --cache-type-k f16 \
   --cache-type-v f16 \
   --cont-batching \
@@ -21,7 +21,7 @@ Exec=--alias gemma4-e4b \
   --port 8080 \
   --spec-type draft-mtp \
   --spec-draft-n-max 4 \
-  --ubatch-size 512
+  --ubatch-size 2048
 Image=ghcr.io/ggml-org/llama.cpp:server-cuda13
 Label=traefik.enable=true
 Label=traefik.http.routers.llama-task-model.entrypoints=websecure

@@ -11,6 +11,8 @@ let
   check = lib.throwIf (errors != [ ])
     "opencode agent graph is invalid: ${lib.concatStringsSep "; " errors}";
 
+  defaultModel = (builtins.fromJSON (builtins.readFile ../config/opencode.json)).model;
+
   # Edges to agents that don't exist in this profile are dropped, so neither the rendered prompt nor the task permission
   # can reference a disabled agent.
   edgesOf = profile: name: lib.filter (availableIn profile) (outgoing name);
@@ -33,7 +35,9 @@ let
       (lib.filter
         (name: !(lib.all (scope: scope == "both" || availableIn scope name)
           (lib.attrNames agents.${name}.permission)))
-        agentNames);
+        agentNames)
+    ++ map (name: "${name} declares unknown model ${modelFor name}")
+      (lib.filter (name: !(modelTuning ? ${modelFor name})) agentNames);
 
   frontmatter = description: ''
     ---
@@ -45,6 +49,23 @@ let
   indent = prefix: text: lib.concatMapStringsSep "\n"
     (line: if line == "" then "" else prefix + line)
     (lib.splitString "\n" (trim text));
+
+  modelFor = name: agents.${name}.model or defaultModel;
+
+  # Sampling parameters are a property of the model rather than the agent, so an agent declares only which model it
+  # runs on and picks up the matching tuning from here.
+  modelTuning = {
+    "coding/gemma4-31b" = {
+      temperature = 1.0;
+      top_k = 64;
+      top_p = 0.95;
+    };
+    "task/gemma4-e4b" = {
+      temperature = 1.0;
+      top_k = 64;
+      top_p = 0.95;
+    };
+  };
 
   outgoing = name: lib.attrNames (agents.${name}.delegatesTo or { });
 
@@ -115,12 +136,10 @@ let
 
   trim = text: lib.removeSuffix "\n" text;
 
-  tuning = [
-    "model"
-    "temperature"
-    "top_k"
-    "top_p"
-  ];
+  # `model` is emitted only when the agent overrides the default; otherwise the config's top-level `model` applies.
+  tuningFor = name:
+    modelTuning.${modelFor name}
+    // lib.optionalAttrs (agents.${name} ? model) { inherit (agents.${name}) model; };
 in
 check (lib.genAttrs profiles (profile: {
   directory = pkgs.runCommand "opencode-agents-${profile}" { } (''
@@ -136,7 +155,7 @@ check (lib.genAttrs profiles (profile: {
       if availableIn profile name then {
         inherit (agent) mode;
         permission = permissionFor profile name;
-      } // lib.getAttrs (lib.filter (attr: agent ? ${attr}) tuning) agent
+      } // tuningFor name
       else {
         disable = true;
       })
