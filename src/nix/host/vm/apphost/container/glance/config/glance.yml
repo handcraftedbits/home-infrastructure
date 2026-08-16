@@ -22,6 +22,9 @@ pages:
               - title: adguard
                 icon: /assets/icons/adguard.svg
                 url: https://admin.dns.lan.howard.estate/login.html
+              - title: audio.cpp
+                icon: /assets/icons/audiocpp.svg
+                url: https://audiocpp.app.howard.estate
               - title: comfyui
                 icon: /assets/icons/comfyui.svg
                 url: https://comfyui.app.howard.estate
