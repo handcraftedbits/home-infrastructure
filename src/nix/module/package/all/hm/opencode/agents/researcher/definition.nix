@@ -1,5 +1,6 @@
 {
   delegatesTo = {
+    image-interpreter = { };
     remote-code-explorer = { };
     web-explorer = { };
   };

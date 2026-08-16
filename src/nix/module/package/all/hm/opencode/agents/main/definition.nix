@@ -11,6 +11,13 @@
         `documenter` along with the writing task.
       '';
     };
+    image-interpreter = {
+      note = ''
+        An image attached directly to your own conversation cannot be forwarded -- delegation carries text only, and a
+        filename read off an attachment usually arrives without its directory. You can see such an image yourself, so
+        interpret it directly rather than delegating.
+      '';
+    };
     local-code-explorer = { };
     remote-code-explorer = { };
     researcher = { };

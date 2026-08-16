@@ -42,6 +42,15 @@
             "context": 262144,
             "output": 81920
           },
+          "modalities": {
+            "input": [
+              "image",
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
           "name": "Gemma4 31B",
           "reasoning": true,
           "temperature": true
@@ -59,6 +68,14 @@
           "limit": {
             "context": 131072,
             "output": 32768
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
           },
           "name": "Gemma4 E4B",
           "reasoning": true,
