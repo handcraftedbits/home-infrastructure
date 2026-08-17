@@ -23,11 +23,6 @@ Exec=--alias gemma4-e4b \
   --spec-draft-n-max 4 \
   --ubatch-size 2048
 Image=ghcr.io/ggml-org/llama.cpp:server-cuda13
-Label=traefik.enable=true
-Label=traefik.http.routers.llama-task-model.entrypoints=websecure
-Label=traefik.http.routers.llama-task-model.rule=Host(`task.llm.howard.estate`)
-Label=traefik.http.routers.llama-task-model.tls.certresolver=route53
-Label=traefik.http.services.llama-task-model.loadbalancer.server.port=8080
 Network=traefik.network
 Volume=/mnt/container/models/llm/gguf/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf:/opt/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf:ro
 Volume=/mnt/container/models/llm/gguf/mtp-gemma-4-E4B-it-F16.gguf:/opt/models/mtp-gemma-4-E4B-it-F16.gguf:ro
@@ -42,8 +37,6 @@ TimeoutStartSec=900
 [Unit]
 After=mnt-container.mount
 After=nvidia-gpu-1-available.service
-After=traefik.service
 Description=llama.cpp Task Model
 Wants=nvidia-gpu-1-available.service
-Wants=traefik.service
 ''

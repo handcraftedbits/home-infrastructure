@@ -5,7 +5,7 @@
       "disable": true
     },
     "compaction": {
-      "model": "task/gemma4-e4b"
+      "model": "llm/task"
     },
     "explore": {
       "disable": true
@@ -17,10 +17,10 @@
       "disable": true
     },
     "summary": {
-      "model": "task/gemma4-e4b"
+      "model": "llm/task"
     },
     "title": {
-      "model": "task/gemma4-e4b"
+      "model": "llm/task"
     }
   },
   "disabled_providers": [
@@ -33,11 +33,11 @@
       "url": "https://mcp.howard.estate/mcp"
     }
   },
-  "model": "coding/gemma4-31b",
+  "model": "llm/chat",
   "provider": {
-    "coding": {
+    "llm": {
       "models": {
-        "gemma4-31b": {
+        "chat": {
           "limit": {
             "context": 262144,
             "output": 81920
@@ -54,17 +54,8 @@
           "name": "Gemma4 31B",
           "reasoning": true,
           "temperature": true
-        }
-      },
-      "name": "coding",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "https://coding.llm.howard.estate/v1"
-      }
-    },
-    "task": {
-      "models": {
-        "gemma4-e4b": {
+        },
+        "task": {
           "limit": {
             "context": 131072,
             "output": 32768
@@ -82,10 +73,10 @@
           "temperature": true
         }
       },
-      "name": "task",
+      "name": "llm",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "baseURL": "https://task.llm.howard.estate/v1"
+        "baseURL": "https://llm.howard.estate/v1"
       }
     }
   },

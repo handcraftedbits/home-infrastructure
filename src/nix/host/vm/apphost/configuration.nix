@@ -18,7 +18,6 @@ in
   home-manager.users.${vars.user.username}.imports = [
     (util.mkUserQuadlets {
       containers = [
-        { directory = ./container/docsgpt; }
         { directory = ./container/forgejo; }
         { directory = ./container/glance; }
         {
@@ -48,29 +47,19 @@ in
       port = 443;
     })
     (util.mkTcpAvailabilityService {
-      name = "docsgpt-api-available";
-      host = "api.docsgpt.app.howard.estate";
-      port = 443;
-    })
-    (util.mkTcpAvailabilityService {
       name = "immich-machine-learning-available";
       host = "aihost.vm.lan.howard.estate";
       port = 3003;
     })
     (util.mkTcpAvailabilityService {
-      name = "llama-task-model-available";
-      host = "task.llm.howard.estate";
+      name = "litellm-available";
+      host = "llm.howard.estate";
       port = 443;
     })
     (util.mkTcpAvailabilityService {
       name = "postgresql-available";
       host = "postgresql.db.howard.estate";
       port = 5432;
-    })
-    (util.mkTcpAvailabilityService {
-      name = "vllm-coding-model-available";
-      host = "coding.llm.howard.estate";
-      port = 443;
     })
     ({ config, lib, ... }: {
       home.activation.opencodeBootstrap = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -57,7 +57,7 @@ so secrets never enter the Nix store. See [nix.md](nix.md#secrets) for how that 
 Everything is under `howard.estate`, structured by role rather than by machine:
 
 * Machines get `<name>.lan.howard.estate`, with VMs at `<name>.vm.lan.howard.estate`.
-* Services get a role-suffixed alias -- `forgejo.app`, `postgresql.db`, `coding.llm` -- pointing at whichever host
+* Services get a role-suffixed alias -- `forgejo.app`, `postgresql.db`, `immich.app` -- pointing at whichever host
   currently runs them.
 
 The alias layer is what makes a service movable. Containers reference each other by service name, so relocating a

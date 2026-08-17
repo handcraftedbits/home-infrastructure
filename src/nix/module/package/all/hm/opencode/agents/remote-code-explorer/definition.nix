@@ -37,7 +37,7 @@
 
   mode = "subagent";
 
-  model = "task/gemma4-e4b";
+  model = "llm/task";
 
   permission = {
     both = {

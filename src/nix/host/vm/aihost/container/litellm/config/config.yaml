@@ -1,0 +1,40 @@
+model_list:
+  - model_name: chat
+    litellm_params:
+      api_base: http://vllm-coding-model:8000/v1
+      api_key: none
+      model: openai/gemma4-31b
+    model_info:
+      mode: chat
+
+  - model_name: embedding
+    litellm_params:
+      api_base: http://tei-embedding-model:8080/v1
+      api_key: none
+      model: openai/granite-embedding-311m-multilingual-r2
+    model_info:
+      mode: embedding
+
+  - model_name: stt
+    litellm_params:
+      api_base: http://audio-cpp:8080/v1
+      api_key: none
+      model: openai/stt-default
+    model_info:
+      mode: audio_transcription
+
+  - model_name: task
+    litellm_params:
+      api_base: http://llama-task-model:8080/v1
+      api_key: none
+      model: openai/gemma4-e4b
+    model_info:
+      mode: chat
+
+  - model_name: tts
+    litellm_params:
+      api_base: http://audio-cpp:8080/v1
+      api_key: none
+      model: openai/tts-default
+    model_info:
+      mode: audio_speech

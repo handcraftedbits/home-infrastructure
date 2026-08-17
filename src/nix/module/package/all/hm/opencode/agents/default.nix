@@ -55,12 +55,12 @@ let
   # Sampling parameters are a property of the model rather than the agent, so an agent declares only which model it
   # runs on and picks up the matching tuning from here.
   modelTuning = {
-    "coding/gemma4-31b" = {
+    "llm/chat" = {
       temperature = 1.0;
       top_k = 64;
       top_p = 0.95;
     };
-    "task/gemma4-e4b" = {
+    "llm/task" = {
       temperature = 1.0;
       top_k = 64;
       top_p = 0.95;

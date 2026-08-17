@@ -238,7 +238,7 @@ The unit polls the port, signals readiness once, and then **exits non-zero when 
 `Restart=always` it re-enters the waiting state, which tears down and retries everything bound to it. That is how a
 database restart on one host propagates to consumers on another.
 
-Always address the remote service by its **role alias** (`postgresql.db.howard.estate`, `coding.llm.howard.estate`),
+Always address the remote service by its **role alias** (`postgresql.db.howard.estate`, `llm.howard.estate`),
 never by machine name or IP, so the dependency survives the service moving hosts.
 
 ### GPUs

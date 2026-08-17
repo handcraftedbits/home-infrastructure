@@ -161,7 +161,7 @@ Every place the old name appears:
 | Other hosts' `configuration.nix`     | Any `mkTcpAvailabilityService` pointing at it |
 
 Most consumers will **not** need changes, and that is by design. Services address each other through role aliases
-(`postgresql.db.howard.estate`, `coding.llm.howard.estate`), not machine names, so a rename is invisible to them as long
+(`postgresql.db.howard.estate`, `llm.howard.estate`), not machine names, so a rename is invisible to them as long
 as the alias moves with the service. Only direct machine-FQDN references break. There are few of them; find them with:
 
 ```shell

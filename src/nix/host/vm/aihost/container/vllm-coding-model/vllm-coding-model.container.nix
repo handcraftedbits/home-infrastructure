@@ -25,11 +25,6 @@ Exec=/opt/models/gemma-4-31B-it-FP8-dynamic \
   --tensor-parallel-size 1 \
   --tool-call-parser gemma4
 Image=docker.io/vllm/vllm-openai:v0.25.1
-Label=traefik.enable=true
-Label=traefik.http.routers.vllm-coding-model.entrypoints=websecure
-Label=traefik.http.routers.vllm-coding-model.rule=Host(`coding.llm.howard.estate`)
-Label=traefik.http.routers.vllm-coding-model.tls.certresolver=route53
-Label=traefik.http.services.vllm-coding-model.loadbalancer.server.port=8000
 Network=traefik.network
 ShmSize=16g
 Volume=/mnt/container/models/llm:/opt/models:ro
@@ -46,8 +41,6 @@ TimeoutStartSec=900
 [Unit]
 After=mnt-container.mount
 After=nvidia-gpu-0-available.service
-After=traefik.service
 Description=vLLM Coding Model
 Wants=nvidia-gpu-0-available.service
-Wants=traefik.service
 ''

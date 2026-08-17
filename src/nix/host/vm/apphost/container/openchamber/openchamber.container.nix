@@ -33,13 +33,11 @@ Restart=always
 TimeoutStartSec=900
 
 [Unit]
-After=llama-task-model-available.service
+After=litellm-available.service
 After=mnt-container.mount
 After=traefik.service
-After=vllm-coding-model-available.service
 Description=OpenChamber
-Wants=llama-task-model-available.service
+Wants=litellm-available.service
 Wants=openai-transcription-normalizer.service
 Wants=traefik.service
-Wants=vllm-coding-model-available.service
 ''
