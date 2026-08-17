@@ -10,13 +10,13 @@ Exec=--auto-truncate false \
   --hostname 0.0.0.0 \
   --max-batch-tokens 32768 \
   --max-client-batch-size 64 \
-  --model-id /opt/models/granite-embedding-311m-multilingual-r2 \
+  --model-id /opt/models/BAAI/bge-m3 \
   --pooling cls \
   --port 8080 \
-  --served-model-name granite-embedding-311m-multilingual-r2
+  --served-model-name bge-m3
 Image=ghcr.io/huggingface/text-embeddings-inference:86-latest
 Network=traefik.network
-Volume=/mnt/container/models/llm/ibm-granite/granite-embedding-311m-multilingual-r2:/opt/models/granite-embedding-311m-multilingual-r2:ro
+Volume=/mnt/container/models/embedding:/opt/models:ro
 
 [Install]
 WantedBy=default.target
