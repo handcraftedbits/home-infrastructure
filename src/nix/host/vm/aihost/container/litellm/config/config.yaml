@@ -9,9 +9,11 @@ model_list:
 
   - model_name: embedding
     litellm_params:
+      additional_drop_params:
+        - dimensions
       api_base: http://tei-embedding-model:8080/v1
       api_key: none
-      model: openai/granite-embedding-311m-multilingual-r2
+      model: openai/bge-m3
     model_info:
       mode: embedding
 
