@@ -2,7 +2,9 @@
 let
   # Excluded since these secrets have special handling.
   excludedDirs = [
+    "gpg"
     "samba"
+    "sonatype"
     "wireguard"
   ];
 
