@@ -37,8 +37,8 @@
   fi
 
   mkdir -p /tmp/opencode-intellij
-  sed 's/''${agent_bridge_port}/'"$PORT"'/g' "${config.xdg.configHome}/opencode/opencode-intellij.json" \
-    > /tmp/opencode-intellij/opencode.jsonc
+  sed -e 's|''${agent_bridge_port}|'"$PORT"'|g' -e 's|''${project_path}|'"''${PROJECT_DIR:-$(pwd)}"'|g' \
+    "${config.xdg.configHome}/opencode/opencode-intellij.json" > /tmp/opencode-intellij/opencode.jsonc
 
   mkdir -p ${config.xdg.cacheHome}/opencode
   mkdir -p ${config.xdg.configHome}/opencode

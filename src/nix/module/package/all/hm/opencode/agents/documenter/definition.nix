@@ -62,13 +62,13 @@
     };
 
     intellij = {
-      "intellij_edit_text" = "allow";
-      "intellij_find_file" = "allow";
-      "intellij_insert_*" = "allow";
-      "intellij_list_directory_tree" = "allow";
-      "intellij_read_file" = "allow";
-      "intellij_search_*" = "allow";
-      "intellij_write_file" = "allow";
+      "agentbridge_edit_text" = "allow";
+      "agentbridge_find_file" = "allow";
+      "agentbridge_insert_*" = "allow";
+      "agentbridge_list_directory_tree" = "allow";
+      "agentbridge_read_file" = "allow";
+      "agentbridge_search_*" = "allow";
+      "agentbridge_write_file" = "allow";
     };
   };
 }

@@ -47,24 +47,24 @@
     };
 
     intellij = {
-      "intellij_download_sources" = "allow";
-      "intellij_find_*" = "allow";
-      "intellij_get_call_hierarchy" = "allow";
-      "intellij_get_class_outline" = "allow";
-      "intellij_get_documentation" = "allow";
-      "intellij_get_file_*" = "allow";
-      "intellij_get_project_*" = "allow";
-      "intellij_get_symbol_info" = "allow";
-      "intellij_get_type_hierarchy" = "allow";
-      "intellij_git_diff" = "allow";
-      "intellij_git_log" = "allow";
-      "intellij_git_show" = "allow";
-      "intellij_go_to_declaration" = "allow";
-      "intellij_list_directory_tree" = "allow";
-      "intellij_list_external_dirs" = "allow";
-      "intellij_list_project_files" = "allow";
-      "intellij_read_file" = "allow";
-      "intellij_search_*" = "allow";
+      "agentbridge_download_sources" = "allow";
+      "agentbridge_find_*" = "allow";
+      "agentbridge_get_call_hierarchy" = "allow";
+      "agentbridge_get_class_outline" = "allow";
+      "agentbridge_get_documentation" = "allow";
+      "agentbridge_get_file_*" = "allow";
+      "agentbridge_get_project_*" = "allow";
+      "agentbridge_get_symbol_info" = "allow";
+      "agentbridge_get_type_hierarchy" = "allow";
+      "agentbridge_git_diff" = "allow";
+      "agentbridge_git_log" = "allow";
+      "agentbridge_git_show" = "allow";
+      "agentbridge_go_to_declaration" = "allow";
+      "agentbridge_list_directory_tree" = "allow";
+      "agentbridge_list_external_dirs" = "allow";
+      "agentbridge_list_project_files" = "allow";
+      "agentbridge_read_file" = "allow";
+      "agentbridge_search_*" = "allow";
     };
   };
 }
