@@ -27,6 +27,8 @@ model_list:
 
   - model_name: task
     litellm_params:
+      allowed_openai_params:
+        - reasoning_effort
       api_base: http://llama-task-model:8080/v1
       api_key: none
       model: openai/gemma4-e4b
