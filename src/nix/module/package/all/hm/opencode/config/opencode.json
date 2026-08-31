@@ -33,11 +33,11 @@
       "url": "https://mcp.howard.estate/mcp"
     }
   },
-  "model": "llm/chat",
+  "model": "llm/main",
   "provider": {
     "llm": {
       "models": {
-        "chat": {
+        "main": {
           "limit": {
             "context": 262144,
             "output": 81920
@@ -51,7 +51,7 @@
               "text"
             ]
           },
-          "name": "Gemma4 31B",
+          "name": "main",
           "reasoning": true,
           "temperature": true
         },
@@ -68,7 +68,7 @@
               "text"
             ]
           },
-          "name": "Gemma4 E4B",
+          "name": "task",
           "reasoning": true,
           "temperature": true
         }

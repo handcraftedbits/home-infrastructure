@@ -55,7 +55,7 @@ let
   # Sampling parameters are a property of the model rather than the agent, so an agent declares only which model it
   # runs on and picks up the matching tuning from here.
   modelTuning = {
-    "llm/chat" = {
+    "llm/main" = {
       temperature = 1.0;
       top_k = 64;
       top_p = 0.95;

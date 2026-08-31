@@ -1,9 +1,9 @@
 model_list:
-  - model_name: chat
+  - model_name: main
     litellm_params:
       api_base: http://vllm-coding-model:8000/v1
       api_key: none
-      model: openai/gemma4-31b
+      model: openai/main
     model_info:
       mode: chat
 
@@ -31,7 +31,7 @@ model_list:
         - reasoning_effort
       api_base: http://llama-task-model:8080/v1
       api_key: none
-      model: openai/gemma4-e4b
+      model: openai/task
     model_info:
       mode: chat
 

@@ -4,7 +4,7 @@
 AddDevice=nvidia.com/gpu=1
 AutoUpdate=registry
 ContainerName=llama-task-model
-Exec=--alias gemma4-e4b \
+Exec=--alias task \
   --batch-size 8192 \
   --cache-type-k f16 \
   --cache-type-v f16 \
