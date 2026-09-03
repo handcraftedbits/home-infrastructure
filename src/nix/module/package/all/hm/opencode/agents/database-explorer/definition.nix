@@ -33,11 +33,11 @@
   permission = {
     intellij = {
       "*" = "deny";
-      "intellij_get_database_object_description" = "allow";
-      "intellij_list_database_connections" = "allow";
-      "intellij_list_database_schemas" = "allow";
-      "intellij_list_schema_object_kinds" = "allow";
-      "intellij_list_schema_objects" = "allow";
+      "agentbridge_get_database_object_description" = "allow";
+      "agentbridge_list_database_connections" = "allow";
+      "agentbridge_list_database_schemas" = "allow";
+      "agentbridge_list_schema_object_kinds" = "allow";
+      "agentbridge_list_schema_objects" = "allow";
     };
   };
 

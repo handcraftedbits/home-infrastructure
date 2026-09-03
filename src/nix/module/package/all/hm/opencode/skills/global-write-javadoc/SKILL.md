@@ -1,5 +1,5 @@
 ---
-name: write-javadoc
+name: global-write-javadoc
 description: >
   Writing Javadoc comments for Java source code. Use this skill any time you are asked to write, add, update, or
   generate Javadoc for a Java class, method, field, enum, or record - including when the user pastes Java code and asks

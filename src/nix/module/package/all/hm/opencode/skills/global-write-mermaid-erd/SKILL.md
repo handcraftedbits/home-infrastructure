@@ -1,5 +1,5 @@
 ---
-name: write-mermaid-erd
+name: global-write-mermaid-erd
 description: >
   Generates a Mermaid entity-relationship diagram from one or more SQL CREATE TABLE statements. Use this skill whenever
   the user provides DDL (CREATE TABLE), a database schema, or asks to visualize, diagram, or map table relationships --

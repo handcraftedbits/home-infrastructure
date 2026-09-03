@@ -1,5 +1,6 @@
 { config, containerRuntime }:
 ''
+  mkdir -p "''${HOME}/.m2"
   mkdir -p ${config.xdg.cacheHome}/opencode
   mkdir -p ${config.xdg.configHome}/opencode
   mkdir -p ${config.xdg.configHome}/opencode/node_modules
@@ -20,8 +21,11 @@
 
   ${containerRuntime} run -it --rm \
     --env KITTY_WINDOW_ID="''${KITTY_WINDOW_ID}" \
+    --env PTY_WEB_HOSTNAME=0.0.0.0 \
+    --env PTY_WEB_PORT=58213 \
     --hostname "$(hostname)" \
     --network=host \
+    --volume "''${HOME}/.m2":/root/.m2 \
     --volume "${config.xdg.cacheHome}/opencode":/root/.cache/opencode \
     --volume "${config.xdg.configHome}/opencode/.gitignore":/root/.config/opencode/.gitignore \
     --volume "$(realpath ${config.xdg.configHome}/opencode/agents-default)":/root/.config/opencode/agents \

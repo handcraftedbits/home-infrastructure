@@ -79,6 +79,12 @@ let
     // (permission.${profile} or { })
     // { task = taskPermission profile name; };
 
+  # Tool names differ between launchers, so a shared prompt cannot name one that exists in only some of them. An agent
+  # may put per-launcher prose in `prompt-<profile>.md`; it is appended after the shared body when present.
+  profilePrompt = profile: name:
+    let path = ./. + "/${name}/prompt-${profile}.md"; in
+    lib.optional (builtins.pathExists path) (trim (builtins.readFile path));
+
   profiles = [ "default" "intellij" ];
 
   # Transitive closure by iteration; agentNames rounds is more than enough to saturate.
@@ -95,6 +101,7 @@ let
     frontmatter agents.${name}.description
     + "\n"
     + paragraphs ([ (trim (builtins.readFile (./. + "/${name}/prompt.md"))) ]
+      ++ profilePrompt profile name
       ++ lib.optional (edgesOf profile name != [ ]) (renderDelegation profile name))
     + "\n";
 

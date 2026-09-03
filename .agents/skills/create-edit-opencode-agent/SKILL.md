@@ -23,6 +23,7 @@ src/nix/module/package/all/hm/opencode/agents/
   <agent-name>/
     definition.nix         <- metadata, permissions, delegation edges
     prompt.md              <- the agent's system prompt body
+    prompt-<profile>.md    <- optional; appended to prompt.md in that launch profile only
 ```
 
 Agents are discovered with `readDir`. Creating the directory **is** the registration step -- there is no list to add
@@ -185,6 +186,18 @@ The prompt body, and nothing else:
 * `#` headings for top-level sections -- generated delegation content uses `#` / `##` and must not collide.
 * Wrap at 120 columns; use `--` rather than an em dash; `*` for bullets.
 * No trailing newline concerns -- the engine trims and re-joins blocks.
+
+**Never name a tool in `prompt.md` that does not exist in every profile the agent runs in.** The prompt body is shared
+across profiles -- only agent availability, delegation edges, and permissions vary -- so naming `agentbridge_*` there
+tells the agent it has those tools in the `default` launcher too, where they do not exist. Permissions still deny the
+call, but the agent does not find out until it tries, and a hedge like "if available" does not stop it believing the
+tool is there.
+
+Put per-launcher prose in `prompt-default.md` or `prompt-intellij.md` instead. Each is optional, discovered by
+`pathExists`, and appended after the shared body, so it holds the last word. The split that works: `prompt.md` carries
+what is true regardless of tooling -- scope, judgement, reporting rules -- and each overlay names the concrete tools
+that launcher actually provides. This applies to ordinary file tools too, since `read`/`grep`/`glob` and
+`agentbridge_read_file`/`agentbridge_search_*` are the same capability under different names.
 
 ## Step-by-Step Instructions
 

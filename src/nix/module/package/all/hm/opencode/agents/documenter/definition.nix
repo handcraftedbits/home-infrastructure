@@ -3,20 +3,28 @@
 
   delegation = {
     briefing = [
-      "What needs documenting and at what level of detail."
-      "The relevant facts it needs to do the job."
-      "Where it should live (a specific file, or a new one) and any format expectations."
-      "Whether it should match an existing style/convention in the project."
+      "What is being documented -- a class, a module, a schema, a system, a release history -- and where it lives."
+      "What it is and what it does: behavior, purpose, structure, how it relates to what surrounds it."
+      "Anything not recoverable from the subject itself -- intent, history, gotchas, why an approach was chosen."
+      "Where the documentation should go, if it is a standalone artifact rather than documentation in place."
     ];
 
     intro = ''
-      You do not have direct access to documentation-writing tools. Any time a task involves writing or updating
+      Documentation is `documenter`'s to write, not yours. Any time a task involves writing or updating
       documentation -- READMEs, API docs, docstrings, changelogs, architecture notes, schema/system documentation --
       delegate it to the `documenter` subagent.
 
-      The `documenter` does not explore the codebase itself, but it does have the ability to read files, so it is not
-      necessary to pass the full content of any file to the `documenter`. Don't send `documenter` a vague task and
-      expect it to go find the details on its own.
+      Give `documenter` the material, not the wording. Describe the subject -- what it is, what it does, why it
+      exists, and anything that cannot be recovered by inspecting it -- then let `documenter` decide what to say, how
+      to say it, and which parts warrant saying anything about. Handing over finished sentences turns the job into
+      transcription, and the conventions it would otherwise apply never get consulted. Do not enumerate the parts to
+      cover as a way of setting scope either -- name the subject, supply the context, and leave coverage to
+      `documenter`.
+
+      Being specific and dictating the output are different things. `documenter` does not investigate on its own, so a
+      vague task will come back as a question -- be precise about what is being documented, and generous with facts
+      about it. It can read files, so you need not paste the contents of anything on disk; but facts it cannot reach
+      that way, such as a live schema or a decision made elsewhere, have to come from you.
     '';
 
     outro = ''
@@ -50,7 +58,8 @@
       "*" = "deny";
       "skill" = {
         "*" = "deny";
-        "write-*" = "allow";
+        "global-write-javadoc" = "allow";
+        "global-write-mermaid-erd" = "allow";
       };
     };
 

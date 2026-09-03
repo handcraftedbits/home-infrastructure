@@ -21,6 +21,10 @@
       search results or full page dumps. It answers from a single pass of looking: it does not plan an investigation,
       pursue a question across many sources, or reconcile sources that disagree. When a question needs that, it will say
       so and return what it found rather than going further on its own.
+
+      A second or third `web-explorer` call to fill gaps the first one exposed is that same situation arriving
+      gradually. At that point the question has turned into an investigation, and it is better handed to something that
+      can plan one than continued a piece at a time.
     '';
 
     title = "Web Search and Page Content";

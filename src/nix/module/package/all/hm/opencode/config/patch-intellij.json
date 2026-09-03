@@ -4,15 +4,6 @@
       "enabled": true,
       "type": "remote",
       "url": "http://host.docker.internal:${agent_bridge_port}/mcp"
-    },
-    "intellij": {
-      "enabled": true,
-      "type": "remote",
-      "url": "http://host.docker.internal:64342/stream",
-      "headers": {
-        "HOST": "127.0.0.1:64342",
-        "IJ_MCP_SERVER_PROJECT_PATH": "${project_path}"
-      }
     }
   }
 }

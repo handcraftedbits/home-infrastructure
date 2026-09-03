@@ -34,6 +34,8 @@
 
   mode = "subagent";
 
+  model = "llm/task";
+
   permission = {
     both = {
       "*" = "deny";
