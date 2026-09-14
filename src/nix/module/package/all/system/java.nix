@@ -1,7 +1,7 @@
 { lib, pkgs, system, vars, ... }:
 let
   isLinux = lib.hasSuffix "-linux" system;
-  jdk = pkgs.javaPackages.compiler.temurin-bin.jdk-25;
+  jdk = pkgs.graalvmPackages.graalvm-ce;
 in
 {
   environment.systemPackages = with pkgs; [
@@ -11,6 +11,7 @@ in
 
   environment.variables = {
     JAVA_HOME = "${jdk.home}";
+    NATIVE_IMAGE_OPTIONS = "-H:NativeLinkerOption=-L${pkgs.zlib}/lib";
   };
 } // lib.optionalAttrs (!isLinux) {
   system.activationScripts.postActivation.text = ''
