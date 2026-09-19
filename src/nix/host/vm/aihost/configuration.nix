@@ -1,8 +1,17 @@
-{ vars, ... }:
+{ pkgs, vars, ... }:
 let
   util = import ../../../module/util { inherit vars; };
 in
 {
+  environment.systemPackages = with pkgs; [
+    cudaPackages_13_2.cuda_nvcc
+    cudaPackages_13_2.cuda_cudart
+    python3
+    python3Packages.huggingface-hub
+    python3Packages.pip
+    uv
+  ];
+
   imports = [
     ../../../module/hardware/nvidia.nix
     ../../../module/os/linux/internal/vm.nix

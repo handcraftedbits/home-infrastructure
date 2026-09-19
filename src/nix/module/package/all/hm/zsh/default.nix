@@ -1,6 +1,6 @@
 { pkgs, lib, config, vars, ... }:
 let
-  isLinux = pkgs.stdenv.isLinux;
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
 in
 {
   xdg.configFile."zsh/oh-my-zsh/custom/themes/handcraftedbits.zsh-theme".source = ./handcraftedbits.zsh-theme;

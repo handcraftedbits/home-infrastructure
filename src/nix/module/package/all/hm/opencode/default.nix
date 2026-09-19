@@ -6,7 +6,7 @@ let
     "skills"
   ];
 
-  containerRuntime = if pkgs.stdenv.isLinux then "podman" else "docker";
+  containerRuntime = if pkgs.stdenv.hostPlatform.isLinux then "podman" else "docker";
 
   linkedDirs = lib.foldl' (acc: subdir:
     let path = ./. + "/${subdir}"; in
@@ -37,7 +37,7 @@ in
 
   home.packages = [
     (pkgs.writeShellScriptBin "opencode" (import ./opencode.sh.nix { inherit config containerRuntime; }))
-  ] ++ lib.optionals (!pkgs.stdenv.isLinux) [
+  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isLinux) [
     (pkgs.writeShellScriptBin "opencode-intellij"
       (import ./opencode_intellij.sh.nix { inherit config containerRuntime; }))
   ];
