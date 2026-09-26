@@ -1,8 +1,11 @@
-{ ... }:
+{ config, pkgs, ... }:
 {
   programs.aerospace = {
     enable = true;
     launchd.enable = true;
+
+    # Signed with a stable identity so that the Accessibility grant survives rebuilds; see README.md.
+    package = config.lib.appIdentity.stabilizeApp pkgs.aerospace;
 
     settings = {
       accordion-padding = 10;

@@ -1,25 +1,28 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, vars, ... }:
 let
-  util = import ../../../../util { inherit vars; };
+  # Run from the stable copy nix-darwin makes, not from the store, so the bundle is easy to find in System Settings.
+  execPath = "/Applications/Nix Apps/Synergy Server.app/Contents/MacOS/Synergy Server";
 
-  synergyServer = util.mkSignedApp {
+  # A bundle with a stable identity, so that the Accessibility grant survives rebuilds; see README.md.
+  synergyServer = config.lib.appIdentity.mkAppBundle {
+    executable = "${pkgs.synergy}/bin/.synergys-wrapped";
+    identifier = "com.curtisshoward.synergys";
+    mainProgram = "synergys";
     name = "Synergy Server";
-    bundleId = "com.curtisshoward.synergys";
-    executableName = "synergys";
-    binary = "${pkgs.synergy}/bin/.synergys-wrapped";
-    onChange = ''/bin/launchctl kickstart -k "gui/$(id -u)/com.synergy" || true'';
   };
 in
 {
-  imports = [ synergyServer.module ];
-
   environment.etc."synergy/synergy.conf".text = import ./synergy.conf.nix { inherit vars; };
+
+  environment.systemPackages = [
+    synergyServer
+  ];
 
   launchd.user.agents.synergy = {
     serviceConfig = {
       KeepAlive = true;
       Label = "com.synergy";
-      ProgramArguments = [ synergyServer.execPath "-c" "/etc/synergy/synergy.conf" "-f" ];
+      ProgramArguments = [ execPath "-c" "/etc/synergy/synergy.conf" "-f" ];
       RunAtLoad = true;
     };
   };

@@ -14,6 +14,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/home-manager/master";
     };
+    nix-mac-app-identity = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:natsukium/nix-mac-app-identity";
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixvim = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,10 +25,10 @@
     };
   };
 
-  outputs = { agenix, darwin, home-manager, nixpkgs, nixvim, ... }:
+  outputs = { agenix, darwin, home-manager, nix-mac-app-identity, nixpkgs, nixvim, ... }:
     let
       mkHost = import ./module/util/mkHost.nix {
-        inherit agenix darwin home-manager nixpkgs nixvim vars;
+        inherit agenix darwin home-manager nix-mac-app-identity nixpkgs nixvim vars;
       };
 
       users-base = {

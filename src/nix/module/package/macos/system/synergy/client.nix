@@ -1,17 +1,20 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, vars, ... }:
 let
-  util = import ../../../../util { inherit vars; };
+  # Run from the stable copy nix-darwin makes, not from the store, so the bundle is easy to find in System Settings.
+  execPath = "/Applications/Nix Apps/Synergy Client.app/Contents/MacOS/Synergy Client";
 
-  synergyClient = util.mkSignedApp {
+  # A bundle with a stable identity, so that the Accessibility grant survives rebuilds; see README.md.
+  synergyClient = config.lib.appIdentity.mkAppBundle {
+    executable = "${pkgs.synergy}/bin/.synergyc-wrapped";
+    identifier = "com.curtisshoward.synergyc";
+    mainProgram = "synergyc";
     name = "Synergy Client";
-    bundleId = "com.curtisshoward.synergyc";
-    executableName = "synergyc";
-    binary = "${pkgs.synergy}/bin/.synergyc-wrapped";
-    onChange = ''/bin/launchctl kickstart -k "gui/$(id -u)/com.synergy" || true'';
   };
 in
 {
-  imports = [ synergyClient.module ];
+  environment.systemPackages = [
+    synergyClient
+  ];
 
   launchd.user.agents = {
     synergy = {
@@ -19,7 +22,7 @@ in
         KeepAlive = true;
         Label = "com.synergy";
         ProgramArguments = [
-          synergyClient.execPath
+          execPath
           "--name"
           vars.hostName
           "-f"

@@ -1,4 +1,4 @@
-{ agenix, darwin, home-manager, nixpkgs, nixvim, vars }:
+{ agenix, darwin, home-manager, nix-mac-app-identity, nixpkgs, nixvim, vars }:
 let
   secretsDir = "/run/agenix";
 
@@ -14,6 +14,8 @@ in
 { hostName, hostType, mainUser, system ? "x86_64-linux", extraVars ? {} }:
 let
   agenixModule = if isMacos then agenix.darwinModules.default else agenix.nixosModules.default;
+  appIdentityHmModules = if isMacos then [ nix-mac-app-identity.homeManagerModules.default ] else [];
+  appIdentityModules = if isMacos then [ nix-mac-app-identity.darwinModules.default ] else [];
   hardwareModule = if isMacos then [] else [ /etc/nixos/hardware-configuration.nix ];
   hmModule = if isMacos then home-manager.darwinModules.home-manager else home-manager.nixosModules.default;
 
@@ -40,14 +42,14 @@ in
 mkSystem {
   inherit system;
 
-  modules = hardwareModule ++ [
+  modules = hardwareModule ++ appIdentityModules ++ [
     agenixModule
     hmModule
 
     ../../host/${hostType}/${hostName}/configuration.nix
     {
       home-manager = {
-        sharedModules = [
+        sharedModules = appIdentityHmModules ++ [
           nixvim.homeModules.nixvim
         ];
         extraSpecialArgs = {

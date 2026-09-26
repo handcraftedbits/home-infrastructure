@@ -82,7 +82,6 @@ that would be reused belongs in `module/`, not in the host file.
 | `mkFileWithSecrets`        | A Home Manager activation step writing a file whose content interpolates secrets |
 | `mkGpuAvailabilityService` | A oneshot unit that blocks until the NVIDIA device nodes appear                  |
 | `mkNfsMount`               | An NFSv4.2 `fileSystems` entry with the standard tuning options                  |
-| `mkSignedApp`              | A re-signed macOS app bundle; see below                                          |
 | `mkTcpAvailabilityService` | A `Type=notify` unit that stays active only while a host:port is reachable       |
 | `mkUserQuadlets`           | Rootless podman containers from a directory scan; see below                      |
 
@@ -130,13 +129,21 @@ on top of the normal Nix package set. System defaults are split into `settings/{
 macOS secrets are declared explicitly in `os/macos/secrets.nix` rather than discovered, because a workstation needs only
 a handful of them and the recursive scan would pull in every VM's credentials.
 
-### `mkSignedApp`
+### Stable Code Identities
 
 nixpkgs signs macOS binaries ad-hoc, so every rebuild produces a new code identity and TCC permission grants
-(Accessibility, Full Disk Access) are lost. `mkSignedApp` re-signs affected bundles during activation with a
-self-signed `nix-codesign` certificate, giving them a stable cdhash so grants persist. It operates either in place on
-an existing bundle or by synthesising a minimal `.app` around a bare binary. The certificate must be created by hand
-once per machine -- see the Code Signing section of `README.md`; activation fails with a pointer to it if missing.
+(Accessibility, Full Disk Access) would be lost. The `nix-mac-app-identity` flake input fixes this at build time: it
+re-signs a bundle under a requirement naming only its `CFBundleIdentifier`, which no rebuild changes. `mkHost` imports
+its nix-darwin and Home Manager modules on darwin hosts, and there is nothing to set up per machine.
+
+* An existing `.app` is listed in `system.appIdentity.apps`, or handed to `config.lib.appIdentity.stabilizeApp` where a
+  Home Manager module owns the package option (`programs.aerospace.package`).
+* A bare daemon (the Synergy server and client) is wrapped with `config.lib.appIdentity.mkAppBundle` and installed as a
+  system package, so it lands in `/Applications/Nix Apps` at a fixed path that its launchd agent runs and that System
+  Settings can find.
+
+Grants are keyed on the bundle identifier and that requirement, not on the store path, so they survive rebuilds. Each
+one still has to be made by hand once per machine; macOS offers no supported way to script it.
 
 ## OpenCode Agents
 
