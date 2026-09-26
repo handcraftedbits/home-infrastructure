@@ -1,4 +1,4 @@
-{ agenix, darwin, home-manager, nix-mac-app-identity, nixpkgs, nixvim, vars }:
+{ agenix, darwin, home-manager, lazyvim, nix-mac-app-identity, nixpkgs, vars }:
 let
   secretsDir = "/run/agenix";
 
@@ -50,7 +50,7 @@ mkSystem {
     {
       home-manager = {
         sharedModules = appIdentityHmModules ++ [
-          nixvim.homeModules.nixvim
+          lazyvim.homeManagerModules.default
         ];
         extraSpecialArgs = {
           vars = resolvedVariables;

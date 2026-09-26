@@ -1,309 +1,162 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
-  tabstop2 = ''
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
+  extras = [
+    "lazyvim.plugins.extras.coding.blink"
+    "lazyvim.plugins.extras.editor.aerial"
+    "lazyvim.plugins.extras.editor.neo-tree"
+    "lazyvim.plugins.extras.lang.docker"
+    "lazyvim.plugins.extras.lang.json"
+    "lazyvim.plugins.extras.lang.markdown"
+    "lazyvim.plugins.extras.lang.nix"
+    "lazyvim.plugins.extras.lang.terraform"
+    "lazyvim.plugins.extras.lang.typescript"
+    "lazyvim.plugins.extras.lang.yaml"
+    "lazyvim.plugins.extras.ui.edgy"
+  ];
+
+  lintPlugins = ''
+    return {
+      "mfussenegger/nvim-lint",
+      opts = {
+        linters = {
+          ["markdownlint-cli2"] = {
+            prepend_args = { "--config", "${markdownlintConfig}" },
+          },
+        },
+      },
+    }
   '';
 
-  tabstop5 = ''
-    vim.opt_local.tabstop = 5
-    vim.opt_local.shiftwidth = 5
-    vim.opt_local.softtabstop = 5
+  localPlugins = ''
+    return {
+      {
+        "rafamadriz/friendly-snippets",
+        dir = "${pkgs.vimPlugins.friendly-snippets}",
+      },
+      {
+        "saghen/blink.cmp",
+        dir = "${pkgs.vimPlugins.blink-cmp}",
+      },
+      {
+        dir = "${pkgs.vimPlugins.mini-align}",
+        event = "LazyFile",
+        name = "mini.align",
+        opts = {},
+      },
+      {
+        dir = "${pkgs.vimPlugins.monokai-pro-nvim}",
+        lazy = false,
+        name = "monokai-pro.nvim",
+        opts = { filter = "classic" },
+        priority = 1000,
+      },
+      {
+        dir = "${pkgs.vimPlugins.rainbow-delimiters-nvim}",
+        event = "LazyFile",
+        name = "rainbow-delimiters.nvim",
+      },
+      {
+        dir = "${pkgs.vimPlugins.unicode-vim}",
+        event = "VeryLazy",
+        name = "unicode.vim",
+      },
+    }
+  '';
+
+  markdownlintConfig = pkgs.writeText ".markdownlint.yaml" ''
+    MD013:
+      code_block_line_length: 150
+      heading_line_length: 150
+      line_length: 150
+    MD025: false
   '';
 in
 {
-  # Additional required packages.
-  home.packages = with pkgs; [
-    bash-language-server
-    dockerfile-language-server
-    lemminx
-    nil
-    terraform-ls
-    typescript-language-server
-    vscode-langservers-extracted
-    yaml-language-server
-  ];
+  home.activation.clearNeovimLuaCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    rm -rf "$HOME/.cache/nvim/luac"
+  '';
 
-  programs.nixvim = {
-    colorscheme = "molokai";
-
-    diagnostic.settings = {
-      signs = true;
-      underline = true;
-      update_in_insert = false;
-      virtual_text = true;
-    };
-
+  programs.lazyvim = {
+    configFiles = ./lazyvim;
     enable = true;
 
-    extraConfigLua = builtins.readFile ./config.lua;
-
-    extraPlugins = with pkgs.vimPlugins; [
-      molokai
-      tabular
-      unicode-vim
-      vim-fugitive
+    # Servers and tools the extras expect but do not install themselves.
+    extraPackages = with pkgs; [
+      bash-language-server
+      lemminx
+      marksman
+      nil
+      nixfmt
+      statix
+      terraform-ls
+      tflint
+      vscode-langservers-extracted
+      vtsls
+      yaml-language-server
     ];
 
-    globals = {
-      mapleader = ",";
-      rehash256 = 1;
-    };
-
-    highlight = {
-      ColorColumn.bg = "#2d2d2d";
-    };
-
-    impureRtp = false;
-
-    keymaps = [
-      {
-        action = "<cmd>nohlsearch<CR>";
-        key = "<leader><space>";
-        mode = "n";
-      }
-      {
-        action = "<cmd>NvimTreeToggle<CR>";
-        key = "<leader>n";
-        mode = "n";
-      }
-      {
-        action = "<cmd>AerialToggle<CR>";
-        key = "<leader>t";
-        mode = "n";
-      }
-    ];
-
-    nixpkgs.pkgs = pkgs;
-
-    opts = {
-      encoding = "utf-8";
-      expandtab = true;
-      autoindent = true;
-      backspace = "indent,eol,start";
-      backup = false;
-      colorcolumn = "120";
-      completeopt = "menu,menuone,noselect";
-      cursorline = true;
-      fillchars = {
-        vert = "│";
+    # coding.blink is a LazyVim default, but the module only packages extras that are enabled here.
+    extras = {
+      coding.blink.enable = true;
+      editor.aerial.enable = true;
+      editor.neo-tree.enable = true;
+      lang = {
+        docker = {
+          enable = true;
+          installDependencies = true;
+        };
+        json = {
+          enable = true;
+          installDependencies = true;
+        };
+        markdown = {
+          enable = true;
+          installDependencies = true;
+        };
+        nix.enable = true;
+        terraform.enable = true;
+        typescript.enable = true;
+        yaml.enable = true;
       };
-      hlsearch = true;
-      incsearch = true;
-      list = true;
-      listchars = {
-        space = "·";
-        tab = "→ ";
-        nbsp = "␣";
-      };
-      lazyredraw = true;
-      mouse = "a";
-      showmatch = true;
-      number = true;
-      swapfile = false;
-      termguicolors = true;
-      undofile = false;
+      ui.edgy.enable = true;
     };
+
+    ignoreBuildNotifications = true;
 
     plugins = {
-      aerial = {
-        enable = true;
-        settings = {
-          attach_mode = "global";
-          filter_kind = false;
-          layout = {
-            default_direction = "right";
-            placement = "edge";
-            resize_to_content = false;
-            width = 60;
-          };
-          max_level = 10;
-        };
-      };
-
-      cmp = {
-        autoEnableSources = true;
-        enable = true;
-        settings = {
-          mapping = {
-            "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
-            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<C-e>" = "cmp.mapping.abort()";
-          };
-          sources = [
-            { name = "buffer"; }
-            { name = "luasnip"; }
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-          ];
-          snippet = {
-            expand = "function(args) require('luasnip').lsp_expand(args.body) end";
-          };
-        };
-      };
-
-      lsp = {
-        enable = true;
-        servers = {
-          bashls.enable = true;
-          dockerls = {
-            enable = true;
-            filetypes = [
-              "containerfile"
-              "dockerfile"
-            ];
-          };
-          html.enable = true;
-          jsonls.enable = true;
-          lemminx.enable = true;
-          nil_ls.enable = true;
-          terraformls.enable = true;
-          ts_ls.enable = true;
-          yamlls.enable = true;
-        };
-      };
-
-      lualine = {
-        enable = true;
-
-        settings = {
-          options = {
-            theme = {
-              sections = {
-                lualine_a = [ "mode" ];
-                lualine_b = [ ];
-                lualine_c = [ ];
-                lualine_x = [
-                  { __unkeyed-1 = "encoding"; }
-                  { __unkeyed-1 = "fileformat"; }
-                  { __unkeyed-1 = "filetype"; }
-                ];
-                lualine_y = [ "progress" ];
-                lualine_z = [ "location" ];
-              };
-              inactive = {
-                a = {
-                  bg = "#465457";
-                  fg = "#080808";
-                };
-                b = {
-                  bg = "#465457";
-                  fg = "#080808";
-                };
-                c = {
-                  bg = "#465457";
-                  fg = "#080808";
-                };
-              };
-              insert = {
-                a = {
-                  bg = "#66D9E8";
-                  fg = "#080808";
-                  gui = "bold";
-                };
-              };
-              normal = {
-                a = {
-                  bg = "#E6DB74";
-                  fg = "#080808";
-                  gui = "bold";
-                };
-                b = {
-                  bg = "#232526";
-                  fg = "#F8F8F0";
-                };
-                c = {
-                  bg = "#465457";
-                  fg = "#F8F8F0";
-                };
-              };
-              replace = {
-                a = {
-                  bg = "#F92672";
-                  fg = "#080808";
-                  gui = "bold";
-                };
-              };
-              visual = {
-                a = {
-                  bg = "#A6E22E";
-                  fg = "#080808";
-                  gui = "bold";
-                };
-              };
-            };
-          };
-        };
-      };
-
-      nvim-tree = {
-        enable = true;
-        settings = {
-          actions.open_file.window_picker.enable = false;
-          filters.dotfiles = false;
-          view = {
-            preserve_window_proportions = true;
-            width = 50;
-          };
-        };
-      };
-
-      rainbow-delimiters.enable = true;
-
-      render-markdown = {
-        enable = true;
-        settings = {
-          enabled = true;
-          file_types = [ "markdown" ];
-        };
-      };
-
-      telescope = {
-        enable = true;
-        keymaps = {
-          "<leader>fb" = "buffers";
-          "<leader>ff" = "find_files";
-          "<leader>fg" = "live_grep";
-          "<leader>fh" = "help_tags";
-        };
-      };
-
-      treesitter = {
-        enable = true;
-        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-          bash
-          c
-          cpp
-          csv
-          dockerfile
-          editorconfig
-          html
-          http
-          ini
-          java
-          javadoc
-          javascript
-          json
-          nix
-          regex
-          terraform
-          typescript
-          xml
-          yaml
-        ];
-        settings = {
-          highlight.enable = true;
-        };
-      };
-
-      web-devicons.enable = true;
+      lint = lintPlugins;
+      local = localPlugins;
     };
 
+    # Grammars beyond what the core set and the enabled extras provide.
+    treesitterParsers = with pkgs.vimPlugins.nvim-treesitter-parsers; [
+      cpp
+      csv
+      editorconfig
+      http
+      ini
+      java
+      javadoc
+    ];
+  };
+
+  programs.neovim = {
     viAlias = true;
     vimAlias = true;
-    wrapRc = true;
+  };
+
+  xdg.configFile."nvim/lazyvim.json".text = builtins.toJSON {
+    inherit extras;
+    install_version = 8;
+    news = { };
+    version = 8;
+  };
+
+  # The generated init.lua clones lazy.nvim from GitHub when this path is missing; provide it from nixpkgs instead. lazy.nvim only treats a real
+  # directory under its root as installed, so link the package's files rather than the package itself.
+  xdg.dataFile."nvim/lazy/lazy.nvim" = {
+    force = true;
+    recursive = true;
+    source = pkgs.vimPlugins.lazy-nvim;
   };
 }
