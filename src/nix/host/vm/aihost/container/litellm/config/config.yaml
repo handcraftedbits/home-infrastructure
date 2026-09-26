@@ -1,6 +1,8 @@
 model_list:
   - model_name: main
     litellm_params:
+      allowed_openai_params:
+        - reasoning_effort
       api_base: http://vllm-coding-model:8000/v1
       api_key: none
       model: openai/main
