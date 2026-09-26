@@ -7,7 +7,7 @@ ContainerName=comfyui
 Environment=WANTED_GID=%G
 Environment=WANTED_UID=%U
 EnvironmentFile=%h/.config/containers/environment/%N
-Image=docker.io/mmartial/comfyui-nvidia-docker:ubuntu24_cuda13.1-latest
+Image=docker.io/mmartial/comfyui-nvidia-docker:ubuntu24_cuda13.2-latest
 Label=traefik.enable=true
 Label=traefik.http.routers.comfyui.entrypoints=websecure
 Label=traefik.http.routers.comfyui.rule=Host(`comfyui.app.howard.estate`)

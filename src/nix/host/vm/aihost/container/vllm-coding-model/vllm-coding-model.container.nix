@@ -13,21 +13,15 @@ Exec=/opt/models/nvidia/Muse-Glimmer-30B-NVFP4 \
   --enable-log-requests \
   --enable-prefix-caching \
   --generation-config auto \
-# --gpu-memory-utilization 0.73 \
-  --gpu-memory-utilization 0.95 \
-# --hf-overrides '{"text_config": {"max_position_embeddings": 262144}}' \
+  --gpu-memory-utilization 0.73 \
   --host 0.0.0.0 \
   --kv-cache-dtype bfloat16 \
-# --max-model-len 262144 \
   --max-model-len 131072 \
-# --max-num-batched-tokens 16384 \
   --max-num-batched-tokens 8192 \
-# --max-num-seqs 8 \
-  --max-num-seqs 32 \
+  --max-num-seqs 8 \
   --port 8000 \
   --reasoning-parser muse_glimmer \
   --served-model-name main \
-# --speculative-config '{"method":"dflash","model":"/opt/models/z-lab/Muse-Glimmer-30B-DFlash2","num_speculative_tokens":15}' \
   --speculative-config '{"method":"dflash","model":"/opt/models/z-lab/Muse-Glimmer-30B-DFlash2","num_speculative_tokens":4}' \
   --tensor-parallel-size 1 \
   --tool-call-parser muse_glimmer
