@@ -1,16 +1,35 @@
+# max_connections: 1 sends an engine one request at a time; the rest queue for the connection instead of arriving as a
+# burst, which is what gets these engines rate-limited or CAPTCHA'd.
 engines:
   - name: bing
     disabled: false
     inactive: false
+    max_connections: 1
   - name: bing images
     disabled: false
     inactive: false
   - name: bing videos
     disabled: false
     inactive: false
+  - name: brave
+    inactive: true
+  - name: brave.images
+    inactive: true
+  - name: brave.news
+    inactive: true
+  - name: brave.videos
+    inactive: true
+  - name: duckduckgo
+    disabled: false
+    inactive: false
+    max_connections: 1
   - name: github
     disabled: false
     inactive: false
+  - name: google
+    disabled: false
+    inactive: false
+    max_connections: 1
 general:
   debug: false
 outgoing:
